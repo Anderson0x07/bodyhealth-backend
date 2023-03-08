@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface DetalleRepository extends JpaRepository<Detalle,Integer> {
 
-    @Query(
-            value = "SELECT * from detalle ",
-            nativeQuery=true
-    )
-    List<Detalle> listarActivos();
+//    @Query(
+//            value = "SELECT * from detalle ",
+//            nativeQuery=true
+//    )
+//    List<Detalle> listarActivos();
 }
