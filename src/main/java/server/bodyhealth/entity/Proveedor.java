@@ -3,6 +3,8 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -22,4 +24,7 @@ public class Proveedor implements Serializable{
 
     @Column(length = 80)
     private String direccion;
+
+    @OneToMany(mappedBy = "id_proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Maquina> maquinas = new ArrayList<>();
 }

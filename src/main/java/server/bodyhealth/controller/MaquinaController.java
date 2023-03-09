@@ -1,20 +1,14 @@
 package server.bodyhealth.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Maquina;
-import server.bodyhealth.service.DetalleService;
 import server.bodyhealth.service.MaquinaService;
-import server.bodyhealth.service.ProveedorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
-
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/maquinas")
@@ -22,8 +16,6 @@ import java.util.Optional;
 public class MaquinaController {
     @Autowired
     private MaquinaService maquinaService;
-    @Autowired
-    private ProveedorService proveedorService;
     private String msj = "";
 
     @GetMapping("/all-maquinas")
@@ -34,6 +26,15 @@ public class MaquinaController {
         } else {
             return ResponseEntity.noContent().build();
         }
+    }
+
+    @GetMapping("/{id_maquina}")
+    public ResponseEntity<Maquina> getMaquina(@PathVariable int id_maquina) {
+        Maquina maquina = maquinaService.encontrarMaquinaId(id_maquina);
+        if (maquina == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(maquina);
     }
 
     //Guarda nueva maquina
@@ -50,57 +51,46 @@ public class MaquinaController {
         }
     }
 
-    @GetMapping("/{id_maquina}")
-    public ResponseEntity<Maquina> getMaquina(@PathVariable int id_maquina) {
-        Maquina maquina = maquinaService.encontrarMaquinaId(id_maquina);
-        if (maquina == null) {
-            return ResponseEntity.notFound().build();
+
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<Maquina> actualizarProducto(@PathVariable int id, @RequestBody Maquina maquinaActualizada) {
+        //Está buscando la máquina por la llave primaria
+        Maquina maquinaExistente = maquinaService.encontrarMaquinaId(id);
+        //SE PUEDE DEJAR TAMBIÉN DE ESTA FORMA YA QUE BUSCARIA POR EL ID QUE LA EMPRESA LE DE A LA MÁQUINA
+        //Maquina maquinaExistente = maquinaService.encontrarMaquina(id);
+        if (maquinaExistente != null) {
+            // Actualizar el producto existente con los nuevos datos
+            maquinaExistente.setEstado(maquinaActualizada.getEstado());
+            maquinaExistente.setId_maquina(maquinaActualizada.getId_maquina());
+            maquinaExistente.setNombre(maquinaActualizada.getNombre());
+            maquinaExistente.setObservacion(maquinaActualizada.getObservacion());
+            maquinaExistente.setId_proveedor(maquinaActualizada.getId_proveedor());
+
+            maquinaService.guardar(maquinaExistente);
+            // Devolver una respuesta exitosa con el producto actualizado
+            return new ResponseEntity<>(maquinaExistente, HttpStatus.OK);
+        } else {
+            // Devolver una respuesta de error si el producto no existe
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(maquina);
     }
 
-    //Guarda edición de maquina en el dashboard del admin
-    @PostMapping("/admin/dash-maquinas/expand/guardar")
-    public String guardarEdicionMaquina(Maquina maquina) {
 
-        log.info("Maquina: "+maquina.toString());
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<Void> eliminarProducto(@PathVariable int id) {
+        //Está buscando la máquina por la llave primaria
+        Maquina maquinaExistente = maquinaService.encontrarMaquinaId(id);
+        //SE PUEDE DEJAR TAMBIÉN DE ESTA FORMA YA QUE BUSCARIA POR EL ID QUE LA EMPRESA LE DE A LA MÁQUINA
+        //Maquina maquinaExistente = maquinaService.encontrarMaquina(id);
+        if (maquinaExistente != null) {
+            // Eliminar el producto existente
+            maquinaService.eliminar(maquinaExistente);
 
-        List<Maquina> maquinas = maquinaService.listarMaquinas();
-
-        if(maquinas.size()>0) {
-            for (Maquina maq : maquinas) {
-                if (maquina.getId_maquina() == maq.getId_maquina()) {
-                    msj = "Error al editar la maquina, ya existe";
-                    return "redirect:/admin/dash-maquinas/expand/editar/" + maquina.getId();
-                }
-
-            }
+            // Devolver una respuesta exitosa sin cuerpo
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            // Devolver una respuesta de error si el producto no existe
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        maquinaService.guardar(maquina);
-
-        msj = "Maquina editada con exito";
-        return "redirect:/admin/dash-maquinas/expand/"+maquina.getId();
-    }
-
-
-    @GetMapping("/admin/dash-maquinas/expand/editar/{id_maquina}")
-    public String editar(Maquina maquina, Model model){
-
-        maquina = maquinaService.encontrarMaquina(maquina.getId_maquina());
-
-        model.addAttribute("maquina",maquina);
-        model.addAttribute("proveedores",proveedorService.listarProveedores());
-        model.addAttribute("msj",msj);
-        msj="";
-
-        return "admin/maquinas/maquina-editar";
-    }
-
-    @GetMapping("/admin/dash-maquinas/eliminar")
-    public String eliminarMaquina(Maquina maquina){
-        msj = "Maquina eliminada con exito";
-        maquinaService.eliminar(maquina);
-        return "redirect:/admin/dash-maquinas";
     }
 }

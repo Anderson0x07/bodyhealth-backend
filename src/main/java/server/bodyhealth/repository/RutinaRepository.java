@@ -1,7 +1,6 @@
 package server.bodyhealth.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import server.bodyhealth.entity.Maquina;
+
 import server.bodyhealth.entity.Rutina;
 import org.springframework.data.jpa.repository.JpaRepository;
 
