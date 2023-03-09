@@ -25,8 +25,12 @@ public class MaquinaImplement implements MaquinaService {
         maquinaRepository.delete(maquina);
     }
     @Override
-    public Maquina encontrarMaquina(Integer id_maquina) {
+    public Maquina encontrarMaquina(int id_maquina) {
 
-        return maquinaRepository.findById_maquina(id_maquina);
+        return maquinaRepository.findMaquinaById_maquina(id_maquina);
+    }
+    @Override
+    public Maquina encontrarMaquinaId(int id_maquina) { //BUSCA ID PRIMARY
+        return maquinaRepository.findById(id_maquina).orElse(null);
     }
 }

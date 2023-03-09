@@ -12,5 +12,8 @@ public interface MaquinaService {
 
     public void eliminar(Maquina maquina);
 
-    public Maquina encontrarMaquina(Integer id_maquina);
+    //POR SERIAL MAQUINA
+    public Maquina encontrarMaquina(int id_maquina);
+
+    public Maquina encontrarMaquinaId(int id_maquina);
 }

@@ -43,6 +43,7 @@ public class MaquinaController {
         Maquina newMaquina = maquinaService.encontrarMaquina(maquina.getId_maquina());
         if (newMaquina == null) {
             maquinaService.guardar(maquina);
+            log.info("Maquina added");
             return ResponseEntity.ok(maquina);
         } else {
             return ResponseEntity.badRequest().build();
@@ -51,7 +52,7 @@ public class MaquinaController {
 
     @GetMapping("/{id_maquina}")
     public ResponseEntity<Maquina> getMaquina(@PathVariable int id_maquina) {
-        Maquina maquina = maquinaService.encontrarMaquina(id_maquina);
+        Maquina maquina = maquinaService.encontrarMaquinaId(id_maquina);
         if (maquina == null) {
             return ResponseEntity.notFound().build();
         }
