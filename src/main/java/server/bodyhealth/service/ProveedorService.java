@@ -12,5 +12,5 @@ public interface ProveedorService {
 
     public void eliminar(Proveedor proveedor);
 
-    public Proveedor encontrarProveedor(Proveedor proveedor);
+    public Proveedor encontrarProveedor(int id_proveedor);
 }

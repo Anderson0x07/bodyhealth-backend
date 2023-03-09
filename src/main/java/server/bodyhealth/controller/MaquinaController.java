@@ -11,14 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.List;
 
 @RestController
-@RequestMapping("/maquinas")
+@RequestMapping("/maquina")
 @Slf4j
 public class MaquinaController {
     @Autowired
     private MaquinaService maquinaService;
     private String msj = "";
 
-    @GetMapping("/all-maquinas")
+    @GetMapping("/all")
     public ResponseEntity<List<Maquina>> listarMaquinas(){
         List<Maquina> maquinas = maquinaService.listarMaquinas();
         if (!maquinas.isEmpty()) {
@@ -29,7 +29,7 @@ public class MaquinaController {
     }
 
     @GetMapping("/{id_maquina}")
-    public ResponseEntity<Maquina> getMaquina(@PathVariable int id_maquina) {
+    public ResponseEntity<Maquina> obtenerMaquina(@PathVariable int id_maquina) {
         Maquina maquina = maquinaService.encontrarMaquinaId(id_maquina);
         if (maquina == null) {
             return ResponseEntity.notFound().build();
@@ -44,7 +44,6 @@ public class MaquinaController {
         Maquina newMaquina = maquinaService.encontrarMaquina(maquina.getId_maquina());
         if (newMaquina == null) {
             maquinaService.guardar(maquina);
-            log.info("Maquina added");
             return ResponseEntity.ok(maquina);
         } else {
             return ResponseEntity.badRequest().build();
@@ -53,7 +52,7 @@ public class MaquinaController {
 
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Maquina> actualizarProducto(@PathVariable int id, @RequestBody Maquina maquinaActualizada) {
+    public ResponseEntity<Maquina> actualizarMaquina(@PathVariable int id, @RequestBody Maquina maquinaActualizada) {
         //Está buscando la máquina por la llave primaria
         Maquina maquinaExistente = maquinaService.encontrarMaquinaId(id);
         //SE PUEDE DEJAR TAMBIÉN DE ESTA FORMA YA QUE BUSCARIA POR EL ID QUE LA EMPRESA LE DE A LA MÁQUINA
@@ -77,7 +76,7 @@ public class MaquinaController {
 
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable int id) {
+    public ResponseEntity<Void> eliminarMaquina(@PathVariable int id) {
         //Está buscando la máquina por la llave primaria
         Maquina maquinaExistente = maquinaService.encontrarMaquinaId(id);
         //SE PUEDE DEJAR TAMBIÉN DE ESTA FORMA YA QUE BUSCARIA POR EL ID QUE LA EMPRESA LE DE A LA MÁQUINA

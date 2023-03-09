@@ -19,7 +19,7 @@ public class RutinaController {
     @Autowired
     private RutinaService rutinaService;
 
-    @GetMapping("/all-rutinas")
+    @GetMapping("/all")
     public ResponseEntity<List<Rutina>> listarRutinas(){
 
         List<Rutina> maquinas = rutinaService.listarRutina();
@@ -32,7 +32,7 @@ public class RutinaController {
 
 
     @GetMapping("/{id_rutina}")
-    public ResponseEntity<Rutina> getMaquina(@PathVariable int id_rutina) {
+    public ResponseEntity<Rutina> obtenerRutina(@PathVariable int id_rutina) {
         Rutina rutina = rutinaService.encontrarRutina(id_rutina);
         if (rutina == null) {
             return ResponseEntity.notFound().build();
@@ -47,7 +47,6 @@ public class RutinaController {
         Rutina newRutina = rutinaService.encontrarRutina(rutina.getId_rutina());
         if (newRutina == null) {
             rutinaService.guardar(rutina);
-            log.info("Maquina added");
             return ResponseEntity.ok(rutina);
         } else {
             return ResponseEntity.badRequest().build();
@@ -55,7 +54,7 @@ public class RutinaController {
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Rutina> actualizarProducto(@PathVariable int id, @RequestBody Rutina rutinaActualizada) {
+    public ResponseEntity<Rutina> actualizarRutina(@PathVariable int id, @RequestBody Rutina rutinaActualizada) {
         Rutina rutinaExistente = rutinaService.encontrarRutina(id);
         if (rutinaExistente != null) {
             // Actualizar el producto existente con los nuevos datos
@@ -73,7 +72,7 @@ public class RutinaController {
 
 
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable int id) {
+    public ResponseEntity<Void> eliminarRutina(@PathVariable int id) {
         Rutina rutinaExistente = rutinaService.encontrarRutina(id);
         if (rutinaExistente != null) {
             // Eliminar el producto existente

@@ -28,7 +28,7 @@ public class ProveedorImplement implements ProveedorService {
     }
 
     @Override
-    public Proveedor encontrarProveedor(Proveedor proveedor) {
-        return proveedorRepository.findById(proveedor.getId_proveedor()).orElse(null);
+    public Proveedor encontrarProveedor(int id_proveedor) {
+        return proveedorRepository.findById(id_proveedor).orElse(null);
     }
 }

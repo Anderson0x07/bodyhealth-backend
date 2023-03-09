@@ -1,4 +1,7 @@
 package server.bodyhealth.entity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -25,6 +28,7 @@ public class Proveedor implements Serializable{
     @Column(length = 80)
     private String direccion;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "id_proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Maquina> maquinas = new ArrayList<>();
 }
