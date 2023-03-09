@@ -1,6 +1,7 @@
 package server.bodyhealth.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,8 +23,9 @@ public class Maquina implements Serializable {
     private String estado;
 
     private String observacion;
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+
+
+    @ManyToOne
     @JoinColumn(name = "id_proveedor")
     private Proveedor id_proveedor;
 }
