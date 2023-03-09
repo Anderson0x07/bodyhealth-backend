@@ -27,7 +27,7 @@ public class RutinaImplement implements RutinaService {
     }
 
     @Override
-    public Rutina encontrarRutina(Rutina rutina) {
-        return rutinaRepository.findById(rutina.getId_rutina()).orElse(null);
+    public Rutina encontrarRutina(int id_rutina) {
+        return rutinaRepository.findById(id_rutina).orElse(null);
     }
 }

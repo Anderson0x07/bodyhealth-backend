@@ -13,5 +13,5 @@ public interface RutinaService {
 
     public void eliminar(Rutina rutina);
 
-    public Rutina encontrarRutina(Rutina rutina);
+    public Rutina encontrarRutina(int id_rutina);
 }
