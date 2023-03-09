@@ -28,8 +28,8 @@ public class MusculoImplement implements MusculoService {
     }
 
     @Override
-    public Musculo encontrarMusculo(Musculo musculo) {
+    public Musculo encontrarMusculo(int id_musculo) {
 
-        return musculoRepository.findById(musculo.getId_musculo()).orElse(null);
+        return musculoRepository.findById(id_musculo).orElse(null);
     }
 }
