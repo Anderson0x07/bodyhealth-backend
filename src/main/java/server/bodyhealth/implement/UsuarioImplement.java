@@ -1,5 +1,6 @@
 package server.bodyhealth.implement;
 
+import server.bodyhealth.entity.Administrador;
 import server.bodyhealth.entity.Cliente;
 import server.bodyhealth.entity.Entrenador;
 import server.bodyhealth.entity.Usuario;
@@ -38,6 +39,12 @@ public class UsuarioImplement implements UsuarioService {
     public Usuario encontrarUsuario(Usuario usuario) {
         return usuarioRepository.findById(usuario.getId_usuario()).orElse(null);
     }
+
+    @Override
+    public Administrador encontrarAdminEmail(String email) {
+        return usuarioRepository.encontrarAdminEmail(email);
+    }
+
 
     @Override
     public List<Cliente> listarActivos() {

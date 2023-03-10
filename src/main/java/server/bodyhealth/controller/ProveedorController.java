@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/proveedor")
+@CrossOrigin
 @Slf4j
 public class ProveedorController {
     @Autowired
