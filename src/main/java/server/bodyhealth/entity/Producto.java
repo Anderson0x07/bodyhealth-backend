@@ -1,8 +1,11 @@
 package server.bodyhealth.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -28,7 +31,11 @@ public class Producto implements Serializable{
 
     private boolean estado;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne()
     @JoinColumn(name = "id_proveedor")
-    private Proveedor id_proveedor;
+    private Proveedor proveedor;
+
+    @JsonIgnoreProperties("producto")
+    @OneToMany(mappedBy = "producto", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Pedido> pedidos = new ArrayList<>();
 }

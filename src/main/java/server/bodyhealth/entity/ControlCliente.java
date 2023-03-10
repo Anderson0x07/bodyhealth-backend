@@ -15,9 +15,9 @@ public class ControlCliente implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_controlcliente;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente id_cliente;
+    private Cliente cliente;
 
     private double peso;
 

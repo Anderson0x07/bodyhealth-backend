@@ -26,7 +26,13 @@ public class Proveedor implements Serializable{
     @Column(length = 80)
     private String direccion;
 
-    @JsonIgnoreProperties("id_proveedor")
-    @OneToMany(mappedBy = "id_proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    
+    @JsonIgnoreProperties("proveedor")
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Maquina> maquinas = new ArrayList<>();
+
+
+    @JsonIgnoreProperties("proveedor")
+    @OneToMany(mappedBy = "proveedor", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Producto> productos = new ArrayList<>();
 }

@@ -28,8 +28,8 @@ public class ProductoImplement implements ProductoService {
     }
 
     @Override
-    public Producto encontrarProducto(Producto producto) {
-        return productoRepository.findById(producto.getId_producto()).orElse(null);
+    public Producto encontrarProducto(int  id_producto) {
+        return productoRepository.findById(id_producto).orElse(null);
     }
 
     @Override

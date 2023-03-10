@@ -27,5 +27,5 @@ public class Maquina implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_proveedor")
-    private Proveedor id_proveedor;
+    private Proveedor proveedor;
 }

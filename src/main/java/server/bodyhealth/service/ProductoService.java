@@ -12,7 +12,7 @@ public interface ProductoService {
 
     public void eliminar(Producto producto);
 
-    public Producto encontrarProducto(Producto producto);
+    public Producto encontrarProducto(int id_producto);
     public List<Producto> listarActivos();
 
     public List<Producto> listarDesactivados();

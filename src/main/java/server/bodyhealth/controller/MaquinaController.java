@@ -63,7 +63,7 @@ public class MaquinaController {
             maquinaExistente.setId_maquina(maquinaActualizada.getId_maquina());
             maquinaExistente.setNombre(maquinaActualizada.getNombre());
             maquinaExistente.setObservacion(maquinaActualizada.getObservacion());
-            maquinaExistente.setId_proveedor(maquinaActualizada.getId_proveedor());
+            maquinaExistente.setProveedor(maquinaActualizada.getProveedor());
 
             maquinaService.guardar(maquinaExistente);
             // Devolver una respuesta exitosa con el producto actualizado

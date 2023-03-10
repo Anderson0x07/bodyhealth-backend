@@ -1,9 +1,12 @@
 package server.bodyhealth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -18,5 +21,13 @@ public class Rutina implements Serializable {
 
     @Column(length = 100)
     private String descripcion;
+
+    @JsonIgnoreProperties("rutina")
+    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+
+    @JsonIgnoreProperties("rutina")
+    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
 
 }

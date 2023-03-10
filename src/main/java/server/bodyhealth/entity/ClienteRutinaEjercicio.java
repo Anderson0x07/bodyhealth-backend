@@ -11,10 +11,10 @@ public class ClienteRutinaEjercicio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_cliente_rutina_ejercicio;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "id_cliente_rutina")
-    private ClienteRutina id_cliente_rutina;
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    private ClienteRutina clienteRutina;
+    @ManyToOne
     @JoinColumn(name = "id_rutina_ejercicio")
-    private RutinaEjercicio id_rutina_ejercicio;
+    private RutinaEjercicio rutinaEjercicio;
 }
