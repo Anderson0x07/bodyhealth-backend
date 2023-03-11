@@ -1,14 +1,12 @@
 package server.bodyhealth.controller;
 
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Rutina;
 import server.bodyhealth.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 @RestController
@@ -44,8 +42,8 @@ public class RutinaController {
     @PostMapping("/guardar")
     public ResponseEntity<Rutina> guardarRutina(@RequestBody Rutina rutina){
 
-        Rutina newRutina = rutinaService.encontrarRutina(rutina.getId_rutina());
-        if (newRutina == null) {
+        Rutina rutinaExiste = rutinaService.encontrarRutina(rutina.getId_rutina());
+        if (rutinaExiste == null) {
             rutinaService.guardar(rutina);
             return ResponseEntity.ok(rutina);
         } else {
@@ -53,9 +51,9 @@ public class RutinaController {
         }
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<Rutina> actualizarRutina(@PathVariable int id, @RequestBody Rutina rutinaActualizada) {
-        Rutina rutinaExistente = rutinaService.encontrarRutina(id);
+    @PutMapping("/editar/{id_rutina}")
+    public ResponseEntity<Rutina> actualizarRutina(@PathVariable int id_rutina, @RequestBody Rutina rutinaActualizada) {
+        Rutina rutinaExistente = rutinaService.encontrarRutina(id_rutina);
         if (rutinaExistente != null) {
             // Actualizar el producto existente con los nuevos datos
             rutinaExistente.setDescripcion(rutinaActualizada.getDescripcion());
@@ -71,9 +69,9 @@ public class RutinaController {
     }
 
 
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarRutina(@PathVariable int id) {
-        Rutina rutinaExistente = rutinaService.encontrarRutina(id);
+    @DeleteMapping("/eliminar/{id_rutina}")
+    public ResponseEntity<Void> eliminarRutina(@PathVariable int id_rutina) {
+        Rutina rutinaExistente = rutinaService.encontrarRutina(id_rutina);
         if (rutinaExistente != null) {
             // Eliminar el producto existente
             rutinaService.eliminar(rutinaExistente);

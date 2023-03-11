@@ -1,16 +1,14 @@
 package server.bodyhealth.controller;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.MetodoPago;
 import server.bodyhealth.service.MetodoPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.List;
 
 @RestController
-@RequestMapping("/metodoPago")
+@RequestMapping("/metodopago")
 @CrossOrigin
 public class MetodoPagoController {
     @Autowired
@@ -39,21 +37,21 @@ public class MetodoPagoController {
     @PostMapping("/guardar")
     public ResponseEntity<MetodoPago> guardarMetodoPago(@RequestBody MetodoPago metodoPago){
 
-        MetodoPago newMetodoPago = metodoPagoService.encontrarMetodoPago(metodoPago.getId_metodopago());
-        if (newMetodoPago == null) {
-            metodoPagoService.guardar(newMetodoPago);
-            return ResponseEntity.ok(newMetodoPago);
+        MetodoPago metodoPagoExiste = metodoPagoService.encontrarMetodoPago(metodoPago.getId_metodopago());
+        if (metodoPagoExiste == null) {
+            metodoPagoService.guardar(metodoPago);
+            return ResponseEntity.ok(metodoPago);
         } else {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @PutMapping("/editar/{id_metodopago}")
-    public ResponseEntity<MetodoPago> actualizarMetodoPago(@PathVariable int id_metodopago, @RequestBody MetodoPago metodoPagoActualizada) {
+    public ResponseEntity<MetodoPago> editarMetodoPago(@PathVariable int id_metodopago, @RequestBody MetodoPago metodoPagoActualizado) {
         MetodoPago metodoPagoExistente = metodoPagoService.encontrarMetodoPago(id_metodopago);
         if (metodoPagoExistente != null) {
             // Actualizar el producto existente con los nuevos datos
-            metodoPagoExistente.setDescripcion(metodoPagoActualizada.getDescripcion());
+            metodoPagoExistente.setDescripcion(metodoPagoActualizado.getDescripcion());
 
             metodoPagoService.guardar(metodoPagoExistente);
             // Devolver una respuesta exitosa con el producto actualizado

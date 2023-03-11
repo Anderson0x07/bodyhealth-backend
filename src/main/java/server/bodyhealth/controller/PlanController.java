@@ -39,8 +39,8 @@ public class PlanController {
 
     @PostMapping("/guardar")
     public ResponseEntity<Plan> guardarPlan(@RequestBody Plan plan){
-        Plan newPlan = planService.encontrarPlan(plan.getId_plan());
-        if (newPlan == null) {
+        Plan planExiste = planService.encontrarPlan(plan.getId_plan());
+        if (planExiste == null) {
             planService.guardar(plan);
             return ResponseEntity.ok(plan);
         } else {
@@ -50,16 +50,16 @@ public class PlanController {
 
     @PutMapping("/editar/{id_plan}")
     public ResponseEntity<Plan> editarPlan(@PathVariable int id_plan, @RequestBody Plan planActualizado) {
-        Plan plan = planService.encontrarPlan(id_plan);
-        if (plan != null) {
+        Plan planExistente = planService.encontrarPlan(id_plan);
+        if (planExistente != null) {
 
-            plan.setMeses(planActualizado.getMeses());
-            plan.setPlan(planActualizado.getPlan());
-            plan.setPrecio(planActualizado.getPrecio());
+            planExistente.setMeses(planActualizado.getMeses());
+            planExistente.setPlan(planActualizado.getPlan());
+            planExistente.setPrecio(planActualizado.getPrecio());
 
-            planService.guardar(plan);
+            planService.guardar(planExistente);
 
-            return ResponseEntity.ok(plan);
+            return ResponseEntity.ok(planExistente);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -67,9 +67,9 @@ public class PlanController {
 
     @DeleteMapping("/eliminar/{id_plan}")
     public ResponseEntity<Void> eliminarPlan(@PathVariable int id_plan) {
-        Plan plan = planService.encontrarPlan(id_plan);
-        if (plan != null) {
-            planService.eliminar(plan);
+        Plan planExistente = planService.encontrarPlan(id_plan);
+        if (planExistente != null) {
+            planService.eliminar(planExistente);
 
             return ResponseEntity.noContent().build();
         } else {

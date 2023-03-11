@@ -35,29 +35,29 @@ public class AdminController {
 
 
     @PutMapping("/admin/perfil/editar")
-    public ResponseEntity<Administrador> editarPerfil(@Valid @RequestBody Administrador administrador) {
+    public ResponseEntity<Administrador> editarPerfil(@Valid @RequestBody Administrador administradorActualizado) {
 
-        Administrador newAdministrador = usuarioService.encontrarAdminEmail(administrador.getEmail());
+        Administrador administradorExistente = usuarioService.encontrarAdminEmail(administradorActualizado.getEmail());
 
-        if (newAdministrador != null) {
+        if (administradorExistente != null) {
 
-            newAdministrador.setId_usuario(administrador.getId_usuario());
+            administradorExistente.setId_usuario(administradorActualizado.getId_usuario());
 
-            newAdministrador.setNombre(administrador.getNombre());
-            newAdministrador.setApellido(administrador.getApellido());
-            newAdministrador.setDocumento(administrador.getDocumento());
-            newAdministrador.setEmail(administrador.getEmail());
-            newAdministrador.setTipo_documento(administrador.getTipo_documento());
-            newAdministrador.setPassword(administrador.getPassword());
-            newAdministrador.setFecha_nacimiento(administrador.getFecha_nacimiento());
-            newAdministrador.setTelefono(administrador.getTelefono());
+            administradorExistente.setNombre(administradorActualizado.getNombre());
+            administradorExistente.setApellido(administradorActualizado.getApellido());
+            administradorExistente.setDocumento(administradorActualizado.getDocumento());
+            administradorExistente.setEmail(administradorActualizado.getEmail());
+            administradorExistente.setTipo_documento(administradorActualizado.getTipo_documento());
+            administradorExistente.setPassword(administradorActualizado.getPassword());
+            administradorExistente.setFecha_nacimiento(administradorActualizado.getFecha_nacimiento());
+            administradorExistente.setTelefono(administradorActualizado.getTelefono());
 
-            usuarioService.guardar(administrador);
+            usuarioService.guardar(administradorExistente);
             // Devolver una respuesta exitosa con el admin actualizado
-            return new ResponseEntity<>(administrador, HttpStatus.OK);
+            return ResponseEntity.ok(administradorExistente);
         } else {
             // Devolver una respuesta de error si el admin no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 

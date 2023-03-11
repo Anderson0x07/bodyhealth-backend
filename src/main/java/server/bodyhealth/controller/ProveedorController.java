@@ -1,15 +1,11 @@
 package server.bodyhealth.controller;
 
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Proveedor;
 import server.bodyhealth.service.ProveedorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,8 +38,8 @@ public class ProveedorController {
     @PostMapping("/guardar")
     public ResponseEntity<Proveedor> guardarProveedor(@RequestBody Proveedor proveedor){
 
-        Proveedor newProveedor = proveedorService.encontrarProveedor(proveedor.getId_proveedor());
-        if (newProveedor == null) {
+        Proveedor proveedorExiste = proveedorService.encontrarProveedor(proveedor.getId_proveedor());
+        if (proveedorExiste == null) {
             proveedorService.guardar(proveedor);
             return ResponseEntity.ok(proveedor);
         } else {
@@ -51,9 +47,9 @@ public class ProveedorController {
         }
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id, @Valid @RequestBody Proveedor proveedorActualizado) {
-        Proveedor proveedorExistente = proveedorService.encontrarProveedor(id);
+    @PutMapping("/editar/{id_proveedor}")
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id_proveedor, @RequestBody Proveedor proveedorActualizado) {
+        Proveedor proveedorExistente = proveedorService.encontrarProveedor(id_proveedor);
         if (proveedorExistente != null) {
             // Actualizar el producto existente con los nuevos datos
             proveedorExistente.setDireccion(proveedorActualizado.getDireccion());
@@ -69,9 +65,9 @@ public class ProveedorController {
         }
     }
 
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarProveedor(@PathVariable int id) {
-        Proveedor proveedorExistente = proveedorService.encontrarProveedor(id);
+    @DeleteMapping("/eliminar/{id_proveedor}")
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable int id_proveedor) {
+        Proveedor proveedorExistente = proveedorService.encontrarProveedor(id_proveedor);
         if (proveedorExistente != null) {
             // Eliminar el producto existente
             proveedorService.eliminar(proveedorExistente);

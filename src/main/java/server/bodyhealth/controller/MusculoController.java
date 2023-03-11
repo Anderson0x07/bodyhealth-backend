@@ -2,11 +2,9 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Musculo;
-import server.bodyhealth.entity.Rutina;
 import server.bodyhealth.service.MusculoService;
 
 import java.util.List;
@@ -42,8 +40,8 @@ public class MusculoController {
     @PostMapping("/guardar")
     public ResponseEntity<Musculo> guardarMusculo(@RequestBody Musculo musculo){
 
-        Musculo newMusculo = musculoService.encontrarMusculo(musculo.getId_musculo());
-        if (newMusculo == null) {
+        Musculo musculoExiste = musculoService.encontrarMusculo(musculo.getId_musculo());
+        if (musculoExiste == null) {
             musculoService.guardar(musculo);
             return ResponseEntity.ok(musculo);
         } else {
@@ -51,9 +49,9 @@ public class MusculoController {
         }
     }
 
-    @PutMapping("/editar/{id}")
-    public ResponseEntity<Musculo> actualizarRutina(@PathVariable int id, @RequestBody Musculo musculoActualizado) {
-        Musculo musculoExistente = musculoService.encontrarMusculo(id);
+    @PutMapping("/editar/{id_musculo}")
+    public ResponseEntity<Musculo> editarMusculo(@PathVariable int id_musculo, @RequestBody Musculo musculoActualizado) {
+        Musculo musculoExistente = musculoService.encontrarMusculo(id_musculo);
         if (musculoExistente != null) {
             // Actualizar el producto existente con los nuevos datos
             musculoExistente.setDescripcion(musculoActualizado.getDescripcion());
@@ -67,9 +65,9 @@ public class MusculoController {
         }
     }
 
-    @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarMusculo(@PathVariable int id) {
-        Musculo musculoExistente = musculoService.encontrarMusculo(id);
+    @DeleteMapping("/eliminar/{id_musculo}")
+    public ResponseEntity<Void> eliminarMusculo(@PathVariable int id_musculo) {
+        Musculo musculoExistente = musculoService.encontrarMusculo(id_musculo);
         if (musculoExistente != null) {
             // Eliminar el producto existente
             musculoService.eliminar(musculoExistente);
