@@ -9,10 +9,12 @@ import server.bodyhealth.service.ProveedorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping("/proveedor")
+@CrossOrigin
 @Slf4j
 public class ProveedorController {
     @Autowired
@@ -50,7 +52,7 @@ public class ProveedorController {
     }
 
     @PutMapping("/editar/{id}")
-    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id, @RequestBody Proveedor proveedorActualizado) {
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable int id, @Valid @RequestBody Proveedor proveedorActualizado) {
         Proveedor proveedorExistente = proveedorService.encontrarProveedor(id);
         if (proveedorExistente != null) {
             // Actualizar el producto existente con los nuevos datos
@@ -60,10 +62,10 @@ public class ProveedorController {
 
             proveedorService.guardar(proveedorExistente);
             // Devolver una respuesta exitosa con el producto actualizado
-            return new ResponseEntity<>(proveedorExistente, HttpStatus.OK);
+            return ResponseEntity.ok(proveedorExistente);
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -75,10 +77,10 @@ public class ProveedorController {
             proveedorService.eliminar(proveedorExistente);
 
             // Devolver una respuesta exitosa sin cuerpo
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 

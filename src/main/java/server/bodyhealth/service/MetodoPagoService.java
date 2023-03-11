@@ -12,5 +12,5 @@ public interface MetodoPagoService {
 
     public void eliminar(MetodoPago metodoPago);
 
-    public MetodoPago encontrarMetodoPago(MetodoPago metodoPago);
+    public MetodoPago encontrarMetodoPago(int id_metodoPago);
 }

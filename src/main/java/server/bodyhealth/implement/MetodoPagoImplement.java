@@ -28,8 +28,8 @@ public class MetodoPagoImplement implements MetodoPagoService {
     }
 
     @Override
-    public MetodoPago encontrarMetodoPago(MetodoPago metodoPago) {
+    public MetodoPago encontrarMetodoPago(int id_metodoPago) {
 
-        return metodoPagoRepository.findById(metodoPago.getId_metodopago()).orElse(null);
+        return metodoPagoRepository.findById(id_metodoPago).orElse(null);
     }
 }

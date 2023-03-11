@@ -67,10 +67,10 @@ public class MaquinaController {
 
             maquinaService.guardar(maquinaExistente);
             // Devolver una respuesta exitosa con el producto actualizado
-            return new ResponseEntity<>(maquinaExistente, HttpStatus.OK);
+            return ResponseEntity.ok(maquinaExistente);
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -86,10 +86,10 @@ public class MaquinaController {
             maquinaService.eliminar(maquinaExistente);
 
             // Devolver una respuesta exitosa sin cuerpo
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }

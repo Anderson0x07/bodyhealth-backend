@@ -60,10 +60,10 @@ public class MusculoController {
 
             musculoService.guardar(musculoExistente);
             // Devolver una respuesta exitosa con el producto actualizado
-            return new ResponseEntity<>(musculoExistente, HttpStatus.OK);
+            return ResponseEntity.ok(musculoExistente);
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -75,10 +75,10 @@ public class MusculoController {
             musculoService.eliminar(musculoExistente);
 
             // Devolver una respuesta exitosa sin cuerpo
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } else {
             // Devolver una respuesta de error si el producto no existe
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }
