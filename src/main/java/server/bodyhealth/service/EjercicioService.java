@@ -12,5 +12,5 @@ public interface EjercicioService {
 
     public void eliminar(Ejercicio ejercicio);
 
-    public Ejercicio encontrarEjercicio(Ejercicio ejercicio);
+    public Ejercicio encontrarEjercicio(int id_ejercicio);
 }

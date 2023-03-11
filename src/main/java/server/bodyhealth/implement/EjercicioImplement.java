@@ -28,8 +28,8 @@ public class EjercicioImplement implements EjercicioService {
     }
 
     @Override
-    public Ejercicio encontrarEjercicio(Ejercicio ejercicio) {
+    public Ejercicio encontrarEjercicio(int id_ejercicio) {
 
-        return ejercicioRepository.findById(ejercicio.getId_ejercicio()).orElse(null);
+        return ejercicioRepository.findById(id_ejercicio).orElse(null);
     }
 }
