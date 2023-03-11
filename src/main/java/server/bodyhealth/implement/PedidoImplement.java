@@ -29,8 +29,8 @@ public class PedidoImplement implements PedidoService {
     }
 
     @Override
-    public Pedido encontrarPedido(Pedido pedido) {
+    public Pedido encontrarPedido(int id_pedido) {
 
-        return pedidoRepository.findById(pedido.getId_pedido()).orElse(null);
+        return pedidoRepository.findById(id_pedido).orElse(null);
     }
 }

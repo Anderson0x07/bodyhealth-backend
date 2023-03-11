@@ -1,22 +1,15 @@
 package server.bodyhealth.controller;
 
-
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Administrador;
-import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 
 import javax.validation.Valid;
 
-@Controller
+@RestController
 @Slf4j
 public class AdminController {
     @Autowired
@@ -40,8 +33,6 @@ public class AdminController {
         Administrador administradorExistente = usuarioService.encontrarAdminEmail(administradorActualizado.getEmail());
 
         if (administradorExistente != null) {
-
-            administradorExistente.setId_usuario(administradorActualizado.getId_usuario());
 
             administradorExistente.setNombre(administradorActualizado.getNombre());
             administradorExistente.setApellido(administradorActualizado.getApellido());

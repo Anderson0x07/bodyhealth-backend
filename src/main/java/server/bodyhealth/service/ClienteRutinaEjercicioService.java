@@ -13,5 +13,5 @@ public interface ClienteRutinaEjercicioService {
 
     public void eliminar(ClienteRutinaEjercicio clienteRutinaEjercicio);
 
-    public ClienteRutinaEjercicio encontrarClienteRutinaEjercicio(ClienteRutinaEjercicio clienteRutinaEjercicio);
+    public ClienteRutinaEjercicio encontrarClienteRutinaEjercicio(int id_clienteRutinaEjercicio);
 }

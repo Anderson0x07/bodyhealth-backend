@@ -1,5 +1,6 @@
 package server.bodyhealth.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.entity.Ejercicio;
@@ -12,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ejercicio")
+@CrossOrigin
+@Slf4j
 public class EjercicioController {
     @Autowired
     private EjercicioService ejercicioService;

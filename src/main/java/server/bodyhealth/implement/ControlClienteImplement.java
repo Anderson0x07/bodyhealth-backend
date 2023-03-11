@@ -28,8 +28,8 @@ public class ControlClienteImplement implements ControlClienteService {
     }
 
     @Override
-    public ControlCliente encontrarControlCliente(ControlCliente controCliente) {
+    public ControlCliente encontrarControlCliente(int id_controCliente) {
 
-        return controlClienteRepository.findById(controCliente.getId_controlcliente()).orElse(null);
+        return controlClienteRepository.findById(id_controCliente).orElse(null);
     }
 }

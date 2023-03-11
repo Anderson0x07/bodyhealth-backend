@@ -13,5 +13,5 @@ public interface ClienteDetalleService {
 
     public void eliminar(ClienteDetalle clienteDetalle);
 
-    public ClienteDetalle encontrarClienteDetalle(ClienteDetalle clienteDetalle);
+    public ClienteDetalle encontrarClienteDetalle(int id_clienteDetalle);
 }

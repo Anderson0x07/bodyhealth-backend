@@ -22,12 +22,12 @@ public class Rutina implements Serializable {
     @Column(length = 100)
     private String descripcion;
 
-    @JsonIgnoreProperties("rutina")
-    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
-
-    @JsonIgnoreProperties("rutina")
-    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
+//    @JsonIgnoreProperties("rutina")
+//    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+//
+//    @JsonIgnoreProperties("rutina")
+//    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
 
 }

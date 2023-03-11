@@ -28,7 +28,7 @@ public class ClienteRutinaEjercicioImplement implements ClienteRutinaEjercicioSe
     }
 
     @Override
-    public ClienteRutinaEjercicio encontrarClienteRutinaEjercicio(ClienteRutinaEjercicio clienteRutinaEjercicio) {
-        return clienteRutinaEjercicioRepository.findById(clienteRutinaEjercicio.getId_cliente_rutina_ejercicio()).orElse(null);
+    public ClienteRutinaEjercicio encontrarClienteRutinaEjercicio(int id_clienteRutinaEjercicio) {
+        return clienteRutinaEjercicioRepository.findById(id_clienteRutinaEjercicio).orElse(null);
     }
 }

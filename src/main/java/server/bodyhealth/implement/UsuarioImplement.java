@@ -45,6 +45,16 @@ public class UsuarioImplement implements UsuarioService {
         return usuarioRepository.encontrarAdminEmail(email);
     }
 
+    @Override
+    public Entrenador encontrarEntrenadorEmail(String email) {
+        return usuarioRepository.encontrarTrainerEmail(email);
+    }
+
+    @Override
+    public Cliente encontrarClienteEmail(String email) {
+        return usuarioRepository.encontrarClienteEmail(email);
+    }
+
 
     @Override
     public List<Cliente> listarActivos() {

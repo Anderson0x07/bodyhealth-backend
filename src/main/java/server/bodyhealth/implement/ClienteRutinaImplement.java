@@ -28,9 +28,9 @@ public class ClienteRutinaImplement implements ClienteRutinaService {
     }
 
     @Override
-    public ClienteRutina encontrarClienteRutina(ClienteRutina clienteRutina) {
+    public ClienteRutina encontrarClienteRutina(int id_clienteRutina) {
 
-        return clienteRutinaRepository.findById(clienteRutina.getId_clienterutina()).orElse(null);
+        return clienteRutinaRepository.findById(id_clienteRutina).orElse(null);
     }
 
     @Override

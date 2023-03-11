@@ -28,7 +28,7 @@ public class RutinaEjercicioImplement implements RutinaEjercicioService {
     }
 
     @Override
-    public RutinaEjercicio encontrarRutinaEjercicio(RutinaEjercicio rutinaEjercicio) {
-        return rutinaEjercicioRepository.findById(rutinaEjercicio.getId_rutina_ejercicio()).orElse(null);
+    public RutinaEjercicio encontrarRutinaEjercicio(int id_rutinaEjercicio) {
+        return rutinaEjercicioRepository.findById(id_rutinaEjercicio).orElse(null);
     }
 }

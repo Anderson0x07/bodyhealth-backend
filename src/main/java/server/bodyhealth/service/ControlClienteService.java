@@ -12,5 +12,5 @@ public interface ControlClienteService{
 
     public void eliminar(ControlCliente controlCliente);
 
-    public ControlCliente encontrarControlCliente(ControlCliente controlCliente);
+    public ControlCliente encontrarControlCliente(int id_controlCliente);
 }

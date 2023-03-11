@@ -13,7 +13,7 @@ public interface ClienteRutinaService {
 
     public void eliminar(ClienteRutina clienteRutina);
 
-    public ClienteRutina encontrarClienteRutina(ClienteRutina clienteRutina);
+    public ClienteRutina encontrarClienteRutina(int id_clienteRutina);
 
     public List<ClienteRutina> encontrarClientesRutina(int id_rutina);
 }

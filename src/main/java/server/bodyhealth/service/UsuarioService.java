@@ -20,6 +20,10 @@ public interface UsuarioService {
 
     public Administrador encontrarAdminEmail(String email);
 
+    public Entrenador encontrarEntrenadorEmail(String email);
+
+    public Cliente encontrarClienteEmail(String email);
+
     List<Cliente> listarActivos();
 
     List<Cliente> listarDesactivados();

@@ -12,5 +12,5 @@ public interface CompraService{
 
     public void eliminar(Compra compra);
 
-    public Compra encontrarCompra(Compra compra);
+    public Compra encontrarCompra(int id_compra);
 }

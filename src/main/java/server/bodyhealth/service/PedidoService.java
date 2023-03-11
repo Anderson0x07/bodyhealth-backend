@@ -13,5 +13,5 @@ public interface PedidoService{
 
     public void eliminar(Pedido pedido);
 
-    public Pedido encontrarPedido(Pedido pedido);
+    public Pedido encontrarPedido(int id_pedido);
 }

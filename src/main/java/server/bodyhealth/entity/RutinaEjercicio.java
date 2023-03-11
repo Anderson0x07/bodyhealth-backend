@@ -24,7 +24,7 @@ public class RutinaEjercicio implements Serializable {
     @JoinColumn(name = "id_ejercicio")
     private Ejercicio ejercicio;
 
-    @JsonIgnoreProperties("rutinaEjercicio")
-    @OneToMany(mappedBy = "rutinaEjercicio", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ClienteRutinaEjercicio> clienteRutinaEjercicios = new ArrayList<>();
+//    @JsonIgnoreProperties("rutinaEjercicio")
+//    @OneToMany(mappedBy = "rutinaEjercicio", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<ClienteRutinaEjercicio> clienteRutinaEjercicios = new ArrayList<>();
 }

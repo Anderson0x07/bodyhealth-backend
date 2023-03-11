@@ -28,8 +28,8 @@ public class CompraImplement implements CompraService {
     }
 
     @Override
-    public Compra encontrarCompra(Compra compra) {
+    public Compra encontrarCompra(int id_compra) {
 
-        return compraRepository.findById(compra.getId_compra()).orElse(null);
+        return compraRepository.findById(id_compra).orElse(null);
     }
 }
