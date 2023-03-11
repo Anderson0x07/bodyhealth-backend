@@ -20,8 +20,8 @@ public class ClienteDetalle implements Serializable {
     private Cliente cliente;
 
     @ManyToOne
-    @JoinColumn(name = "id_detalle")
-    private Detalle detalle;
+    @JoinColumn(name = "id_plan")
+    private Plan plan;
 
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-MM-dd")

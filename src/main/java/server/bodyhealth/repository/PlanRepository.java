@@ -1,12 +1,9 @@
 package server.bodyhealth.repository;
 
-import server.bodyhealth.entity.Detalle;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import server.bodyhealth.entity.Plan;
 
-import java.util.List;
-
-public interface DetalleRepository extends JpaRepository<Detalle,Integer> {
+public interface PlanRepository extends JpaRepository<Plan,Integer> {
 
 //    @Query(
 //            value = "SELECT * from detalle ",

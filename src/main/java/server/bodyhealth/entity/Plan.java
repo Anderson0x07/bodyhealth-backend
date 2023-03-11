@@ -11,19 +11,19 @@ import java.util.List;
 
 @Entity
 @Data
-@Table(name = "detalle")
-public class Detalle implements Serializable {
+@Table(name = "plan")
+public class Plan implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_detalle;
+    private int id_plan;
 
     private String plan;
 
     private double precio;
     private int meses;
 
-    @JsonIgnoreProperties("detalle")
-    @OneToMany(mappedBy = "detalle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("plan")
+    @OneToMany(mappedBy = "plan", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
 }
