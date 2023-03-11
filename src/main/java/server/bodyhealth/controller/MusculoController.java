@@ -13,8 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/musculo")
+@CrossOrigin
 @Slf4j
-
 public class MusculoController {
     @Autowired
     private MusculoService musculoService;

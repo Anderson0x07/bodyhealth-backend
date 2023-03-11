@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/maquina")
+@CrossOrigin
 @Slf4j
 public class MaquinaController {
     @Autowired
