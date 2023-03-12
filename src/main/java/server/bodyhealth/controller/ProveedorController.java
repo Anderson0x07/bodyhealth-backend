@@ -3,6 +3,7 @@ package server.bodyhealth.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Proveedor;
 import server.bodyhealth.service.ProveedorService;
 import lombok.extern.slf4j.Slf4j;
@@ -38,17 +39,17 @@ public class ProveedorController {
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarProveedor(@Valid @RequestBody Proveedor proveedor){
+    public ResponseEntity<?> guardarProveedor(@Valid @RequestBody ProveedorDto proveedorDto){
         response.clear();
-        proveedorService.guardar(proveedor);
+        proveedorService.guardar(proveedorDto);
         response.put("message", "Proveedor guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/editar/{id_proveedor}")
-    public ResponseEntity<?> actualizarProveedor(@PathVariable int id_proveedor, @RequestBody Proveedor proveedor) {
+    public ResponseEntity<?> actualizarProveedor(@PathVariable int id_proveedor, @RequestBody ProveedorDto proveedorDto) {
         response.clear();
-        proveedorService.editarProveedor(id_proveedor, proveedor);
+        proveedorService.editarProveedor(id_proveedor, proveedorDto);
         response.put("Message", "Proveedor actualizado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
