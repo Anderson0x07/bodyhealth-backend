@@ -40,13 +40,9 @@ public class ProveedorController {
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarProveedor(@Valid @RequestBody Proveedor proveedor){
         response.clear();
-        Proveedor proveedorExiste = proveedorService.encontrarProveedor(proveedor.getId_proveedor());
-        if (proveedorExiste == null) {
-            proveedorService.guardar(proveedor);
-            return new ResponseEntity<>(response, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-        }
+        proveedorService.guardar(proveedor);
+        response.put("message", "Proveedor guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PutMapping("/editar/{id_proveedor}")
