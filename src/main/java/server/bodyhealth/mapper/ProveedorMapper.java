@@ -1,9 +1,6 @@
 package server.bodyhealth.mapper;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Proveedor;
 
@@ -11,6 +8,7 @@ import server.bodyhealth.entity.Proveedor;
 public interface ProveedorMapper {
     Proveedor toEntity(ProveedorDto proveedorDto);
     ProveedorDto toDto(Proveedor proveedor);
+    @Mapping(target = "id_proveedor", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntity(ProveedorDto proveedorDto, @MappingTarget Proveedor proveedor);
 }
