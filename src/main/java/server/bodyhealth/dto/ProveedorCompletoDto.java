@@ -22,7 +22,7 @@ public class ProveedorCompletoDto {
         @NotEmpty(message = "telefono de empresa es requerido")
         private String telefono;
 
-        private List<Maquina> maquinas = new ArrayList<>();
+        private List<MaquinaSinProveedorDto> maquinas = new ArrayList<>();
 
         private List<Producto> productos = new ArrayList<>();
 }
