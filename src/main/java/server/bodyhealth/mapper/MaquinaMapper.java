@@ -9,7 +9,7 @@ import server.bodyhealth.entity.Maquina;
 public interface MaquinaMapper {
     Maquina toEntity(MaquinaDto maquinaDto);
     MaquinaDto toDto(Maquina maquina);
-    @Mapping(target = "id", ignore = true)
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateEntity(MaquinaDto maquinaDto, @MappingTarget Maquina maquina);
+//    @Mapping(target = "id", ignore = true)
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    void updateEntity(MaquinaDto maquinaDto, @MappingTarget Maquina maquina);
 }

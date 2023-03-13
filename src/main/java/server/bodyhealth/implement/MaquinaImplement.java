@@ -7,6 +7,7 @@ import server.bodyhealth.entity.Proveedor;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.MaquinaMapper;
 import server.bodyhealth.repository.MaquinaRepository;
+import server.bodyhealth.repository.ProveedorRepository;
 import server.bodyhealth.service.MaquinaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,9 @@ public class MaquinaImplement implements MaquinaService {
 
     @Autowired
     private MessageUtil messageUtil;
+
+    @Autowired
+    private ProveedorRepository proveedorRepository;
 
     @Autowired
     private MaquinaMapper maquinaMapper;
@@ -61,7 +65,20 @@ public class MaquinaImplement implements MaquinaService {
         Maquina maquina = maquinaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("maquinaNotFound",null, Locale.getDefault()))
         );
-        maquinaMapper.updateEntity(maquinaDto,maquina);
+        maquina.setId_maquina(maquinaDto.getId_maquina());
+        if(maquinaDto.getNombre()!=null)
+        maquina.setNombre(maquinaDto.getNombre());
+        if(maquinaDto.getEstado()!=null)
+        maquina.setEstado(maquinaDto.getEstado());
+        if(maquinaDto.getObservacion()!=null)
+        maquina.setObservacion(maquinaDto.getObservacion());
+        Proveedor proveedor = proveedorRepository.findById(maquinaDto.getProveedor().getId_proveedor()).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
+        );
+        if(maquinaDto.getProveedor()!=null)
+        maquina.setProveedor(proveedor);
+        //Método en MapperImpl no funciona. Por ende se desarrolla en MaquinaImplement.
+//        maquinaMapper.updateEntity(maquinaDto,maquina);
         maquinaRepository.save(maquina);
 
     }
