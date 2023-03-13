@@ -52,7 +52,7 @@ public class ProveedorImplement implements ProveedorService {
     public void eliminar(int id_proveedor) {
 
         Proveedor proveedor1 = proveedorRepository.findById(id_proveedor).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
+                () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
         );
         proveedorRepository.deleteById(id_proveedor);
     }
@@ -61,7 +61,7 @@ public class ProveedorImplement implements ProveedorService {
     @Override
     public void editarProveedor(int id, ProveedorDto proveedorDto){
         Proveedor proveedor1 = proveedorRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
+                () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
         );
         proveedorMapper.updateEntity(proveedorDto,proveedor1);
         proveedorRepository.save(proveedor1);
@@ -69,7 +69,7 @@ public class ProveedorImplement implements ProveedorService {
     @Override
     public ProveedorCompletoDto encontrarProveedor(int id_proveedor) {
         return proveedorCompletoMapper.toDto(proveedorRepository.findById(id_proveedor).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("notFound",null, Locale.getDefault()))
+                () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
         ));
     }
 }

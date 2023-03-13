@@ -1,21 +1,18 @@
-package server.bodyhealth.entity;
+package server.bodyhealth.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import server.bodyhealth.entity.Proveedor;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
-import java.io.Serializable;
 
-@Entity
 @Data
-@Table(name = "maquina")
-public class Maquina implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class MaquinaDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Positive
     private int  id_maquina;
@@ -29,8 +26,5 @@ public class Maquina implements Serializable {
     @NotEmpty(message = "Se requiere una Observación para la máquina")
     private String observacion;
 
-
-    @ManyToOne
-    @JoinColumn(name = "id_proveedor")
-    private Proveedor proveedor;
+    private ProveedorDto proveedor;
 }
