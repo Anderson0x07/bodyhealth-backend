@@ -51,7 +51,7 @@ public class PlanController {
     public ResponseEntity<?> editarPlan(@PathVariable int id, @RequestBody PlanDto planDto) {
         response.clear();
         planService.editarPlan(id,planDto);
-        response.put("Message", "Plan actualizado satisfactoriamente");
+        response.put("message", "Plan actualizado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
