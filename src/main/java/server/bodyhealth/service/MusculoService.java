@@ -1,16 +1,18 @@
 package server.bodyhealth.service;
 
-import server.bodyhealth.entity.Musculo;
+import server.bodyhealth.dto.MusculoDto;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 @Service
 public interface MusculoService {
-    public List<Musculo> listarMusculos();
+    public List<MusculoDto> listarMusculos();
 
-    public void guardar(Musculo musculo);
+    public void guardar(MusculoDto musculoDto);
 
-    public void eliminar(Musculo musculo);
+    public void eliminar(int id_musculo);
 
-    public Musculo encontrarMusculo(int id_musculo);
+    public void editarMusculo(int id, MusculoDto musculoDto);
+
+    public MusculoDto encontrarMusculo(int id_musculo);
+
 }

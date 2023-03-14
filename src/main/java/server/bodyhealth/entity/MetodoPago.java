@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,7 @@ public class MetodoPago implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_metodopago;
 
+    @NotEmpty(message = "Se requiere una descripción del metodo de pago")
     private String descripcion;
 
     @JsonIgnoreProperties("metodoPago")

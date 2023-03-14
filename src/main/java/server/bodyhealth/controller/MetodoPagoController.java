@@ -20,7 +20,7 @@ public class MetodoPagoController {
     private Map<String,Object> response = new HashMap<>();
 
     @GetMapping("/all")
-    public ResponseEntity<?> listarMetodoPagoes(){
+    public ResponseEntity<?> listarMetodosPago(){
         response.clear();
         response.put("Metodos de pago", metodoPagoService.listarMetodosPago());
         return new ResponseEntity<>(response, HttpStatus.OK);
