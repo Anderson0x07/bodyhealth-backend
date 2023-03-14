@@ -5,16 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ProductoDto;
-import server.bodyhealth.entity.Producto;
-import server.bodyhealth.entity.Producto;
 import server.bodyhealth.service.ProductoService;
-import server.bodyhealth.service.ProductoService;
+
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -28,8 +24,6 @@ public class ProductoController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    /*@Autowired
-    private StorageService service;*/
 
     @GetMapping("/all")
     public ResponseEntity<?> listarProductos(){
@@ -39,12 +33,10 @@ public class ProductoController {
     }
 
     @GetMapping("/{id_producto}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable int id_producto) {
-        Producto producto = productoService.encontrarProducto(id_producto);
-        if (producto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(producto);
+    public ResponseEntity<?> obtenerProducto(@PathVariable int id_producto) {
+        response.clear();
+        response.put("producto", productoService.encontrarProducto(id_producto));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/guardar")
@@ -56,48 +48,21 @@ public class ProductoController {
     }
 
 
-//    @PutMapping("/editar/{id_producto}")
-//    public ResponseEntity<Producto> editarProducto(@PathVariable int id_producto, @RequestBody Producto productoActualizado/*, @RequestParam("file") MultipartFile imagen*/) {
-//
-//        Producto productoExistente = productoService.encontrarProducto(id_producto);
-//
-//        if (productoExistente != null) {
-//
-//            productoExistente.setEstado(productoActualizado.isEstado());
-//            productoExistente.setNombre(productoActualizado.getNombre());
-//            productoExistente.setPrecio(productoActualizado.getPrecio());
-//            productoExistente.setStock(productoActualizado.getStock());
-//            productoExistente.setProveedor(productoActualizado.getProveedor());
-//
-//            /*ACTUALIZAR IMAGEN
-//            if(!imagen.isEmpty()){
-//                storageService.uploadFile(imagen);
-//                productoExistente.setFoto(imagen.getOriginalFilename());
-//            }else{
-//                productoExistente.setFoto(productoActualizado.getFoto());
-//            }*/
-//
-//            productoExistente.setFoto(productoActualizado.getFoto());
-//
-//            productoService.guardar(productoExistente);
-//            return ResponseEntity.ok(productoExistente);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
+    @PutMapping("/editar/{id_producto}")
+    public ResponseEntity<?> editarProducto(@PathVariable int id_producto, @RequestBody ProductoDto productoDto/*, @RequestParam("file") MultipartFile imagen*/) {
+        response.clear();
+        productoService.editarProveedor(id_producto,productoDto);
+        response.put("message", "Producto actualizada satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
 
     @DeleteMapping("/eliminar/{id_producto}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable int id_producto) {
+    public ResponseEntity<?> eliminarProducto(@PathVariable int id_producto) {
 
-        Producto productoExistente = productoService.encontrarProducto(id_producto);
-
-        if (productoExistente != null) {
-            productoService.eliminar(productoExistente);
-
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        response.clear();
+        productoService.eliminar(id_producto);
+        response.put("message","Producto eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

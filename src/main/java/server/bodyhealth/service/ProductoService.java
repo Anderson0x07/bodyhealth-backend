@@ -1,6 +1,8 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
+import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Producto;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,9 @@ public interface ProductoService {
 
     public void guardar(ProductoDto productoDto);
 
-    public void eliminar(Producto producto);
+    public void eliminar(int id_producto);
 
-    public Producto encontrarProducto(int id_producto);
-    public List<Producto> listarActivos();
+    public ProductoCompletoDto encontrarProducto(int id_producto);
 
-    public List<Producto> listarDesactivados();
+    public void editarProveedor(int id, ProductoDto productoDto);
 }
