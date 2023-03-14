@@ -27,7 +27,7 @@ public class MaquinaController {
     @GetMapping("/all")
     public ResponseEntity<?> listarMaquinas(){
         response.clear();
-        response.put("Maquina",maquinaService.listarMaquinas());
+        response.put("maquina",maquinaService.listarMaquinas());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -58,7 +58,7 @@ public class MaquinaController {
     public ResponseEntity<?> editarMaquina(@PathVariable int id, @RequestBody MaquinaDto maquinaDto) {
         response.clear();
         maquinaService.editarMaquina(id,maquinaDto);
-        response.put("Message", "Maquina actualizada satisfactoriamente");
+        response.put("message", "Maquina actualizada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
@@ -67,7 +67,7 @@ public class MaquinaController {
     public ResponseEntity<?> eliminarMaquina(@PathVariable int id) {
         response.clear();
         maquinaService.eliminar(id);
-        response.put("Message", "Maquina eliminada satisfactoriamente");
+        response.put("message", "Maquina eliminada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

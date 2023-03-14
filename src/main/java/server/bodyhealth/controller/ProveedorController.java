@@ -25,7 +25,7 @@ public class ProveedorController {
     @GetMapping("/all")
     public ResponseEntity<?> ListarProveedores(){
         response.clear();
-        response.put("Proveedores",proveedorService.listarProveedores());
+        response.put("proveedor",proveedorService.listarProveedores());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -48,7 +48,7 @@ public class ProveedorController {
     public ResponseEntity<?> actualizarProveedor(@PathVariable int id_proveedor, @RequestBody ProveedorDto proveedorDto) {
         response.clear();
         proveedorService.editarProveedor(id_proveedor, proveedorDto);
-        response.put("Message", "Proveedor actualizado satisfactoriamente");
+        response.put("message", "Proveedor actualizado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
@@ -56,7 +56,7 @@ public class ProveedorController {
     public ResponseEntity<?> eliminarProveedor(@PathVariable int id_proveedor) {
         response.clear();
         proveedorService.eliminar(id_proveedor);
-        response.put("Message", "Proveedor eliminado satisfactoriamente");
+        response.put("message", "Proveedor eliminado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

@@ -33,10 +33,15 @@ public class MaquinaImplement implements MaquinaService {
     @Override
     public List<MaquinaDto> listarMaquinas() {
         List<MaquinaDto> maquinaDtos = new ArrayList<>();
-        for (Maquina maquina: maquinaRepository.findAll()
-             ) {
-            MaquinaDto maquinaDto = maquinaMapper.toDto(maquina);
-            maquinaDtos.add(maquinaDto);
+        List<Maquina> maquinas = maquinaRepository.findAll();
+        if(!maquinas.isEmpty()) {
+            for (Maquina maquina : maquinas
+            ) {
+                MaquinaDto maquinaDto = maquinaMapper.toDto(maquina);
+                maquinaDtos.add(maquinaDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("maquinasEmpty",null, Locale.getDefault()));
         }
         return maquinaDtos;
     }
