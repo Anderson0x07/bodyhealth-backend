@@ -56,7 +56,7 @@ public class CompraController {
 
             compraExistente.setFecha_compra(compraActualizada.getFecha_compra());
             compraExistente.setTotal(compraActualizada.getTotal());
-            compraExistente.setId_cliente(compraActualizada.getId_cliente());
+            compraExistente.setCliente(compraActualizada.getCliente());
             compraExistente.setMetodoPago(compraActualizada.getMetodoPago());
 
             compraService.guardar(compraExistente);

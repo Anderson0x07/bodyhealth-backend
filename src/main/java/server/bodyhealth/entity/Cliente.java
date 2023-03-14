@@ -39,4 +39,9 @@ public class Cliente extends Usuario implements Serializable {
     @JsonIgnoreProperties("cliente")
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<EntrenadorCliente> entrenadorClientes = new ArrayList<>();
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Compra> compras = new ArrayList<>();
+
 }

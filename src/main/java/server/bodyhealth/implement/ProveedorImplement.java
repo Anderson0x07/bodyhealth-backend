@@ -33,11 +33,18 @@ public class ProveedorImplement implements ProveedorService {
     @Override
     public List<ProveedorDto> listarProveedores() {
         List<ProveedorDto> proveedoresDto = new ArrayList<>();
-        for (Proveedor proveedor: proveedorRepository.findAll()
-             ) {
+
+        List<Proveedor> proveedores = proveedorRepository.findAll();
+
+        if(!proveedores.isEmpty()){
+            for (Proveedor proveedor: proveedores) {
                 ProveedorDto proveedorDto = proveedorMapper.toDto(proveedor);
                 proveedoresDto.add(proveedorDto);
+            }
+        } else {
+            throw new NotFoundException(messageUtil.getMessage("proveedoresEmpty",null, Locale.getDefault()));
         }
+
         return proveedoresDto;
     }
 

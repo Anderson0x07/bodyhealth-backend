@@ -14,15 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ProveedorCompletoDto {
-        private int id_proveedor;
-        @NotEmpty(message = "Nombre de empresa es requerido")
-        private String nombre_empresa;
-        @NotEmpty(message = "dirección de empresa es requerido")
-        private String direccion;
-        @NotEmpty(message = "telefono de empresa es requerido")
-        private String telefono;
+    private int id_proveedor;
+    @NotEmpty(message = "Nombre de empresa es requerido")
+    private String nombre_empresa;
+    @NotEmpty(message = "dirección de empresa es requerido")
+    private String direccion;
+    @NotEmpty(message = "telefono de empresa es requerido")
+    private String telefono;
 
-        private List<MaquinaSinProveedorDto> maquinas = new ArrayList<>();
+    private List<MaquinaSinProveedorDto> maquinas = new ArrayList<>();
 
-        private List<Producto> productos = new ArrayList<>();
+    private List<Producto> productos = new ArrayList<>();
 }

@@ -2,12 +2,17 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.bodyhealth.dto.PlanDto;
 import server.bodyhealth.entity.Plan;
 import server.bodyhealth.service.PlanService;
 
+import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/plan")
@@ -17,63 +22,45 @@ public class PlanController {
     @Autowired
     private PlanService planService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Plan>> listarPlanes(){
+    private Map<String,Object> response = new HashMap<>();
 
-        List<Plan> planes = planService.listarPlanes();
-        if (!planes.isEmpty()) {
-            return ResponseEntity.ok(planes);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    @GetMapping("/all")
+    public ResponseEntity<?> listarPlanes(){
+        response.clear();
+        response.put("Planes",planService.listarPlanes());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_plan}")
-    public ResponseEntity<Plan> obtenerPlan(@PathVariable int id_plan) {
-        Plan plan = planService.encontrarPlan(id_plan);
-        if (plan == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(plan);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPlan(@PathVariable int id) {
+        response.clear();
+        response.put("Plan", planService.encontrarPlan(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<Plan> guardarPlan(@RequestBody Plan plan){
-        Plan planExiste = planService.encontrarPlan(plan.getId_plan());
-        if (planExiste == null) {
-            planService.guardar(plan);
-            return ResponseEntity.ok(plan);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarPlan(@Valid @RequestBody PlanDto planDto){
+        response.clear();
+        planService.guardar(planDto);
+        response.put("message", "Plan guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_plan}")
-    public ResponseEntity<Plan> editarPlan(@PathVariable int id_plan, @RequestBody Plan planActualizado) {
-        Plan planExistente = planService.encontrarPlan(id_plan);
-        if (planExistente != null) {
 
-            planExistente.setMeses(planActualizado.getMeses());
-            planExistente.setPlan(planActualizado.getPlan());
-            planExistente.setPrecio(planActualizado.getPrecio());
-
-            planService.guardar(planExistente);
-
-            return ResponseEntity.ok(planExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarPlan(@PathVariable int id, @RequestBody PlanDto planDto) {
+        response.clear();
+        planService.editarPlan(id,planDto);
+        response.put("Message", "Plan actualizado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_plan}")
-    public ResponseEntity<Void> eliminarPlan(@PathVariable int id_plan) {
-        Plan planExistente = planService.encontrarPlan(id_plan);
-        if (planExistente != null) {
-            planService.eliminar(planExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarPlan(@PathVariable int id) {
+        response.clear();
+        planService.eliminar(id);
+        response.put("Message", "Plan eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }
