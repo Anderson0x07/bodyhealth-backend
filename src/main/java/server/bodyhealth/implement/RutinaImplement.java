@@ -1,5 +1,6 @@
 package server.bodyhealth.implement;
 
+import org.springframework.transaction.annotation.Transactional;
 import server.bodyhealth.dto.RutinaCompletaDto;
 import server.bodyhealth.dto.RutinaDto;
 import server.bodyhealth.entity.Rutina;
@@ -47,6 +48,7 @@ public class RutinaImplement implements RutinaService {
         return rutinaDtos;
     }
 
+    @Transactional
     @Override
     public void guardar(RutinaDto rutinaDto) {
         Rutina rutina1 = rutinaMapper.toEntity(rutinaDto);
@@ -68,6 +70,7 @@ public class RutinaImplement implements RutinaService {
         ));
     }
 
+    @Transactional
     @Override
     public void editarRutina(int id_rutina, RutinaDto rutinaDto) {
         Rutina rutina = rutinaRepository.findById(id_rutina).orElseThrow(

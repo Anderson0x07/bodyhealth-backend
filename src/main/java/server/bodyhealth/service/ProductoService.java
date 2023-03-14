@@ -1,14 +1,15 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.ProductoDto;
 import server.bodyhealth.entity.Producto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface ProductoService {
-    public List<Producto> listarProductos();
+    public List<ProductoDto> listarProductos();
 
-    public void guardar(Producto producto);
+    public void guardar(ProductoDto productoDto);
 
     public void eliminar(Producto producto);
 
