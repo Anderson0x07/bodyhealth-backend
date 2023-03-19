@@ -28,7 +28,7 @@ public class Ejercicio implements Serializable {
 
     private String url_video;
 
-//    @JsonIgnoreProperties("ejercicio")
-//    @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+    @JsonIgnoreProperties("ejercicio")
+    @OneToMany(mappedBy = "ejercicio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
 }
