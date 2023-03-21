@@ -1,6 +1,7 @@
 package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
 import server.bodyhealth.dto.EntrenadorDto;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@Service
 public class EntrenadorImplement implements EntrenadorService {
 
     @Autowired

@@ -2,9 +2,6 @@ package server.bodyhealth.service;
 
 import org.springframework.stereotype.Service;
 import server.bodyhealth.dto.AdminDto;
-import server.bodyhealth.dto.ClienteDto;
-import server.bodyhealth.dto.ProductoCompletoDto;
-import server.bodyhealth.dto.ProductoDto;
 
 import java.util.List;
 

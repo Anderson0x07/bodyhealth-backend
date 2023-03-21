@@ -1,6 +1,7 @@
 package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+@Service
 public class AdminImplement implements AdminService {
 
     @Autowired
