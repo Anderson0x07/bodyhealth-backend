@@ -16,10 +16,10 @@ public class EntrenadorCliente implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_entrenador")
-    private Entrenador entrenador;
+    private Usuario entrenador;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    private Usuario cliente;
 
 }

@@ -48,6 +48,9 @@ public class MaquinaController {
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarMaquina(@Valid @RequestBody MaquinaDto maquinaDto){
         response.clear();
+
+//        userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
+
         maquinaService.guardar(maquinaDto);
         response.put("message", "Maquina guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);

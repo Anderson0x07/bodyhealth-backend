@@ -4,14 +4,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.persistence.*;
+import server.bodyhealth.entity.*;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteDto {
+public class ClienteCompletoDto {
 
     private int id_usuario;
 
@@ -51,4 +55,14 @@ public class ClienteDto {
     private boolean estado;
 
     private RolDto rol;
+
+    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
+
+    private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
+
+    private List<ControlCliente> controlClientes = new ArrayList<>();
+
+    private List<EntrenadorCliente> clienteEntrenadores = new ArrayList<>();
+
+    private List<Compra> compras = new ArrayList<>();
 }

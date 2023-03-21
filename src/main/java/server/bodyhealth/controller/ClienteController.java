@@ -2,58 +2,78 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Cliente;
-import server.bodyhealth.service.UsuarioService;
+import server.bodyhealth.dto.ClienteDto;
+import server.bodyhealth.service.ClienteService;
 
 import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/cliente")
 @CrossOrigin
 @Slf4j
 public class ClienteController {
 
     @Autowired
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    //M I P E R F I L
-    @GetMapping("/cliente/mi-perfil/{prueba}")
-    public ResponseEntity<Cliente> perfilCliente(@PathVariable String prueba){
-        Cliente cliente = usuarioService.encontrarClienteEmail(prueba);
-        if (cliente == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(cliente);
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("/mi-perfil/{id_cliente}")
+    public ResponseEntity<?> perfilCliente(@PathVariable int id_cliente){
+        response.clear();
+        response.put("cliente", clienteService.encontrarCliente(id_cliente));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<?> listarClientes(){
+        response.clear();
+        response.put("clientes",clienteService.listarClientes());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto){
+        response.clear();
+
+        clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto.getPassword()));
+
+        clienteService.guardar(clienteDto);
+        response.put("message", "Cliente guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/cliente/perfil/editar")
-    public ResponseEntity<Cliente> editarPerfil(@Valid @RequestBody Cliente clienteActualizado) {
-
-        Cliente clienteExistente = usuarioService.encontrarClienteEmail(clienteActualizado.getEmail());
-
-        if (clienteExistente != null) {
-
-            clienteExistente.setNombre(clienteActualizado.getNombre());
-            clienteExistente.setApellido(clienteActualizado.getApellido());
-            clienteExistente.setDocumento(clienteActualizado.getDocumento());
-            clienteExistente.setEmail(clienteActualizado.getEmail());
-            clienteExistente.setTipo_documento(clienteActualizado.getTipo_documento());
-            clienteExistente.setPassword(clienteActualizado.getPassword());
-            clienteExistente.setFecha_nacimiento(clienteActualizado.getFecha_nacimiento());
-            clienteExistente.setTelefono(clienteActualizado.getTelefono());
-            clienteExistente.setJornada(clienteActualizado.getJornada());
-            clienteExistente.setComentario(clienteActualizado.getComentario());
-            clienteExistente.setEstado(clienteActualizado.isEstado());
-            clienteExistente.setFoto(clienteActualizado.getFoto());
-
-            usuarioService.guardar(clienteExistente);
-
-            return ResponseEntity.ok(clienteExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarCliente(@PathVariable int id, @RequestBody ClienteDto clienteDto) {
+        response.clear();
+        clienteService.editarCliente(id,clienteDto);
+        response.put("message", "Datos actualizados satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
+
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarCliente(@PathVariable int id) {
+        response.clear();
+        clienteService.eliminar(id);
+        response.put("message", "Cliente eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
 }

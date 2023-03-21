@@ -1,18 +1,27 @@
 package server.bodyhealth.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.*;
 
 @Entity
 @Data
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="rol", discriminatorType = DiscriminatorType.STRING)
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "usuario")
-public class Usuario implements Serializable {
+public class Usuario implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +29,7 @@ public class Usuario implements Serializable {
 
     @Column(length=15, unique = true)
     private int documento;
+
 
     @Column(length = 3)
     private String tipo_documento;
@@ -39,11 +49,62 @@ public class Usuario implements Serializable {
     //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private Date fecha_nacimiento;
 
-    @Column(unique = true, length = 100)
+    @Column(unique = true, length = 100,nullable = false)
+    @Email
+    @Length(min = 5, max = 50)
     private String email;
 
-    @Column(length = 250)
+    @Column(length = 250,nullable = false)
+    @Length(min = 5, max = 64)
     private String password;
+
+    @ManyToOne
+    @JoinColumn(name = "id_rol")
+    private Rol rol;
+
+    private String foto;
+
+    private String experiencia;
+
+    private String hoja_vida;
+
+    private String titulo_academico;
+
+    private String jornada;
+
+    private boolean estado;
+
+    private String comentario;
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<ControlCliente> controlClientes = new ArrayList<>();
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<EntrenadorCliente> clienteEntrenadores = new ArrayList<>();
+
+    @JsonIgnoreProperties("cliente")
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.EAGER)
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Compra> compras = new ArrayList<>();
+
+
+    @JsonIgnoreProperties("entrenador")
+    @OneToMany(mappedBy = "entrenador", fetch = FetchType.EAGER)
+    private List<EntrenadorCliente> entrenadorClientes = new ArrayList<>();
 
 
 }

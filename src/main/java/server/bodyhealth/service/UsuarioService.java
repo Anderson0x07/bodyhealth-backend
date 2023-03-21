@@ -1,34 +1,11 @@
 package server.bodyhealth.service;
 
-import server.bodyhealth.entity.Administrador;
-import server.bodyhealth.entity.Cliente;
-import server.bodyhealth.entity.Entrenador;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import server.bodyhealth.entity.Usuario;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
+public interface UsuarioService extends UserDetailsService {
 
-@Service
-public interface UsuarioService {
-    public List<Usuario> listarUsuarios();
+    //Usuario getUser(int id);
 
-    public void guardar(Usuario usuario);
-
-    public void eliminar(Usuario usuario);
-
-    public Usuario encontrarUsuario(Usuario usuario);
-
-    public Administrador encontrarAdminEmail(String email);
-
-    public Entrenador encontrarEntrenadorEmail(String email);
-
-    public Cliente encontrarClienteEmail(String email);
-
-    List<Cliente> listarActivos();
-
-    List<Cliente> listarDesactivados();
-
-    List<Entrenador> listarEntrenadoresActivos();
-
-    List<Entrenador> listarEntrenadoresDesactivados();
+   // Usuario save(Usuario user);
 }

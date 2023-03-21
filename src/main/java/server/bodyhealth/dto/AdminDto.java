@@ -11,12 +11,14 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClienteDto {
+public class AdminDto {
+
 
     private int id_usuario;
 
     @NotEmpty(message = "Se requiere el documento.")
     private int documento;
+
 
     @NotEmpty(message = "Se requiere el tipo de documento.")
     private String tipo_documento;
@@ -39,16 +41,6 @@ public class ClienteDto {
     @NotEmpty(message = "Se requiere el password.")
     private String password;
 
-    private String foto;
-
-    @NotEmpty(message = "Se requiere una jornada.")
-    private String jornada;
-
-    @NotEmpty(message = "Se requiere un comentario.")
-    private String comentario;
-
-    @NotEmpty(message = "Se requiere un estado")
-    private boolean estado;
-
     private RolDto rol;
+
 }

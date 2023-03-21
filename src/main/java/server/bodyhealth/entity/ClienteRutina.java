@@ -2,6 +2,7 @@ package server.bodyhealth.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import server.bodyhealth.dto.ClienteDto;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class ClienteRutina implements Serializable {
     private int id_clienterutina;
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    private Usuario cliente;
     @ManyToOne
     @JoinColumn(name = "id_rutina")
     private Rutina rutina;

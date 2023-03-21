@@ -3,6 +3,7 @@ package server.bodyhealth.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.RutinaDto;
 import server.bodyhealth.entity.Rutina;
@@ -25,6 +26,7 @@ public class RutinaController {
 
     private Map<String,Object> response = new HashMap<>();
 
+    @PreAuthorize("hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> listarRutinas(){
         response.clear();
