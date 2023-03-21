@@ -76,4 +76,12 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerClienteByID(@PathVariable int id) {
+        response.clear();
+        response.put("cliente", clienteService.encontrarCliente(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

@@ -76,4 +76,12 @@ public class EntrenadorController {
         response.put("message", "Entrenador eliminado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerEntrenadorByID(@PathVariable int id) {
+        response.clear();
+        response.put("entrenador", entrenadorService.encontrarEntrenador(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 }

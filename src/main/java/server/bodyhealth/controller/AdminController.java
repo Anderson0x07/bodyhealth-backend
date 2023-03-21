@@ -77,6 +77,13 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerAdminByID(@PathVariable int id) {
+        response.clear();
+        response.put("admin", adminService.encontrarAdmin(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 
 
