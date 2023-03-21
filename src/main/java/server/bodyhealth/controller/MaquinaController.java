@@ -27,7 +27,7 @@ public class MaquinaController {
     @GetMapping("/all")
     public ResponseEntity<?> listarMaquinas(){
         response.clear();
-        response.put("maquina",maquinaService.listarMaquinas());
+        response.put("maquinas",maquinaService.listarMaquinas());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -49,10 +49,8 @@ public class MaquinaController {
     public ResponseEntity<?> guardarMaquina(@Valid @RequestBody MaquinaDto maquinaDto){
         response.clear();
 
-//        userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-
         maquinaService.guardar(maquinaDto);
-        response.put("message", "Maquina guardado satisfactoriamente");
+        response.put("message", "Maquina guardada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
