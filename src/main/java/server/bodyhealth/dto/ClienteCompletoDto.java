@@ -56,7 +56,7 @@ public class ClienteCompletoDto {
 
     private RolDto rol;
 
-    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
+    private List<ClienteRutinaSinClienteDto> clienteRutinas = new ArrayList<>();
 
     private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
 

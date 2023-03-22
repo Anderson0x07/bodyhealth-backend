@@ -1,11 +1,13 @@
 package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
+import server.bodyhealth.dto.EjercicioCompletoDto;
 import server.bodyhealth.dto.EjercicioDto;
 import server.bodyhealth.dto.MaquinaDto;
 import server.bodyhealth.entity.*;
 import server.bodyhealth.entity.Ejercicio;
 import server.bodyhealth.exception.NotFoundException;
+import server.bodyhealth.mapper.EjercicioCompletoMapper;
 import server.bodyhealth.mapper.EjercicioMapper;
 import server.bodyhealth.repository.EjercicioRepository;
 import server.bodyhealth.repository.MusculoRepository;
@@ -31,6 +33,10 @@ public class EjercicioImplement implements EjercicioService {
 
     @Autowired
     private EjercicioMapper ejercicioMapper;
+
+    @Autowired
+    private EjercicioCompletoMapper ejercicioCompletoMapper;
+
     @Override
     public List<EjercicioDto> listarEjercicios() {
         List<EjercicioDto> ejerciciosDto = new ArrayList<>();
@@ -93,9 +99,9 @@ public class EjercicioImplement implements EjercicioService {
     }
 
     @Override
-    public EjercicioDto encontrarEjercicio(int id_ejercicio) {
+    public EjercicioCompletoDto encontrarEjercicio(int id_ejercicio) {
 
-        return ejercicioMapper.toDto(ejercicioRepository.findById(id_ejercicio).orElseThrow(
+        return ejercicioCompletoMapper.toDto(ejercicioRepository.findById(id_ejercicio).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("ejercicioNotFound",null, Locale.getDefault()))
         ));
     }
