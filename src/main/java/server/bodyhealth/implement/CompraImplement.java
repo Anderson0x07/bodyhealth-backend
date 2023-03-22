@@ -88,9 +88,12 @@ public class CompraImplement implements CompraService {
         Compra compra = compraRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("compraNotFound",null, Locale.getDefault()))
         );
-        compra.setId_compra(compraDto.getId_compra());
+
+        //compra.setId_compra(compraDto.getId_compra());
+
         if(compraDto.getFecha_compra()!=null)
             compra.setFecha_compra(compraDto.getFecha_compra());
+
         if(compraDto.getTotal() >1000)
             compra.setTotal(compraDto.getTotal());
 
@@ -103,10 +106,10 @@ public class CompraImplement implements CompraService {
         Usuario cliente = usuarioRepository.findById(compraDto.getCliente().getId_usuario()).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteNotFound",null, Locale.getDefault()))
         );
-        if(compraDto.getMetodoPago()!=null) {
+        if(compraDto.getCliente()!=null) {
             if(cliente.getRol().getId_rol() == 2){
                 compra.setCliente(cliente);
-            }else {
+            } else {
                 throw new NotFoundException(messageUtil.getMessage("clienteDoesntExist",null, Locale.getDefault()));
             }
 
