@@ -62,7 +62,7 @@ public class ClienteCompletoDto {
 
     private List<ControlCliente> controlClientes = new ArrayList<>();
 
-    private List<EntrenadorCliente> clienteEntrenadores = new ArrayList<>();
+    private List<EntrenadorClienteDto> clienteEntrenadores = new ArrayList<>();
 
-    private List<Compra> compras = new ArrayList<>();
+    private List<CompraSinClienteDto> compras = new ArrayList<>();
 }

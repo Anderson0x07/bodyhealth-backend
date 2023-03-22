@@ -28,7 +28,7 @@ public class ClienteController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/mi-perfil/{id_cliente}")
     public ResponseEntity<?> perfilCliente(@PathVariable int id_cliente){
         response.clear();
