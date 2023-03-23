@@ -2,13 +2,14 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Pedido;
+import server.bodyhealth.dto.PedidoDto;
 import server.bodyhealth.service.PedidoService;
-import server.bodyhealth.service.PedidoService;
-
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -19,64 +20,46 @@ public class PedidoController {
     @Autowired
     private PedidoService pedidoService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Pedido>> listarPedidos(){
+    private Map<String,Object> response = new HashMap<>();
 
-        List<Pedido> pedidos = pedidoService.listarPedidos();
-        if (!pedidos.isEmpty()) {
-            return ResponseEntity.ok(pedidos);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    @GetMapping("/all")
+    public ResponseEntity<?> listarPedidos(){
+        response.clear();
+        response.put("pedidos",pedidoService.listarPedidos());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_pedido}")
-    public ResponseEntity<Pedido> obtenerPedido(@PathVariable int id_pedido) {
-        Pedido pedido = pedidoService.encontrarPedido(id_pedido);
-        if (pedido == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(pedido);
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerPedidoByID(@PathVariable int id) {
+        response.clear();
+        response.put("pedido", pedidoService.encontrarPedido(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<Pedido> guardarPedido(@RequestBody Pedido pedido){
-        Pedido pedidoExiste = pedidoService.encontrarPedido(pedido.getId_pedido());
-        if (pedidoExiste == null) {
-            pedidoService.guardar(pedido);
-            return ResponseEntity.ok(pedido);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarPedido(@Valid @RequestBody PedidoDto pedidoDto){
+        response.clear();
+
+        pedidoService.guardar(pedidoDto);
+        response.put("message", "Pedido guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_pedido}")
-    public ResponseEntity<Pedido> editarPedido(@PathVariable int id_pedido, @RequestBody Pedido pedidoActualizado) {
-        Pedido pedidoExistente = pedidoService.encontrarPedido(id_pedido);
-        if (pedidoExistente != null) {
 
-            pedidoExistente.setCantidad(pedidoActualizado.getCantidad());
-            pedidoExistente.setTotal(pedidoActualizado.getTotal());
-            pedidoExistente.setCompra(pedidoActualizado.getCompra());
-            pedidoExistente.setProducto(pedidoActualizado.getProducto());
-
-            pedidoService.guardar(pedidoExistente);
-
-            return ResponseEntity.ok(pedidoExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarPedido(@PathVariable int id, @RequestBody PedidoDto pedidoDto) {
+        response.clear();
+        pedidoService.editarPedido(id,pedidoDto);
+        response.put("message", "Pedido actualizado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_pedido}")
-    public ResponseEntity<Void> eliminarPedido(@PathVariable int id_pedido) {
-        Pedido pedidoExistente = pedidoService.encontrarPedido(id_pedido);
-        if (pedidoExistente != null) {
-            pedidoService.eliminar(pedidoExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarPedido(@PathVariable int id) {
+        response.clear();
+        pedidoService.eliminar(id);
+        response.put("message", "Pedido eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

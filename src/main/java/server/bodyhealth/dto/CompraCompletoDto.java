@@ -31,5 +31,5 @@ public class CompraCompletoDto {
 
     private double total;
 
-    List<Pedido> pedidos = new ArrayList<>();
+    List<PedidoDto> pedidos = new ArrayList<>();
 }

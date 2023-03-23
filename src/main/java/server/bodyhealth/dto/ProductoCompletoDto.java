@@ -34,5 +34,5 @@ public class ProductoCompletoDto {
 
     private ProveedorDto proveedor;
 
-    private List<Pedido> pedidos = new ArrayList<>();
+    private List<PedidoDto> pedidos = new ArrayList<>();
 }
