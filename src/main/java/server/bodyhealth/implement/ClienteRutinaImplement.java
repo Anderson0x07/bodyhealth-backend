@@ -90,7 +90,7 @@ public class ClienteRutinaImplement implements ClienteRutinaService {
         Rutina rutina = rutinaRepository.findById(clienteRutinaDto.getRutina().getId_rutina()).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("rutinaNotFound", null, Locale.getDefault()))
         );
-        if (clienteRutinaDto.getCliente() != null)
+        if (clienteRutinaDto.getRutina() != null)
             clienteRutina.setRutina(rutina);
 
         clienteRutinaRepository.save(clienteRutina);
