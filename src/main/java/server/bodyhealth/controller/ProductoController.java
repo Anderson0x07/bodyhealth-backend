@@ -5,12 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ProductoDto;
+import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.service.ProductoService;
+import server.bodyhealth.service.StorageService;
+import server.bodyhealth.util.MessageUtil;
 
 
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -21,6 +26,12 @@ public class ProductoController {
 
     @Autowired
     private ProductoService productoService;
+
+    @Autowired
+    private StorageService service;
+
+    @Autowired
+    private MessageUtil messageUtil;
 
     private Map<String,Object> response = new HashMap<>();
 
@@ -39,19 +50,29 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+//    @PostMapping("/guardar")
+//    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto /*,@RequestParam("file") MultipartFile imagen*/){
+//        response.clear();
+//        productoService.guardar(productoDto);
+//        response.put("message","Producto guardado satisfactoriamente");
+//        return new ResponseEntity<>(response, HttpStatus.CREATED);
+//    }
+
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto /*,@RequestParam("file") MultipartFile imagen*/){
+    public ResponseEntity<?> guardarProducto(ProductoDto productoDto,@RequestPart(name = "file", required = false) MultipartFile file){
         response.clear();
-        productoService.guardar(productoDto);
+        ProductoDto productoDto1 = productoService.loadImage(file,productoDto);
+        productoService.guardar(productoDto1);
         response.put("message","Producto guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
     @PutMapping("/editar/{id_producto}")
-    public ResponseEntity<?> editarProducto(@PathVariable int id_producto, @RequestBody ProductoDto productoDto/*, @RequestParam("file") MultipartFile imagen*/) {
+    public ResponseEntity<?> editarProducto(@PathVariable int id_producto, ProductoDto productoDto,@RequestPart(name = "file", required = false) MultipartFile file){
         response.clear();
-        productoService.editarProveedor(id_producto,productoDto);
+        ProductoDto productoDto1 = productoService.loadImage(file,productoDto);
+        productoService.editarProveedor(id_producto,productoDto1);
         response.put("message", "Producto actualizada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

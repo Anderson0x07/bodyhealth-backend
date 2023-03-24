@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Data
@@ -15,7 +16,7 @@ public class ClienteDto {
 
     private int id_usuario;
 
-    @NotEmpty(message = "Se requiere el documento.")
+    @Positive
     private int documento;
 
     @NotEmpty(message = "Se requiere el tipo de documento.")
@@ -44,10 +45,8 @@ public class ClienteDto {
     @NotEmpty(message = "Se requiere una jornada.")
     private String jornada;
 
-    @NotEmpty(message = "Se requiere un comentario.")
     private String comentario;
 
-    @NotEmpty(message = "Se requiere un estado")
     private boolean estado;
 
     private RolDto rol;

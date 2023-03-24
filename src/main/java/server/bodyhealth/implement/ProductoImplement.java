@@ -1,6 +1,7 @@
 package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
 import server.bodyhealth.entity.Producto;
@@ -13,6 +14,7 @@ import server.bodyhealth.repository.ProveedorRepository;
 import server.bodyhealth.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
 import java.util.ArrayList;
@@ -32,6 +34,9 @@ public class ProductoImplement implements ProductoService {
 
     @Autowired
     private ProveedorRepository proveedorRepository;
+
+    @Autowired
+    private StorageService service;
 
     @Autowired
     private ProductoCompletoMapper productoCompletoMapper;
@@ -90,11 +95,36 @@ public class ProductoImplement implements ProductoService {
         if(productoDto.getStock()>=0)
             producto.setStock(productoDto.getStock());
         Proveedor proveedor = proveedorRepository.findById(productoDto.getProveedor().getId_proveedor()).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
-        );
-        if(productoDto.getProveedor()!=null)
-            producto.setProveedor(proveedor);
-        productoRepository.save(producto);
+                    () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
+            );
+            if(productoDto.getProveedor()!=null)
+                producto.setProveedor(proveedor);
+            productoRepository.save(producto);
+
+
+    }
+
+    @Override
+    public void validation(ProductoDto productoDto) {
+        if(productoDto.getNombre().equals("")){
+            throw new NotFoundException(messageUtil.getMessage("productoWithoutNombre",null, Locale.getDefault()));
+        }else if(productoDto.getProveedor() == null){
+            throw new NotFoundException(messageUtil.getMessage("productoWithoutProveedor",null, Locale.getDefault()));
+        }
+    }
+
+    @Override
+    public ProductoDto loadImage(MultipartFile file, ProductoDto productoDto) {
+        validation(productoDto);
+        String nombreImagen = "";
+        if(file != null){
+            String[] tipo = file.getOriginalFilename().split("\\.");
+            nombreImagen ="Producto_"+ productoDto.getNombre()+"."+tipo[tipo.length-1];
+
+            service.uploadFile(file,nombreImagen);
+        }
+        productoDto.setFoto(nombreImagen);
+        return  productoDto;
     }
 
 }

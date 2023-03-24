@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.entity.Compra;
 import server.bodyhealth.entity.Usuario;
@@ -47,12 +48,11 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarAdministrador(@Valid @RequestBody AdminDto adminDto){
+    public ResponseEntity<?> guardarAdministrador(AdminDto adminDto, @RequestPart(name = "file", required = false) MultipartFile file){
         response.clear();
-
-        adminDto.setPassword(bCryptPasswordEncoder.encode(adminDto.getPassword()));
-
-        adminService.guardar(adminDto);
+        AdminDto adminDto1 = adminService.loadImage(file,adminDto);
+        adminDto.setPassword(bCryptPasswordEncoder.encode(adminDto1.getPassword()));
+        adminService.guardar(adminDto1);
         response.put("message", "Administrador guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -60,9 +60,10 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarAdministrador(@PathVariable int id, @RequestBody AdminDto adminDto) {
+    public ResponseEntity<?> editarAdministrador(@PathVariable int id,AdminDto adminDto,@RequestPart(name = "file", required = false) MultipartFile file) {
         response.clear();
-        adminService.editarAdmin(id,adminDto);
+        AdminDto adminDto1 = adminService.loadImage(file,adminDto);
+        adminService.editarAdmin(id,adminDto1);
         response.put("message", "Administrador actualizado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

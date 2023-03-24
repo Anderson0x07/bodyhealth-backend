@@ -2,6 +2,7 @@ package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
@@ -10,6 +11,7 @@ import server.bodyhealth.mapper.AdminMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.service.AdminService;
+import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
 import java.util.ArrayList;
@@ -30,6 +32,9 @@ public class AdminImplement implements AdminService {
 
     @Autowired
     private RolRepository rolRepository;
+
+    @Autowired
+    private StorageService service;
 
 
     @Override
@@ -113,5 +118,37 @@ public class AdminImplement implements AdminService {
         if(adminDto.getRol()!=null)
             admin.setRol(rol);
         usuarioRepository.save(admin);
+    }
+
+    @Override
+    public void validation(AdminDto adminDto) {
+        if(adminDto.getDocumento() == 0)
+            throw new NotFoundException(messageUtil.getMessage("withoutDocumento",null, Locale.getDefault()));
+       else if(adminDto.getTipo_documento()==null)
+            throw new NotFoundException(messageUtil.getMessage("withoutTipoDoc",null, Locale.getDefault()));
+       else if(adminDto.getNombre()==null)
+            throw new NotFoundException(messageUtil.getMessage("withoutNombre",null, Locale.getDefault()));
+       else if(adminDto.getApellido() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutApellido",null, Locale.getDefault()));
+       else if(adminDto.getEmail() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutEmail",null, Locale.getDefault()));
+       else if(adminDto.getPassword() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
+       else if(adminDto.getRol() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
+    }
+
+    @Override
+    public AdminDto loadImage(MultipartFile file, AdminDto adminDto) {
+        validation(adminDto);
+        String nombreImagen = "";
+        if(file != null){
+            String[] tipo = file.getOriginalFilename().split("\\.");
+            nombreImagen ="Admin_"+ adminDto.getNombre()+"."+tipo[tipo.length-1];
+
+            service.uploadFile(file,nombreImagen);
+        }
+        adminDto.setFoto(nombreImagen);
+        return  adminDto;
     }
 }

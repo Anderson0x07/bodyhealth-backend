@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.EntrenadorService;
@@ -47,12 +48,11 @@ public class EntrenadorController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarEntrenador(@Valid @RequestBody EntrenadorDto entrenadorDto){
+    public ResponseEntity<?> guardarEntrenador(EntrenadorDto entrenadorDto,@RequestPart(name = "file", required = false) MultipartFile file){
         response.clear();
-
-        entrenadorDto.setPassword(bCryptPasswordEncoder.encode(entrenadorDto.getPassword()));
-
-        entrenadorService.guardar(entrenadorDto);
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(file,entrenadorDto);
+        entrenadorDto.setPassword(bCryptPasswordEncoder.encode(entrenadorDto1.getPassword()));
+        entrenadorService.guardar(entrenadorDto1);
         response.put("message", "Entrenador guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -60,9 +60,10 @@ public class EntrenadorController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarEntrenador(@PathVariable int id, @RequestBody EntrenadorDto entrenadorDto) {
+    public ResponseEntity<?> editarEntrenador(@PathVariable int id,EntrenadorDto entrenadorDto,@RequestPart(name = "file", required = false) MultipartFile file) {
         response.clear();
-        entrenadorService.editarEntrenador(id,entrenadorDto);
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(file,entrenadorDto);
+        entrenadorService.editarEntrenador(id,entrenadorDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

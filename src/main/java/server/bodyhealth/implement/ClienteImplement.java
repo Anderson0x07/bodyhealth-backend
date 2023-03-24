@@ -3,6 +3,7 @@ package server.bodyhealth.implement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.entity.Rol;
@@ -13,6 +14,7 @@ import server.bodyhealth.mapper.ClienteMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.service.ClienteService;
+import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ public class ClienteImplement implements ClienteService {
 
     @Autowired
     private ClienteCompletoMapper clienteCompletoMapper;
+
+    @Autowired
+    private StorageService service;
 
     @Override
     public List<ClienteDto> listarClientes() {
@@ -120,6 +125,40 @@ public class ClienteImplement implements ClienteService {
 
         usuarioRepository.save(cliente);
 
+    }
+
+    @Override
+    public void validation(ClienteDto clienteDto) {
+        if(clienteDto.getDocumento() == 0)
+            throw new NotFoundException(messageUtil.getMessage("withoutDocumento",null, Locale.getDefault()));
+       else if(clienteDto.getTipo_documento()==null)
+            throw new NotFoundException(messageUtil.getMessage("withoutTipoDoc",null, Locale.getDefault()));
+       else if(clienteDto.getNombre()==null)
+            throw new NotFoundException(messageUtil.getMessage("withoutNombre",null, Locale.getDefault()));
+       else if(clienteDto.getApellido() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutApellido",null, Locale.getDefault()));
+       else if(clienteDto.getEmail() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutEmail",null, Locale.getDefault()));
+       else if(clienteDto.getPassword() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
+       else if(clienteDto.getJornada() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutJornada",null, Locale.getDefault()));
+       else if(clienteDto.getRol() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
+    }
+
+    @Override
+    public ClienteDto loadImage(MultipartFile file, ClienteDto clienteDto) {
+        validation(clienteDto);
+        String nombreImagen = "";
+        if(file != null){
+            String[] tipo = file.getOriginalFilename().split("\\.");
+            nombreImagen ="Cliente"+ clienteDto.getNombre()+"."+tipo[tipo.length-1];
+
+            service.uploadFile(file,nombreImagen);
+        }
+        clienteDto.setFoto(nombreImagen);
+        return  clienteDto;
     }
 
     @Override

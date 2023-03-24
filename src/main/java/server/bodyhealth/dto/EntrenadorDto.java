@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.parameters.P;
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
 import java.util.Date;
 
 @Data
@@ -16,7 +19,7 @@ public class EntrenadorDto {
 
     private int id_usuario;
 
-    @NotEmpty(message = "Se requiere el documento.")
+    @Positive
     private int documento;
 
     @NotEmpty(message = "Se requiere el tipo de documento.")
@@ -25,6 +28,7 @@ public class EntrenadorDto {
     @NotEmpty(message = "Se requiere el nombre.")
     private String nombre;
 
+    @NotEmpty(message = "Se requiere un apellido.")
     private String apellido;
 
     private String telefono;
@@ -53,7 +57,6 @@ public class EntrenadorDto {
     @NotEmpty(message = "Se requiere un titulo academico.")
     private String titulo_academico;
 
-    @NotEmpty(message = "Se requiere un estado.")
     private boolean estado;
 
     private RolDto rol;

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.service.ClienteService;
 
@@ -46,12 +47,11 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto){
+    public ResponseEntity<?> guardarCliente(ClienteDto clienteDto, @RequestPart(name = "file", required = false) MultipartFile file){
         response.clear();
-
-        clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto.getPassword()));
-
-        clienteService.guardar(clienteDto);
+        ClienteDto clienteDto1 = clienteService.loadImage(file,clienteDto);
+        clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto1.getPassword()));
+        clienteService.guardar(clienteDto1);
         response.put("message", "Cliente guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -59,9 +59,10 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarCliente(@PathVariable int id, @RequestBody ClienteDto clienteDto) {
+    public ResponseEntity<?> editarCliente(@PathVariable int id, ClienteDto clienteDto,@RequestPart(name = "file", required = false) MultipartFile file) {
         response.clear();
-        clienteService.editarCliente(id,clienteDto);
+        ClienteDto clienteDto1 = clienteService.loadImage(file,clienteDto);
+        clienteService.editarCliente(id,clienteDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

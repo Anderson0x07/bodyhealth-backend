@@ -1,6 +1,7 @@
 package server.bodyhealth.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
@@ -22,4 +23,8 @@ public interface EntrenadorService {
     public EntrenadorCompletoDto encontrarEntrenadorByDocument(int documento);
 
     public void editarEntrenador(int id, EntrenadorDto entrenadorDto);
+
+    public void validation(EntrenadorDto entrenadorDto);
+
+    public EntrenadorDto loadImage(MultipartFile file, EntrenadorDto entrenadorDto);
 }

@@ -1,6 +1,7 @@
 package server.bodyhealth.service;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.ProductoCompletoDto;
@@ -21,4 +22,8 @@ public interface ClienteService {
     public ClienteCompletoDto encontrarClienteByDocument(int documento);
 
     public void editarCliente(int id, ClienteDto clienteDto);
+
+    public void validation(ClienteDto clienteDto);
+
+    public ClienteDto loadImage(MultipartFile file, ClienteDto clienteDto);
 }
