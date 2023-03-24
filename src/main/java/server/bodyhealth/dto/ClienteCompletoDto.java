@@ -60,9 +60,9 @@ public class ClienteCompletoDto {
 
     private List<ClienteDetalleSinClienteDto> clienteDetalles = new ArrayList<>();
 
-    private List<ControlCliente> controlClientes = new ArrayList<>();
+    private List<ControlClienteSinClienteDto> controlClientes = new ArrayList<>();
 
-    private List<EntrenadorClienteDto> clienteEntrenadores = new ArrayList<>();
+    private List<EntrenadorClienteSinClienteDto> clienteEntrenadores = new ArrayList<>();
 
     private List<CompraSinClienteDto> compras = new ArrayList<>();
 }

@@ -22,5 +22,5 @@ public class PlanCompletoDto {
     @Positive
     private int meses;
 
-    private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
+    private List<ClienteDetalleDto> clienteDetalles = new ArrayList<>();
 }

@@ -19,6 +19,6 @@ public class RutinaEjercicioCompletoDto {
 
     private EjercicioDto ejercicio;
 
-    private List<ClienteRutinaEjercicio> clienteRutinaEjercicios = new ArrayList<>();
+    private List<ClienteRutinaEjercicioDto> clienteRutinaEjercicios = new ArrayList<>();
 
 }

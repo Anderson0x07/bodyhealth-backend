@@ -61,5 +61,5 @@ public class EntrenadorCompletoDto {
 
     private RolDto rol;
 
-    private List<EntrenadorCliente> entrenadorClientes = new ArrayList<>();
+    private List<EntrenadorClienteDto> entrenadorClientes = new ArrayList<>();
 }

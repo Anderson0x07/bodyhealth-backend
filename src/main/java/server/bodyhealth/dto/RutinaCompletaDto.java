@@ -22,7 +22,7 @@ public class RutinaCompletaDto {
     @NotEmpty(message = "Se requiere una descripcion de la rutina.")
     private String descripcion;
 
-    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+    private List<RutinaEjercicioDto> rutinaEjercicios = new ArrayList<>();
 
-    private List<ClienteRutina> clienteRutinas = new ArrayList<>();
+    private List<ClienteRutinaDto> clienteRutinas = new ArrayList<>();
 }

@@ -3,8 +3,6 @@ package server.bodyhealth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.bodyhealth.entity.RutinaEjercicio;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
@@ -30,6 +28,6 @@ public class EjercicioCompletoDto {
 
     private MusculoDto musculo;
 
-    private List<RutinaEjercicio> rutinaEjercicios = new ArrayList<>();
+    private List<RutinaEjercicioDto> rutinaEjercicios = new ArrayList<>();
 
 }
