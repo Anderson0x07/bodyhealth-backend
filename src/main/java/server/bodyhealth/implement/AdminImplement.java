@@ -134,8 +134,8 @@ public class AdminImplement implements AdminService {
             throw new NotFoundException(messageUtil.getMessage("withoutEmail",null, Locale.getDefault()));
        else if(adminDto.getPassword() == null)
             throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
-       else if(adminDto.getRol() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
+//       else if(adminDto.getRol() == null)
+//            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
     }
 
     @Override

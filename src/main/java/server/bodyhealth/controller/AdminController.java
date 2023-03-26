@@ -9,9 +9,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
+import server.bodyhealth.dto.RolDto;
 import server.bodyhealth.entity.Compra;
+import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.service.AdminService;
+import server.bodyhealth.service.EmailService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -29,6 +32,9 @@ public class AdminController {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private EmailService emailService;
+
     private Map<String,Object> response = new HashMap<>();
 
     @GetMapping("/all")
@@ -45,7 +51,6 @@ public class AdminController {
         response.put("admin", adminService.encontrarAdmin(id_admin));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarAdministrador(AdminDto adminDto, @RequestPart(name = "file", required = false) MultipartFile file){
@@ -53,6 +58,7 @@ public class AdminController {
         AdminDto adminDto1 = adminService.loadImage(file,adminDto);
         adminDto.setPassword(bCryptPasswordEncoder.encode(adminDto1.getPassword()));
         adminService.guardar(adminDto1);
+        emailService.emailRegistro(adminDto.getEmail(),adminDto.getNombre(),adminDto.getDocumento());
         response.put("message", "Administrador guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

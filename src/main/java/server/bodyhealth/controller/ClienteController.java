@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.service.ClienteService;
+import server.bodyhealth.service.EmailService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -26,6 +27,9 @@ public class ClienteController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     private Map<String,Object> response = new HashMap<>();
 
@@ -52,6 +56,7 @@ public class ClienteController {
         ClienteDto clienteDto1 = clienteService.loadImage(file,clienteDto);
         clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto1.getPassword()));
         clienteService.guardar(clienteDto1);
+        emailService.emailRegistro(clienteDto.getEmail(),clienteDto.getNombre(),clienteDto.getId_usuario());
         response.put("message", "Cliente guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

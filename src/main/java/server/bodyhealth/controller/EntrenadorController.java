@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.EntrenadorDto;
+import server.bodyhealth.service.EmailService;
 import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.EntrenadorService;
 
@@ -27,6 +28,9 @@ public class EntrenadorController {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private EmailService emailService;
 
     private Map<String,Object> response = new HashMap<>();
 
@@ -53,6 +57,7 @@ public class EntrenadorController {
         EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(file,entrenadorDto);
         entrenadorDto.setPassword(bCryptPasswordEncoder.encode(entrenadorDto1.getPassword()));
         entrenadorService.guardar(entrenadorDto1);
+        emailService.emailRegistro(entrenadorDto.getEmail(),entrenadorDto.getNombre(),entrenadorDto.getId_usuario());
         response.put("message", "Entrenador guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }

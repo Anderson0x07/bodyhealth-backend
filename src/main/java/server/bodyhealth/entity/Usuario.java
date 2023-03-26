@@ -73,6 +73,8 @@ public class Usuario implements Serializable{
     private String jornada;
 
     private boolean estado;
+    @Column(nullable = false)
+    private boolean confirmado;
 
     private String comentario;
 
