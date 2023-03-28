@@ -113,4 +113,23 @@ public class PedidoImplement implements PedidoService {
                 () -> new NotFoundException(messageUtil.getMessage("pedidoNotFound",null, Locale.getDefault()))
         ));
     }
+
+    @Override
+    public List<PedidoDto> encontrarPedidoPorCompra(int id_compra) {
+
+        List<PedidoDto> pedidoDtos = new ArrayList<>();
+
+        List<Pedido> pedidos = pedidoRepository.findByCompra(id_compra);
+
+        if(!pedidos.isEmpty()) {
+            for (Pedido pedido : pedidos) {
+                PedidoDto pedidoDto = pedidoMapper.toDto(pedido);
+                pedidoDtos.add(pedidoDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("pedidosEmpty",null, Locale.getDefault()));
+        }
+
+        return pedidoDtos;
+    }
 }

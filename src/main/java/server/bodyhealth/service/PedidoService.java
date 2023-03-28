@@ -18,4 +18,6 @@ public interface PedidoService{
     public void editarPedido(int id, PedidoDto pedidoDto);
 
     public PedidoDto encontrarPedido(int id_pedido);
+
+    public List<PedidoDto> encontrarPedidoPorCompra(int id_compra);
 }
