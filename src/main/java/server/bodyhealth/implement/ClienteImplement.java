@@ -116,11 +116,11 @@ public class ClienteImplement implements ClienteService {
 
         cliente.setEstado(clienteDto.isEstado());
 
-        Rol rol = rolRepository.findById(clienteDto.getRol().getId_rol()).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("rolNotFound",null, Locale.getDefault()))
-        );
-        if(clienteDto.getRol()!=null)
-            cliente.setRol(rol);
+//        Rol rol = rolRepository.findById(clienteDto.getRol().getId_rol()).orElseThrow(
+//                () -> new NotFoundException(messageUtil.getMessage("rolNotFound",null, Locale.getDefault()))
+//        );
+//        if(clienteDto.getRol()!=null)
+//            cliente.setRol(rol);
 
 
         usuarioRepository.save(cliente);
@@ -143,8 +143,8 @@ public class ClienteImplement implements ClienteService {
             throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
        else if(clienteDto.getJornada() == null)
             throw new NotFoundException(messageUtil.getMessage("withoutJornada",null, Locale.getDefault()));
-       else if(clienteDto.getRol() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
+        else if(clienteDto.getFecha_nacimiento() == null)
+            throw new NotFoundException(messageUtil.getMessage("withoutFecha",null, Locale.getDefault()));
     }
 
     @Override
