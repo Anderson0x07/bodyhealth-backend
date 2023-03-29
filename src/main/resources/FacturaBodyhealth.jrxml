@@ -399,7 +399,7 @@
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[  "$"+$P{subtotal}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["$"+$P{subtotal}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="420" y="22" width="90" height="20" uuid="4eaea243-1289-4365-98d6-9ac4d70b79b0"/>
@@ -407,7 +407,7 @@
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[  "$"+$P{iva}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["$"+$P{iva}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement mode="Opaque" x="420" y="42" width="90" height="20" forecolor="#FFFFFF" backcolor="#336B87" uuid="da68fc9c-951b-48fd-a320-6d4abe5fe956"/>
@@ -419,7 +419,7 @@
 					<rightPen lineWidth="0.25" lineStyle="Solid" lineColor="#030303"/>
 				</box>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[  "$"+$P{total}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["$"+$P{total}]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
@@ -427,7 +427,7 @@
 		<band height="39" splitType="Stretch">
 			<staticText>
 				<reportElement x="0" y="8" width="430" height="30" uuid="78515d55-b5ef-41fc-8817-14b3f489932e"/>
-				<text><![CDATA[Representación impresa de reporte de facturación del gimnasio BodyHealth.
+				<text><![CDATA[Representación impresa de reporte de facturación del gimnasio 
 Para más información consulte en nuestra página web.]]></text>
 			</staticText>
 			<line>
@@ -435,6 +435,10 @@ Para más información consulte en nuestra página web.]]></text>
 					<property name="com.jaspersoft.studio.unit.width" value="px"/>
 				</reportElement>
 			</line>
+			<textField>
+				<reportElement x="284" y="8" width="120" height="15" uuid="f14a3010-c218-4f1a-aaad-0ffa4ea7bc89"/>
+				<textFieldExpression><![CDATA[$P{nombreEmpresa}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>
