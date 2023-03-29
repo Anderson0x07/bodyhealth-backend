@@ -1,5 +1,6 @@
 package server.bodyhealth.implement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,10 +18,15 @@ import server.bodyhealth.service.ClienteService;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
+@Slf4j
 @Service
 public class ClienteImplement implements ClienteService {
 
@@ -62,6 +68,7 @@ public class ClienteImplement implements ClienteService {
     @Override
     public void guardar(ClienteDto clienteDto) {
         Usuario cliente = clienteMapper.toEntity(clienteDto);
+        log.info(cliente.getRol().toString());
         if (!usuarioRepository.findByEmail(clienteDto.getEmail()).isPresent()) {
 
             if(!usuarioRepository.findByDocumento(clienteDto.getDocumento()).isPresent()){
@@ -127,38 +134,24 @@ public class ClienteImplement implements ClienteService {
 
     }
 
-    @Override
-    public void validation(ClienteDto clienteDto) {
-        if(clienteDto.getDocumento() == 0)
-            throw new NotFoundException(messageUtil.getMessage("withoutDocumento",null, Locale.getDefault()));
-       else if(clienteDto.getTipo_documento()==null)
-            throw new NotFoundException(messageUtil.getMessage("withoutTipoDoc",null, Locale.getDefault()));
-       else if(clienteDto.getNombre()==null)
-            throw new NotFoundException(messageUtil.getMessage("withoutNombre",null, Locale.getDefault()));
-       else if(clienteDto.getApellido() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutApellido",null, Locale.getDefault()));
-       else if(clienteDto.getEmail() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutEmail",null, Locale.getDefault()));
-       else if(clienteDto.getPassword() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
-       else if(clienteDto.getJornada() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutJornada",null, Locale.getDefault()));
-        else if(clienteDto.getFecha_nacimiento() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutFecha",null, Locale.getDefault()));
-    }
+
 
     @Override
-    public ClienteDto loadImage(MultipartFile file, ClienteDto clienteDto) {
-        validation(clienteDto);
-        String nombreImagen = "";
-        if(file != null){
-            String[] tipo = file.getOriginalFilename().split("\\.");
-            nombreImagen ="Cliente"+ clienteDto.getNombre()+"."+tipo[tipo.length-1];
-
-            service.uploadFile(file,nombreImagen);
+    public ClienteDto loadImage(ClienteDto clienteDto) throws IOException {
+        if(!clienteDto.getFoto().equals("")){
+            String[] foto = clienteDto.getFoto().split("\\s+");
+            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+            File file = convertBytesToFile(image1,foto[1]);
+            String[] tipo = foto[1].split("\\.");
+            String nombre = "CLIENTE_"+clienteDto.getNombre()+"."+ tipo[tipo.length-1];
+            if(file != null){
+                clienteDto.setFoto(nombre);
+                service.uploadFile(file,nombre);
+            }
+            file.delete();
         }
-        clienteDto.setFoto(nombreImagen);
-        return  clienteDto;
+        return clienteDto;
+
     }
 
     @Override
@@ -174,5 +167,13 @@ public class ClienteImplement implements ClienteService {
         return clienteCompletoMapper.toDto(usuarioRepository.findByDocumento(documento).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteNotFound",null, Locale.getDefault()))
         ));
+    }
+
+    public File convertBytesToFile(byte[] bytes, String filename) throws IOException {
+        File file = new File(filename);
+        FileOutputStream outputStream = new FileOutputStream(file);
+        outputStream.write(bytes);
+        outputStream.close();
+        return file;
     }
 }

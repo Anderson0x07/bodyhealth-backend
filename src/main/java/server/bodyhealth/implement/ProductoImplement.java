@@ -2,6 +2,7 @@ package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
 import server.bodyhealth.entity.Producto;
@@ -17,7 +18,11 @@ import org.springframework.stereotype.Service;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -104,27 +109,31 @@ public class ProductoImplement implements ProductoService {
 
     }
 
+
     @Override
-    public void validation(ProductoDto productoDto) {
-        if(productoDto.getNombre().equals("")){
-            throw new NotFoundException(messageUtil.getMessage("productoWithoutNombre",null, Locale.getDefault()));
-        }else if(productoDto.getProveedor() == null){
-            throw new NotFoundException(messageUtil.getMessage("productoWithoutProveedor",null, Locale.getDefault()));
+    public ProductoDto loadImage(ProductoDto productoDto) throws IOException {
+        if(!productoDto.getFoto().equals("")){
+            String[] foto = productoDto.getFoto().split("\\s+");
+            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+            File file = convertBytesToFile(image1,foto[1]);
+            String[] tipo = foto[1].split("\\.");
+            String nombre = "PRODUCT_"+productoDto.getNombre()+"."+ tipo[tipo.length-1];
+            if(file != null){
+                productoDto.setFoto(nombre);
+                service.uploadFile(file,nombre);
+            }
+            file.delete();
         }
+        return productoDto;
+
     }
 
-    @Override
-    public ProductoDto loadImage(MultipartFile file, ProductoDto productoDto) {
-        validation(productoDto);
-        String nombreImagen = "";
-        if(file != null){
-            String[] tipo = file.getOriginalFilename().split("\\.");
-            nombreImagen ="Producto_"+ productoDto.getNombre()+"."+tipo[tipo.length-1];
-
-            service.uploadFile(file,nombreImagen);
-        }
-        productoDto.setFoto(nombreImagen);
-        return  productoDto;
+    public File convertBytesToFile(byte[] bytes, String filename) throws IOException {
+        File file = new File(filename);
+        FileOutputStream outputStream = new FileOutputStream(file);
+        outputStream.write(bytes);
+        outputStream.close();
+        return file;
     }
 
 }

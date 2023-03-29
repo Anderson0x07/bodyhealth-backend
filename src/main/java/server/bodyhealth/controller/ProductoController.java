@@ -14,6 +14,7 @@ import server.bodyhealth.util.MessageUtil;
 
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -59,9 +60,9 @@ public class ProductoController {
 //    }
 
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarProducto(ProductoDto productoDto,@RequestPart(name = "file", required = false) MultipartFile file){
+    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto) throws IOException {
         response.clear();
-        ProductoDto productoDto1 = productoService.loadImage(file,productoDto);
+        ProductoDto productoDto1 = productoService.loadImage(productoDto);
         productoService.guardar(productoDto1);
         response.put("message","Producto guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -69,9 +70,9 @@ public class ProductoController {
 
 
     @PutMapping("/editar/{id_producto}")
-    public ResponseEntity<?> editarProducto(@PathVariable int id_producto, ProductoDto productoDto,@RequestPart(name = "file", required = false) MultipartFile file){
+    public ResponseEntity<?> editarProducto(@PathVariable int id_producto,@Valid @RequestBody ProductoDto productoDto) throws IOException {
         response.clear();
-        ProductoDto productoDto1 = productoService.loadImage(file,productoDto);
+        ProductoDto productoDto1 = productoService.loadImage(productoDto);
         productoService.editarProveedor(id_producto,productoDto1);
         response.put("message", "Producto actualizada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);

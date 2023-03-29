@@ -17,7 +17,11 @@ import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
 
@@ -138,43 +142,30 @@ public class EntrenadorImplement implements EntrenadorService {
 
     }
 
+
     @Override
-    public void validation(EntrenadorDto entrenadorDto) {
-        if(entrenadorDto.getDocumento() == 0)
-            throw new NotFoundException(messageUtil.getMessage("withoutDocumento",null, Locale.getDefault()));
-        else if(entrenadorDto.getTipo_documento()==null)
-            throw new NotFoundException(messageUtil.getMessage("withoutTipoDoc",null, Locale.getDefault()));
-        else if(entrenadorDto.getNombre()==null)
-            throw new NotFoundException(messageUtil.getMessage("withoutNombre",null, Locale.getDefault()));
-        else if(entrenadorDto.getApellido() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutApellido",null, Locale.getDefault()));
-        else if(entrenadorDto.getEmail() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutEmail",null, Locale.getDefault()));
-        else if(entrenadorDto.getPassword() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutPassword",null, Locale.getDefault()));
-        else if(entrenadorDto.getJornada() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutJornada",null, Locale.getDefault()));
-        else if(entrenadorDto.getHoja_vida() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutHojaVida",null, Locale.getDefault()));
-        else if(entrenadorDto.getTitulo_academico() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutTituloAcad",null, Locale.getDefault()));
-        else if(entrenadorDto.getExperiencia() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutExperiencia",null, Locale.getDefault()));
-        else if(entrenadorDto.getRol() == null)
-            throw new NotFoundException(messageUtil.getMessage("withoutRol",null, Locale.getDefault()));
+    public EntrenadorDto loadImage(EntrenadorDto entrenadorDto) throws IOException {
+        if(!entrenadorDto.getFoto().equals("")){
+            String[] foto = entrenadorDto.getFoto().split("\\s+");
+            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+            File file = convertBytesToFile(image1,foto[1]);
+            String[] tipo = foto[1].split("\\.");
+            String nombre = "TRAINER_"+entrenadorDto.getNombre()+"."+ tipo[tipo.length-1];
+            if(file != null){
+                entrenadorDto.setFoto(nombre);
+                service.uploadFile(file,nombre);
+            }
+            file.delete();
+        }
+        return entrenadorDto;
+
     }
 
-    @Override
-    public EntrenadorDto loadImage(MultipartFile file, EntrenadorDto entrenadorDto) {
-        validation(entrenadorDto);
-        String nombreImagen = "";
-        if(file != null){
-            String[] tipo = file.getOriginalFilename().split("\\.");
-            nombreImagen ="Entrenador"+ entrenadorDto.getNombre()+"."+tipo[tipo.length-1];
-
-            service.uploadFile(file,nombreImagen);
-        }
-        entrenadorDto.setFoto(nombreImagen);
-        return  entrenadorDto;
+    public File convertBytesToFile(byte[] bytes, String filename) throws IOException {
+        File file = new File(filename);
+        FileOutputStream outputStream = new FileOutputStream(file);
+        outputStream.write(bytes);
+        outputStream.close();
+        return file;
     }
 }

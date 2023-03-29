@@ -7,18 +7,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 import server.bodyhealth.dto.ClienteDto;
-import server.bodyhealth.dto.RolDto;
-import server.bodyhealth.mapper.RolMapper;
-import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.service.ClienteService;
 import server.bodyhealth.service.EmailService;
-import org.apache.commons.beanutils.BeanUtils;
-import server.bodyhealth.service.UsuarioService;
 
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,12 +31,6 @@ public class ClienteController {
 
     @Autowired
     private EmailService emailService;
-
-    @Autowired
-    private RolRepository rolRepository;
-
-    @Autowired
-    private RolMapper rolMapper;
 
     private Map<String,Object> response = new HashMap<>();
 
@@ -63,16 +52,12 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarCliente(ClienteDto clienteDto, @RequestPart(name = "file", required = false) MultipartFile file)  {
+    public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto) throws IOException {
         response.clear();
-        ClienteDto clienteDto1 = clienteService.loadImage(file,clienteDto);
+        ClienteDto clienteDto1 =  clienteService.loadImage(clienteDto);
         clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto1.getPassword()));
-
-        RolDto rol = rolMapper.toDto(rolRepository.getRolById(2));
-        clienteDto.setRol(rol);
-
         clienteService.guardar(clienteDto1);
-        emailService.emailRegistro(clienteDto.getEmail(),clienteDto.getNombre(),clienteDto.getId_usuario());
+        emailService.emailRegistro(clienteDto1.getEmail(),clienteDto1.getNombre(),clienteDto1.getDocumento());
         response.put("message", "Cliente guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
@@ -80,10 +65,10 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarCliente(@PathVariable int id, ClienteDto clienteDto,@RequestPart(name = "file", required = false) MultipartFile file) {
+    public ResponseEntity<?> editarCliente(@RequestBody ClienteDto clienteDto) throws IOException {
         response.clear();
-        ClienteDto clienteDto1 = clienteService.loadImage(file,clienteDto);
-        clienteService.editarCliente(id,clienteDto1);
+        ClienteDto clienteDto1 = clienteService.loadImage(clienteDto);
+        clienteService.editarCliente(clienteDto1.getId_usuario(),clienteDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }

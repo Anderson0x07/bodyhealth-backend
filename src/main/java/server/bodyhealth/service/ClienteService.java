@@ -6,6 +6,9 @@ import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,7 +26,5 @@ public interface ClienteService {
 
     public void editarCliente(int id, ClienteDto clienteDto);
 
-    public void validation(ClienteDto clienteDto);
-
-    public ClienteDto loadImage(MultipartFile file, ClienteDto clienteDto);
+    public ClienteDto loadImage(ClienteDto clienteDto) throws IOException;
 }

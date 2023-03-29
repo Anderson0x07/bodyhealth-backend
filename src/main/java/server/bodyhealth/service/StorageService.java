@@ -26,11 +26,11 @@ public class StorageService {
     @Autowired
     private AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file,String nombre) {
-        File fileObj = convertMultiPartFileToFile(file);
+    public String uploadFile(File file,String nombre) {
+//        File fileObj = convertMultiPartFileToFile(file);
         String fileName = nombre;
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
-        fileObj.delete();
+        s3Client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
+        //fileObj.delete();
         return "File uploaded : " + fileName;
     }
 

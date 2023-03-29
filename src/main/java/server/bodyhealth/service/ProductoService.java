@@ -7,6 +7,7 @@ import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Producto;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 public interface ProductoService {
@@ -20,7 +21,6 @@ public interface ProductoService {
 
     public void editarProveedor(int id, ProductoDto productoDto);
 
-    public void validation(ProductoDto productoDto);
 
-    public ProductoDto loadImage(MultipartFile file, ProductoDto productoDto);
+    public ProductoDto loadImage(ProductoDto productoDto) throws IOException;
 }

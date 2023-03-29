@@ -17,6 +17,7 @@ import server.bodyhealth.service.AdminService;
 import server.bodyhealth.service.EmailService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,9 +54,9 @@ public class AdminController {
     }
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarAdministrador(AdminDto adminDto, @RequestPart(name = "file", required = false) MultipartFile file){
+    public ResponseEntity<?> guardarAdministrador(@Valid @RequestBody AdminDto adminDto) throws IOException {
         response.clear();
-        AdminDto adminDto1 = adminService.loadImage(file,adminDto);
+        AdminDto adminDto1 = adminService.loadImage(adminDto);
         adminDto.setPassword(bCryptPasswordEncoder.encode(adminDto1.getPassword()));
         adminService.guardar(adminDto1);
         emailService.emailRegistro(adminDto.getEmail(),adminDto.getNombre(),adminDto.getDocumento());
@@ -66,9 +67,9 @@ public class AdminController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarAdministrador(@PathVariable int id,AdminDto adminDto,@RequestPart(name = "file", required = false) MultipartFile file) {
+    public ResponseEntity<?> editarAdministrador(@PathVariable int id,@RequestBody AdminDto adminDto) throws IOException {
         response.clear();
-        AdminDto adminDto1 = adminService.loadImage(file,adminDto);
+        AdminDto adminDto1 = adminService.loadImage(adminDto);
         adminService.editarAdmin(id,adminDto1);
         response.put("message", "Administrador actualizado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);

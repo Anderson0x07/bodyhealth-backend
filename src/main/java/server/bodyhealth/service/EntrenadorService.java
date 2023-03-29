@@ -7,6 +7,7 @@ import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
 import server.bodyhealth.dto.EntrenadorDto;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,7 +25,5 @@ public interface EntrenadorService {
 
     public void editarEntrenador(int id, EntrenadorDto entrenadorDto);
 
-    public void validation(EntrenadorDto entrenadorDto);
-
-    public EntrenadorDto loadImage(MultipartFile file, EntrenadorDto entrenadorDto);
+    public EntrenadorDto loadImage(EntrenadorDto entrenadorDto) throws IOException;
 }

@@ -14,6 +14,7 @@ import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.EntrenadorService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,9 +53,9 @@ public class EntrenadorController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarEntrenador(EntrenadorDto entrenadorDto,@RequestPart(name = "file", required = false) MultipartFile file){
+    public ResponseEntity<?> guardarEntrenador(@Valid @RequestBody EntrenadorDto entrenadorDto) throws IOException {
         response.clear();
-        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(file,entrenadorDto);
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(entrenadorDto);
         entrenadorDto.setPassword(bCryptPasswordEncoder.encode(entrenadorDto1.getPassword()));
         entrenadorService.guardar(entrenadorDto1);
         emailService.emailRegistro(entrenadorDto.getEmail(),entrenadorDto.getNombre(),entrenadorDto.getId_usuario());
@@ -65,9 +66,9 @@ public class EntrenadorController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarEntrenador(@PathVariable int id,EntrenadorDto entrenadorDto,@RequestPart(name = "file", required = false) MultipartFile file) {
+    public ResponseEntity<?> editarEntrenador(@PathVariable int id,@RequestBody EntrenadorDto entrenadorDto) throws IOException {
         response.clear();
-        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(file,entrenadorDto);
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(entrenadorDto);
         entrenadorService.editarEntrenador(id,entrenadorDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
