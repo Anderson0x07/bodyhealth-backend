@@ -1,10 +1,12 @@
 package server.bodyhealth.implement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.ClienteDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
@@ -12,6 +14,7 @@ import server.bodyhealth.mapper.AdminMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.service.AdminService;
+import server.bodyhealth.service.ResetPasswordTokenService;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
@@ -24,6 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 public class AdminImplement implements AdminService {
 
     @Autowired
@@ -40,6 +44,10 @@ public class AdminImplement implements AdminService {
 
     @Autowired
     private StorageService service;
+
+
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
 
 
     @Override
@@ -143,6 +151,24 @@ public class AdminImplement implements AdminService {
         return adminDto;
 
     }
+
+    @Override
+    public void enviarTokenPassword(int id) throws Exception {
+        Usuario usuario = usuarioRepository.findById_usuario(id);
+        if(usuario!=null) {
+            resetPasswordTokenService.generarTokenYEnviarEmail(usuario);
+        }else{
+            log.info("no pasa");
+        }
+
+
+    }
+
+    @Override
+    public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        resetPasswordTokenService.verificarToken(verifyTokenRequestDto);
+    }
+
 
     public File convertBytesToFile(byte[] bytes, String filename) throws IOException {
         File file = new File(filename);

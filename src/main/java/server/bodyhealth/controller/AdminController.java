@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.RolDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.entity.Compra;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
@@ -93,6 +94,21 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/restablecer-password/{id}")
+    public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
+        response.clear();
+        adminService.enviarTokenPassword(id);
+        response.put("message", "Se envió el token al correo");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
+    @PostMapping("/verificar-token")
+    public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        response.clear();
+        adminService.verificarToken(verifyTokenRequestDto);
+        response.put("message", "Password actualizada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
 }
