@@ -158,7 +158,7 @@ public class AdminImplement implements AdminService {
         if(usuario!=null) {
             resetPasswordTokenService.generarTokenYEnviarEmail(usuario);
         }else{
-            log.info("no pasa");
+            throw new Exception("Ocurrió un error");
         }
 
 

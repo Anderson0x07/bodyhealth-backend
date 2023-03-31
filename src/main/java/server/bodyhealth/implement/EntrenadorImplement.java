@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
 import server.bodyhealth.dto.EntrenadorDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
@@ -14,6 +15,7 @@ import server.bodyhealth.mapper.EntrenadorMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.service.EntrenadorService;
+import server.bodyhealth.service.ResetPasswordTokenService;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
@@ -45,6 +47,9 @@ public class EntrenadorImplement implements EntrenadorService {
 
     @Autowired
     private StorageService service;
+
+    @Autowired
+    private ResetPasswordTokenService resetPasswordTokenService;
     @Override
     public List<EntrenadorDto> listarEntrenadores() {
         List<EntrenadorDto> entrenadoresDto = new ArrayList<>();
@@ -159,6 +164,21 @@ public class EntrenadorImplement implements EntrenadorService {
         }
         return entrenadorDto;
 
+    }
+
+    @Override
+    public void enviarTokenPassword(int id) throws Exception {
+        Usuario usuario = usuarioRepository.findById_usuario(id);
+        if(usuario!=null) {
+            resetPasswordTokenService.generarTokenYEnviarEmail(usuario);
+        }else{
+            throw new Exception("Ocurrió un error");
+        }
+    }
+
+    @Override
+    public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        resetPasswordTokenService.verificarToken(verifyTokenRequestDto);
     }
 
     public File convertBytesToFile(byte[] bytes, String filename) throws IOException {

@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.EntrenadorDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.service.EmailService;
 import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.EntrenadorService;
@@ -90,5 +91,22 @@ public class EntrenadorController {
         response.clear();
         response.put("entrenador", entrenadorService.encontrarEntrenador(id));
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PostMapping("/restablecer-password/{id}")
+    public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
+        response.clear();
+        entrenadorService.enviarTokenPassword(id);
+        response.put("message", "Se envió el token al correo");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verificar-token")
+    public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        response.clear();
+        entrenadorService.verificarToken(verifyTokenRequestDto);
+        response.put("message", "Password actualizada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
