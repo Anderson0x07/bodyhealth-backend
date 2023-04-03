@@ -2,10 +2,7 @@ package server.bodyhealth.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import server.bodyhealth.dto.ClienteCompletoDto;
-import server.bodyhealth.dto.ClienteDto;
-import server.bodyhealth.dto.ProductoCompletoDto;
-import server.bodyhealth.dto.ProductoDto;
+import server.bodyhealth.dto.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,4 +24,8 @@ public interface ClienteService {
     public void editarCliente(int id, ClienteDto clienteDto);
 
     public ClienteDto loadImage(ClienteDto clienteDto) throws IOException;
+
+    public void enviarTokenPassword(int id) throws Exception;
+
+    public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception;
 }

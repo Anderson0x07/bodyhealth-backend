@@ -87,6 +87,7 @@ public class AdminImplement implements AdminService {
         Usuario admin = usuarioRepository.findById(id_admin).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("adminNotFound",null, Locale.getDefault()))
         );
+        service.deleteFile(admin.getFoto());
         usuarioRepository.deleteById(admin.getId_usuario());
     }
 

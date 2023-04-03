@@ -73,6 +73,7 @@ public class ProductoImplement implements ProductoService {
         Producto producto = productoRepository.findById(id_producto).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("productoNotFound",null, Locale.getDefault()))
         );
+        service.deleteFile(producto.getFoto());
         productoRepository.deleteById(id_producto);
     }
 
@@ -105,8 +106,6 @@ public class ProductoImplement implements ProductoService {
             if(productoDto.getProveedor()!=null)
                 producto.setProveedor(proveedor);
             productoRepository.save(producto);
-
-
     }
 
 

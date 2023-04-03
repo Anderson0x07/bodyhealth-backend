@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import server.bodyhealth.dto.ClienteDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.service.ClienteService;
 import server.bodyhealth.service.EmailService;
 
@@ -89,6 +90,23 @@ public class ClienteController {
         response.clear();
         response.put("cliente", clienteService.encontrarCliente(id));
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @PostMapping("/restablecer-password/{id}")
+    public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
+        response.clear();
+        clienteService.enviarTokenPassword(id);
+        response.put("message", "Se envió el token al correo");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verificar-token")
+    public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        response.clear();
+        clienteService.verificarToken(verifyTokenRequestDto);
+        response.put("message", "Password actualizada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 }

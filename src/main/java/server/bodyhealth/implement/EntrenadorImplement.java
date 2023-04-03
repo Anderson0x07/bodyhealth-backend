@@ -89,6 +89,7 @@ public class EntrenadorImplement implements EntrenadorService {
         Usuario trainer = usuarioRepository.findById(id_entrenador).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("trainerNotFound",null, Locale.getDefault()))
         );
+        service.deleteFile(trainer.getFoto());
         usuarioRepository.deleteById(trainer.getId_usuario());
     }
 

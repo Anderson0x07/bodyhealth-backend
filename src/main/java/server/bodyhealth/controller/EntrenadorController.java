@@ -109,4 +109,6 @@ public class EntrenadorController {
         response.put("message", "Password actualizada satisfactoriamente.");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
 }
