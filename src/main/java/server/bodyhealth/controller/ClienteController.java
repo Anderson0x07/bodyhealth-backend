@@ -52,7 +52,7 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
-    public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto) throws IOException {
+    public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto) throws Exception {
         response.clear();
         ClienteDto clienteDto1 =  clienteService.loadImage(clienteDto);
         clienteDto.setPassword(bCryptPasswordEncoder.encode(clienteDto1.getPassword()));
@@ -65,7 +65,7 @@ public class ClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarCliente(@RequestBody ClienteDto clienteDto) throws IOException {
+    public ResponseEntity<?> editarCliente(@RequestBody ClienteDto clienteDto) throws Exception {
         response.clear();
         ClienteDto clienteDto1 = clienteService.loadImage(clienteDto);
         clienteService.editarCliente(clienteDto1.getId_usuario(),clienteDto1);

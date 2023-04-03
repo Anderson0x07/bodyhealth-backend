@@ -17,4 +17,7 @@ public class ResetPasswordToken {
     @JoinColumn(nullable = false, name = "id_usuario")
     private Usuario usuario;
     private LocalDateTime expiryDate;
+
+    private LocalDateTime creacion;
+    private boolean usado;
 }

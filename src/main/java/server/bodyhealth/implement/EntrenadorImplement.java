@@ -155,7 +155,7 @@ public class EntrenadorImplement implements EntrenadorService {
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);
             String[] tipo = foto[1].split("\\.");
-            String nombre = "TRAINER_"+entrenadorDto.getNombre()+"."+ tipo[tipo.length-1];
+            String nombre = "TRAINER_"+entrenadorDto.getDocumento()+"."+ tipo[tipo.length-1];
             if(file != null){
                 entrenadorDto.setFoto(nombre);
                 service.uploadFile(file,nombre);

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
@@ -18,9 +19,12 @@ import server.bodyhealth.service.ClienteService;
 import server.bodyhealth.service.StorageService;
 import server.bodyhealth.util.MessageUtil;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -143,7 +147,7 @@ public class ClienteImplement implements ClienteService {
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);
             String[] tipo = foto[1].split("\\.");
-            String nombre = "CLIENTE_"+clienteDto.getNombre()+"."+ tipo[tipo.length-1];
+            String nombre = "CLIENTE_"+clienteDto.getDocumento()+"."+ tipo[tipo.length-1];
             if(file != null){
                 clienteDto.setFoto(nombre);
                 service.uploadFile(file,nombre);
@@ -153,6 +157,7 @@ public class ClienteImplement implements ClienteService {
         return clienteDto;
 
     }
+
 
     @Override
     public ClienteCompletoDto encontrarCliente(int id_cliente) {

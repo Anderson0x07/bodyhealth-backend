@@ -141,7 +141,7 @@ public class AdminImplement implements AdminService {
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);
             String[] tipo = foto[1].split("\\.");
-            String nombre = "ADMIN_"+adminDto.getNombre()+"."+ tipo[tipo.length-1];
+            String nombre = "ADMIN_"+adminDto.getDocumento()+"."+ tipo[tipo.length-1];
             if(file != null){
                 adminDto.setFoto(nombre);
                 service.uploadFile(file,nombre);
