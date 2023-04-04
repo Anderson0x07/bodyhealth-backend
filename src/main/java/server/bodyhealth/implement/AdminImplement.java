@@ -136,21 +136,30 @@ public class AdminImplement implements AdminService {
 
     @Override
     public AdminDto loadImage(AdminDto adminDto) throws IOException {
-        Usuario usuario = usuarioRepository.findById_usuario(adminDto.getId_usuario());
-        if(!adminDto.getFoto().equals("") && !usuario.getFoto().equals(adminDto.getFoto())){
-            String[] foto = adminDto.getFoto().split("\\s+");
-            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
-            File file = convertBytesToFile(image1,foto[1]);
-            String[] tipo = foto[1].split("\\.");
-            String nombre = "ADMIN_"+adminDto.getDocumento()+"."+ tipo[tipo.length-1];
-            if(file != null){
-                adminDto.setFoto(nombre);
-                service.uploadFile(file,nombre);
+        if (!adminDto.getFoto().equals("")) {
+            if (usuarioRepository.findById(adminDto.getId_usuario()).isPresent()) {
+                Usuario admin = usuarioRepository.findById(adminDto.getId_usuario()).get();
+                if (!admin.getFoto().equals(adminDto.getFoto())) {
+                    saveImage(adminDto);
+                }
+            }else{
+                saveImage(adminDto);
             }
-            file.delete();
         }
         return adminDto;
+    }
 
+    public void saveImage(AdminDto adminDto) throws IOException {
+        String[] foto = adminDto.getFoto().split("\\s+");
+        byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+        File file = convertBytesToFile(image1, foto[1]);
+        String[] tipo = foto[1].split("\\.");
+        String nombre = "ADMIN_" + adminDto.getDocumento() + "." + tipo[tipo.length - 1];
+        if (file != null) {
+            adminDto.setFoto(nombre);
+            service.uploadFile(file, nombre);
+        }
+        file.delete();
     }
 
     @Override

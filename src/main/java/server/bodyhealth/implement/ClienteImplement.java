@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.ClienteCompletoDto;
 import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
@@ -125,11 +126,6 @@ public class ClienteImplement implements ClienteService {
         if(clienteDto.getComentario() != null)
             cliente.setComentario(clienteDto.getComentario());
         cliente.setEstado(clienteDto.isEstado());
-//        Rol rol = rolRepository.findById(clienteDto.getRol().getId_rol()).orElseThrow(
-//                () -> new NotFoundException(messageUtil.getMessage("rolNotFound",null, Locale.getDefault()))
-//        );
-//        if(clienteDto.getRol()!=null)
-//            cliente.setRol(rol);
         usuarioRepository.save(cliente);
         return clienteMapper.toDto(cliente);
 
@@ -139,21 +135,30 @@ public class ClienteImplement implements ClienteService {
 
     @Override
     public ClienteDto loadImage(ClienteDto clienteDto) throws IOException {
-        Usuario usuario = usuarioRepository.findById_usuario(clienteDto.getId_usuario());
-        if(!clienteDto.getFoto().equals("") && !usuario.getFoto().equals(clienteDto.getFoto())){
-            String[] foto = clienteDto.getFoto().split("\\s+");
-            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
-            File file = convertBytesToFile(image1,foto[1]);
-            String[] tipo = foto[1].split("\\.");
-            String nombre = "CLIENTE_"+clienteDto.getDocumento()+"."+ tipo[tipo.length-1];
-            if(file != null){
-                clienteDto.setFoto(nombre);
-                service.uploadFile(file,nombre);
+        if (!clienteDto.getFoto().equals("")) {
+            if (usuarioRepository.findById(clienteDto.getId_usuario()).isPresent()) {
+                Usuario cliente = usuarioRepository.findById(clienteDto.getId_usuario()).get();
+                if (!cliente.getFoto().equals(clienteDto.getFoto())) {
+                    saveImage(clienteDto);
+                }
+            }else{
+                saveImage(clienteDto);
             }
-            file.delete();
         }
         return clienteDto;
+    }
 
+    public void saveImage(ClienteDto clienteDto) throws IOException {
+        String[] foto = clienteDto.getFoto().split("\\s+");
+        byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+        File file = convertBytesToFile(image1, foto[1]);
+        String[] tipo = foto[1].split("\\.");
+        String nombre = "CLIENTE_" + clienteDto.getDocumento() + "." + tipo[tipo.length - 1];
+        if (file != null) {
+            clienteDto.setFoto(nombre);
+            service.uploadFile(file, nombre);
+        }
+        file.delete();
     }
 
     @Override

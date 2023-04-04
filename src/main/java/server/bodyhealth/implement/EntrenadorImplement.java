@@ -2,6 +2,7 @@ package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import server.bodyhealth.dto.ClienteDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
 import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
@@ -168,21 +169,30 @@ public class EntrenadorImplement implements EntrenadorService {
 
     @Override
     public EntrenadorDto loadImage(EntrenadorDto entrenadorDto) throws IOException {
-        Usuario usuario = usuarioRepository.findById_usuario(entrenadorDto.getId_usuario());
-        if(!entrenadorDto.getFoto().equals("") && !usuario.getFoto().equals(entrenadorDto.getFoto())){
-            String[] foto = entrenadorDto.getFoto().split("\\s+");
-            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
-            File file = convertBytesToFile(image1,foto[1]);
-            String[] tipo = foto[1].split("\\.");
-            String nombre = "TRAINER_"+entrenadorDto.getDocumento()+"."+ tipo[tipo.length-1];
-            if(file != null){
-                entrenadorDto.setFoto(nombre);
-                service.uploadFile(file,nombre);
+        if (!entrenadorDto.getFoto().equals("")) {
+            if (usuarioRepository.findById(entrenadorDto.getId_usuario()).isPresent()) {
+                Usuario entrenador = usuarioRepository.findById(entrenadorDto.getId_usuario()).get();
+                if (!entrenador.getFoto().equals(entrenadorDto.getFoto())) {
+                    saveImage(entrenadorDto);
+                }
+            }else{
+                saveImage(entrenadorDto);
             }
-            file.delete();
         }
         return entrenadorDto;
+    }
 
+    public void saveImage(EntrenadorDto entrenadorDto) throws IOException {
+        String[] foto = entrenadorDto.getFoto().split("\\s+");
+        byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+        File file = convertBytesToFile(image1, foto[1]);
+        String[] tipo = foto[1].split("\\.");
+        String nombre = "ENTRENADOR_" + entrenadorDto.getDocumento() + "." + tipo[tipo.length - 1];
+        if (file != null) {
+            entrenadorDto.setFoto(nombre);
+            service.uploadFile(file, nombre);
+        }
+        file.delete();
     }
 
     @Override

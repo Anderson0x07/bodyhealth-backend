@@ -112,20 +112,30 @@ public class ProductoImplement implements ProductoService {
 
     @Override
     public ProductoDto loadImage(ProductoDto productoDto) throws IOException {
-        Producto producto = productoRepository.findById(productoDto.getId_producto()).get();
-        if(!productoDto.getFoto().equals("") && !producto.getFoto().equals(productoDto.getFoto())) {
-            String[] foto = productoDto.getFoto().split("\\s+");
-            byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
-            File file = convertBytesToFile(image1, foto[1]);
-            String[] tipo = foto[1].split("\\.");
-            String nombre = "PRODUCT_" + productoDto.getNombre() + "." + tipo[tipo.length - 1];
-            if (file != null) {
-                productoDto.setFoto(nombre);
-                service.uploadFile(file, nombre);
+        if (!productoDto.getFoto().equals("")) {
+            if (productoRepository.findById(productoDto.getId_producto()).isPresent()) {
+                Producto producto = productoRepository.findById(productoDto.getId_producto()).get();
+                if (!producto.getFoto().equals(productoDto.getFoto())) {
+                    saveImage(productoDto);
+                }
+            }else{
+                saveImage(productoDto);
             }
-            file.delete();
         }
         return productoDto;
+    }
+
+    public void saveImage(ProductoDto productoDto) throws IOException {
+        String[] foto = productoDto.getFoto().split("\\s+");
+        byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
+        File file = convertBytesToFile(image1, foto[1]);
+        String[] tipo = foto[1].split("\\.");
+        String nombre = "PRODUCT_" + productoDto.getNombre() + "." + tipo[tipo.length - 1];
+        if (file != null) {
+            productoDto.setFoto(nombre);
+            service.uploadFile(file, nombre);
+        }
+        file.delete();
     }
 
     @Override
