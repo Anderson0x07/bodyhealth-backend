@@ -2,8 +2,6 @@ package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-import server.bodyhealth.dto.AdminDto;
 import server.bodyhealth.dto.EntrenadorCompletoDto;
 import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
@@ -55,6 +53,24 @@ public class EntrenadorImplement implements EntrenadorService {
         List<EntrenadorDto> entrenadoresDto = new ArrayList<>();
 
         List<Usuario> trainers = usuarioRepository.findAllByRol(3);
+
+        if(!trainers.isEmpty()){
+            for (Usuario usuario: trainers) {
+                EntrenadorDto trainerDto = entrenadorMapper.toDto(usuario);
+                entrenadoresDto.add(trainerDto);
+            }
+        } else {
+            throw new NotFoundException(messageUtil.getMessage("trainerEmpty",null, Locale.getDefault()));
+        }
+
+        return entrenadoresDto;
+    }
+
+    @Override
+    public List<EntrenadorDto> listarEntrenadores(String jornada) {
+        List<EntrenadorDto> entrenadoresDto = new ArrayList<>();
+
+        List<Usuario> trainers = usuarioRepository.findAllByRolAndJornada(3, jornada);
 
         if(!trainers.isEmpty()){
             for (Usuario usuario: trainers) {

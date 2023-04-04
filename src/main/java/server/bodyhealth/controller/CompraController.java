@@ -7,14 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.CompraDto;
-import server.bodyhealth.dto.MaquinaDto;
-import server.bodyhealth.entity.Compra;
-import server.bodyhealth.service.CompraService;
 import server.bodyhealth.service.CompraService;
 
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -36,7 +32,7 @@ public class CompraController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerCompraByID(@PathVariable int id) {
         response.clear();
@@ -44,7 +40,7 @@ public class CompraController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarCompra(@Valid @RequestBody CompraDto compraDto){
         response.clear();

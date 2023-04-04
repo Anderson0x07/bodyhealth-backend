@@ -12,6 +12,8 @@ public interface EntrenadorService {
 
     public List<EntrenadorDto> listarEntrenadores();
 
+    public List<EntrenadorDto> listarEntrenadores(String jornada);
+
     public void guardar(EntrenadorDto entrenadorDto);
 
     public void eliminar(int id_entrenador);

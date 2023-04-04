@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.ClienteRutinaEjercicioDto;
 import server.bodyhealth.service.ClienteRutinaEjercicioService;
@@ -22,6 +23,7 @@ public class ClienteRutinaEjercicioController {
 
     private Map<String,Object> response = new HashMap<>();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/all")
     public ResponseEntity<?> listarClienteRutinaEjercicios(){
         response.clear();
@@ -29,6 +31,7 @@ public class ClienteRutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerClienteRutinaEjercicioByID(@PathVariable int id) {
         response.clear();
@@ -36,6 +39,7 @@ public class ClienteRutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarClienteRutinaEjercicio(@Valid @RequestBody ClienteRutinaEjercicioDto clienteRutinaEjercicioDto){
         response.clear();
@@ -45,7 +49,7 @@ public class ClienteRutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarClienteRutinaEjercicio(@PathVariable int id, @RequestBody ClienteRutinaEjercicioDto clienteRutinaEjercicioDto) {
         response.clear();
@@ -55,7 +59,7 @@ public class ClienteRutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarClienteRutinaEjercicio(@PathVariable int id) {
         response.clear();

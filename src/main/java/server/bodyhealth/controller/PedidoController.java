@@ -8,6 +8,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.PedidoDto;
 import server.bodyhealth.dto.ReporteDto;
@@ -17,7 +18,6 @@ import server.bodyhealth.service.ReporteService;
 import javax.validation.Valid;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,6 +36,7 @@ public class PedidoController {
 
     private Map<String,Object> response = new HashMap<>();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> listarPedidos(){
         response.clear();
@@ -43,6 +44,7 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerPedidoByID(@PathVariable int id) {
         response.clear();
@@ -50,6 +52,7 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarPedido(@Valid @RequestBody PedidoDto pedidoDto){
         response.clear();
@@ -59,7 +62,7 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarPedido(@PathVariable int id, @RequestBody PedidoDto pedidoDto) {
         response.clear();
@@ -69,7 +72,7 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarPedido(@PathVariable int id) {
         response.clear();
@@ -78,7 +81,8 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    //GENERAR PDF
+    //GENERAR PDF DE PEDIDOS
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping( value = "/pdf/{id_compra}", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> generarPDF(@PathVariable int id_compra) throws FileNotFoundException, JRException {
 

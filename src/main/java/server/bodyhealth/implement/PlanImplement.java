@@ -4,7 +4,6 @@ import org.springframework.transaction.annotation.Transactional;
 import server.bodyhealth.dto.PlanCompletoDto;
 import server.bodyhealth.dto.PlanDto;
 import server.bodyhealth.entity.Plan;
-import server.bodyhealth.entity.Plan;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.PlanCompletoMapper;
 import server.bodyhealth.mapper.PlanMapper;

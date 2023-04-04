@@ -2,7 +2,6 @@ package server.bodyhealth.implement;
 
 import server.bodyhealth.dto.CompraCompletoDto;
 import server.bodyhealth.dto.CompraDto;
-import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.*;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.CompraCompletoMapper;

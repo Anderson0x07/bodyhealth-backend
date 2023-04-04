@@ -24,7 +24,7 @@ public class RutinaEjercicioController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/all")
     public ResponseEntity<?> listarRutinaEjercicios(){
         response.clear();
@@ -33,7 +33,7 @@ public class RutinaEjercicioController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerRutinaEjercicioByID(@PathVariable int id) {
         response.clear();
@@ -41,7 +41,7 @@ public class RutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarRutinaEjercicio(@Valid @RequestBody RutinaEjercicioDto rutinaEjercicioDto){
         response.clear();
@@ -52,7 +52,7 @@ public class RutinaEjercicioController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarRutinaEjercicio(@PathVariable int id, @RequestBody RutinaEjercicioDto rutinaEjercicioDto) {
         response.clear();

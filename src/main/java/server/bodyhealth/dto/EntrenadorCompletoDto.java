@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import server.bodyhealth.entity.EntrenadorCliente;
 
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;

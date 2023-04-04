@@ -39,7 +39,7 @@ public class ClienteRutinaController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarClienteRutina(@Valid @RequestBody ClienteRutinaDto clienteRutinaDto){
         response.clear();
@@ -50,7 +50,7 @@ public class ClienteRutinaController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarClienteRutina(@PathVariable int id, @RequestBody ClienteRutinaDto clienteRutinaDto) {
         response.clear();

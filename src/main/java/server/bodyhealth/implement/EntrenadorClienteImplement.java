@@ -1,7 +1,6 @@
 package server.bodyhealth.implement;
 
 import server.bodyhealth.dto.EntrenadorClienteDto;
-import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.*;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.EntrenadorClienteMapper;

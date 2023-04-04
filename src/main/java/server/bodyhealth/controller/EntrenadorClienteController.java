@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.EntrenadorClienteDto;
-import server.bodyhealth.dto.MaquinaDto;
 import server.bodyhealth.service.EntrenadorClienteService;
 
 import javax.validation.Valid;
@@ -34,7 +33,7 @@ public class EntrenadorClienteController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerEntrenadorClientByID(@PathVariable int id) {
         response.clear();
@@ -47,8 +46,6 @@ public class EntrenadorClienteController {
     public ResponseEntity<?> guardarEntrenadorCliente(@Valid @RequestBody EntrenadorClienteDto entrenadorClienteDto){
         response.clear();
 
-//        userRequest.setPassword(bCryptPasswordEncoder.encode(userRequest.getPassword()));
-
         entrenadorClienteService.guardar(entrenadorClienteDto);
         response.put("message", "Entrenador Cliente guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -57,7 +54,7 @@ public class EntrenadorClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> editarMaquina(@PathVariable int id, @RequestBody EntrenadorClienteDto entrenadorClienteDto) {
+    public ResponseEntity<?> editarEntrenadorCliente(@PathVariable int id, @RequestBody EntrenadorClienteDto entrenadorClienteDto) {
         response.clear();
         EntrenadorClienteDto entrenadorCliente = entrenadorClienteService.editarEntrenadorCliente(id,entrenadorClienteDto);
         response.put("message", "Entrenador Cliente actualizado satisfactoriamente");
@@ -68,7 +65,7 @@ public class EntrenadorClienteController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<?> eliminarMaquina(@PathVariable int id) {
+    public ResponseEntity<?> eliminarEntrenadorCliente(@PathVariable int id) {
         response.clear();
         entrenadorClienteService.eliminar(id);
         response.put("message", "Entrenador Cliente eliminado satisfactoriamente");

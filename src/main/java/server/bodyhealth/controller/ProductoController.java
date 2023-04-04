@@ -4,19 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ProductoDto;
-import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.service.ProductoService;
-import server.bodyhealth.service.StorageService;
-import server.bodyhealth.util.MessageUtil;
 
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -28,15 +24,10 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    @Autowired
-    private StorageService service;
-
-    @Autowired
-    private MessageUtil messageUtil;
-
     private Map<String,Object> response = new HashMap<>();
 
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
     @GetMapping("/all")
     public ResponseEntity<?> listarProductos(){
         response.clear();
@@ -44,6 +35,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id_producto}")
     public ResponseEntity<?> obtenerProducto(@PathVariable int id_producto) {
         response.clear();
@@ -51,14 +43,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-//    @PostMapping("/guardar")
-//    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto /*,@RequestParam("file") MultipartFile imagen*/){
-//        response.clear();
-//        productoService.guardar(productoDto);
-//        response.put("message","Producto guardado satisfactoriamente");
-//        return new ResponseEntity<>(response, HttpStatus.CREATED);
-//    }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto) throws IOException {
         response.clear();
@@ -68,7 +53,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id_producto}")
     public ResponseEntity<?> editarProducto(@PathVariable int id_producto,@Valid @RequestBody ProductoDto productoDto) throws IOException {
         response.clear();
@@ -79,7 +64,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id_producto}")
     public ResponseEntity<?> eliminarProducto(@PathVariable int id_producto) {
 
@@ -89,6 +74,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/desactivar/{id}")
     public ResponseEntity<?> desactivarProducto(@PathVariable int id){
         response.clear();
@@ -97,6 +83,7 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/activar/{id}")
     public ResponseEntity<?> activarProducto(@PathVariable int id){
         response.clear();

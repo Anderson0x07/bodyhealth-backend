@@ -7,11 +7,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.service.EmailService;
-import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.EntrenadorService;
 
 import javax.validation.Valid;
@@ -36,7 +34,7 @@ public class EntrenadorController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
     @GetMapping("/mi-perfil/{id_entrenador}")
     public ResponseEntity<?> perfilEntrenador(@PathVariable int id_entrenador){
         response.clear();
@@ -46,9 +44,17 @@ public class EntrenadorController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<?> listarEntrenadors(){
+    public ResponseEntity<?> listarEntrenadores(){
         response.clear();
-        response.put("Entrenadores",entrenadorService.listarEntrenadores());
+        response.put("entrenadores",entrenadorService.listarEntrenadores());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @GetMapping("/all/jornada/{jornada}")
+    public ResponseEntity<?> listarEntrenadoresPorJornada(@PathVariable String jornada){
+        response.clear();
+        response.put("entrenadores",entrenadorService.listarEntrenadores(jornada));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

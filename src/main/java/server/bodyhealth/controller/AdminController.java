@@ -7,13 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
-import server.bodyhealth.dto.RolDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
-import server.bodyhealth.entity.Compra;
-import server.bodyhealth.entity.Rol;
-import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.service.AdminService;
 import server.bodyhealth.service.EmailService;
 
@@ -39,10 +34,11 @@ public class AdminController {
 
     private Map<String,Object> response = new HashMap<>();
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> listarAdministradores(){
         response.clear();
-        response.put("Administradores",adminService.listarAdmins());
+        response.put("administradores",adminService.listarAdmins());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -53,6 +49,7 @@ public class AdminController {
         response.put("admin", adminService.encontrarAdmin(id_admin));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarAdministrador(@Valid @RequestBody AdminDto adminDto) throws IOException {
@@ -65,7 +62,6 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarAdministrador(@PathVariable int id,@RequestBody AdminDto adminDto) throws IOException {
@@ -76,7 +72,6 @@ public class AdminController {
         response.put("admin", admin);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
-
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")

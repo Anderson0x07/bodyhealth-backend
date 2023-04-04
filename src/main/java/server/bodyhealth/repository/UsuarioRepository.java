@@ -43,5 +43,11 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
     )
     List<Usuario> findAllByRol(int id_rol);
 
+    @Query(
+            value = "SELECT * FROM usuario u where u.id_rol = :id_rol and u.jornada = :jornada",
+            nativeQuery=true
+    )
+    List<Usuario> findAllByRolAndJornada(int id_rol, String jornada);
+
 
 }

@@ -1,13 +1,9 @@
 package server.bodyhealth.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.bodyhealth.entity.Pedido;
-import server.bodyhealth.entity.Proveedor;
 
-import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;

@@ -8,8 +8,6 @@ import server.bodyhealth.entity.ClienteRutina;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.ClienteRutinaCompletoMapper;
 import server.bodyhealth.mapper.ClienteRutinaMapper;
-import server.bodyhealth.mapper.ClienteRutinaCompletoMapper;
-import server.bodyhealth.mapper.ClienteRutinaMapper;
 import server.bodyhealth.repository.*;
 import server.bodyhealth.repository.ClienteRutinaRepository;
 import server.bodyhealth.service.ClienteRutinaService;

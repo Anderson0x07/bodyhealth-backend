@@ -2,8 +2,6 @@ package server.bodyhealth.implement;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
-import server.bodyhealth.dto.EntrenadorDto;
 import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
 import server.bodyhealth.entity.Producto;

@@ -3,8 +3,6 @@ package server.bodyhealth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.bodyhealth.entity.ClienteRutina;
-import server.bodyhealth.entity.RutinaEjercicio;
 
 import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;

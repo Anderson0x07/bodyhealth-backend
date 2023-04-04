@@ -3,7 +3,6 @@ package server.bodyhealth.implement;
 import org.springframework.transaction.annotation.Transactional;
 import server.bodyhealth.dto.EjercicioCompletoDto;
 import server.bodyhealth.dto.EjercicioDto;
-import server.bodyhealth.dto.MaquinaDto;
 import server.bodyhealth.entity.*;
 import server.bodyhealth.entity.Ejercicio;
 import server.bodyhealth.exception.NotFoundException;
