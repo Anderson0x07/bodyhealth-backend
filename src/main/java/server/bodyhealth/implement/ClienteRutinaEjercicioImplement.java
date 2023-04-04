@@ -78,7 +78,7 @@ public class ClienteRutinaEjercicioImplement implements ClienteRutinaEjercicioSe
 
     @Transactional
     @Override
-    public void editarClienteRutinaEjercicio(int id, ClienteRutinaEjercicioDto clienteRutinaEjercicioDto) {
+    public ClienteRutinaEjercicioDto editarClienteRutinaEjercicio(int id, ClienteRutinaEjercicioDto clienteRutinaEjercicioDto) {
         ClienteRutinaEjercicio clienteRutinaEjercicio = clienteRutinaEjercicioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteRutinaEjercicioNotFound",null, Locale.getDefault()))
         );
@@ -98,6 +98,8 @@ public class ClienteRutinaEjercicioImplement implements ClienteRutinaEjercicioSe
         }
 
         clienteRutinaEjercicioRepository.save(clienteRutinaEjercicio);
+
+        return clienteRutinaEjercicioMapper.toDto(clienteRutinaEjercicio);
 
     }
 

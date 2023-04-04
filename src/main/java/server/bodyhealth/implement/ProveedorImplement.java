@@ -66,12 +66,13 @@ public class ProveedorImplement implements ProveedorService {
 
     @Transactional
     @Override
-    public void editarProveedor(int id, ProveedorDto proveedorDto){
+    public ProveedorDto editarProveedor(int id, ProveedorDto proveedorDto){
         Proveedor proveedor1 = proveedorRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("proveedorNotFound",null, Locale.getDefault()))
         );
         proveedorMapper.updateEntity(proveedorDto,proveedor1);
         proveedorRepository.save(proveedor1);
+        return proveedorMapper.toDto(proveedor1);
     }
     @Override
     public ProveedorCompletoDto encontrarProveedor(int id_proveedor) {

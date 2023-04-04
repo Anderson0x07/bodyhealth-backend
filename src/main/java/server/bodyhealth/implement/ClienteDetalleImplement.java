@@ -85,7 +85,7 @@ public class ClienteDetalleImplement implements ClienteDetalleService {
 
     @Transactional
     @Override
-    public void editarClienteDetalle(int id, ClienteDetalleDto clienteDetalleDto) {
+    public ClienteDetalleDto editarClienteDetalle(int id, ClienteDetalleDto clienteDetalleDto) {
         ClienteDetalle clienteDetalle = clienteDetalleRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteDetalleNotFound",null, Locale.getDefault()))
         );
@@ -122,6 +122,8 @@ public class ClienteDetalleImplement implements ClienteDetalleService {
 
 
         clienteDetalleRepository.save(clienteDetalle);
+
+        return clienteDetalleMapper.toDto(clienteDetalle);
 
     }
 

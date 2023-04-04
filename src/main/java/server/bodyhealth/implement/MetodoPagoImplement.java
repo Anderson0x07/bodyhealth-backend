@@ -63,12 +63,13 @@ public class MetodoPagoImplement implements MetodoPagoService {
 
     @Transactional
     @Override
-    public void editarMetodoPago(int id, MetodoPagoDto metodoPagoDto){
+    public MetodoPagoDto editarMetodoPago(int id, MetodoPagoDto metodoPagoDto){
         MetodoPago metodoPago = metodoPagoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("metodoPagoNotFound",null, Locale.getDefault()))
         );
         metodoPagoMapper.updateEntity(metodoPagoDto,metodoPago);
         metodoPagoRepository.save(metodoPago);
+        return metodoPagoMapper.toDto(metodoPago);
     }
     @Override
     public MetodoPagoDto encontrarMetodoPago(int id_metodoPago) {

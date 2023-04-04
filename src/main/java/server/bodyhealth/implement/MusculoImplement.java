@@ -63,12 +63,13 @@ public class MusculoImplement implements MusculoService {
 
     @Transactional
     @Override
-    public void editarMusculo(int id, MusculoDto musculoDto){
+    public MusculoDto editarMusculo(int id, MusculoDto musculoDto){
         Musculo musculo = musculoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("musculoNotFound",null, Locale.getDefault()))
         );
         musculoMapper.updateEntity(musculoDto,musculo);
         musculoRepository.save(musculo);
+        return musculoMapper.toDto(musculo);
     }
     @Override
     public MusculoDto encontrarMusculo(int id_musculo) {

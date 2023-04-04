@@ -42,12 +42,13 @@ public class InfoBasicaImplement implements InfoBasicaService {
     }
 
     @Override
-    public void editarInfoBasica(int id, InfoBasicaDto infoBasicaDto) {
+    public InfoBasicaDto editarInfoBasica(int id, InfoBasicaDto infoBasicaDto) {
         InfoBasica infoBasica = infoBasicaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("infoBasicaNotFound",null, Locale.getDefault()))
         );
         infoBasicaMapper.updateEntity(infoBasicaDto,infoBasica);
         infoBasicaRepository.save(infoBasica);
+        return infoBasicaMapper.toDto(infoBasica);
     }
 
     @Override

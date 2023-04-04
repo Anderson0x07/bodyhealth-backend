@@ -80,7 +80,7 @@ public class EntrenadorClienteImplement implements EntrenadorClienteService {
     }
 
     @Override
-    public void editarEntrenadorCliente(int id, EntrenadorClienteDto entrenadorClienteDto) {
+    public EntrenadorClienteDto editarEntrenadorCliente(int id, EntrenadorClienteDto entrenadorClienteDto) {
         EntrenadorCliente entrenadorCliente = entrenadorClienteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("entrenadorClienteNotFound",null, Locale.getDefault()))
         );
@@ -102,10 +102,12 @@ public class EntrenadorClienteImplement implements EntrenadorClienteService {
             if(cliente.getRol().getId_rol()==2) {
                 entrenadorCliente.setCliente(cliente);
                 entrenadorClienteRepository.save(entrenadorCliente);
+
             }else{
                 throw new NotFoundException(messageUtil.getMessage("clienteDoesntExist", null, Locale.getDefault()));
             }
         }
+        return entrenadorClienteMapper.toDto(entrenadorCliente);
     }
 
 

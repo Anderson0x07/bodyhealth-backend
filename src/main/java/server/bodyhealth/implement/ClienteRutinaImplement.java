@@ -75,7 +75,7 @@ public class ClienteRutinaImplement implements ClienteRutinaService {
 
     @Transactional
     @Override
-    public void editarClienteRutina(int id, ClienteRutinaDto clienteRutinaDto) {
+    public ClienteRutinaDto editarClienteRutina(int id, ClienteRutinaDto clienteRutinaDto) {
         ClienteRutina clienteRutina = clienteRutinaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteRutinaNotFound",null, Locale.getDefault()))
         );
@@ -94,6 +94,8 @@ public class ClienteRutinaImplement implements ClienteRutinaService {
             clienteRutina.setRutina(rutina);
 
         clienteRutinaRepository.save(clienteRutina);
+
+        return clienteRutinaMapper.toDto(clienteRutina);
 
     }
 

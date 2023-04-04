@@ -71,8 +71,9 @@ public class AdminController {
     public ResponseEntity<?> editarAdministrador(@PathVariable int id,@RequestBody AdminDto adminDto) throws IOException {
         response.clear();
         AdminDto adminDto1 = adminService.loadImage(adminDto);
-        adminService.editarAdmin(id,adminDto1);
+        AdminDto admin = adminService.editarAdmin(id,adminDto1);
         response.put("message", "Administrador actualizado satisfactoriamente");
+        response.put("admin", admin);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

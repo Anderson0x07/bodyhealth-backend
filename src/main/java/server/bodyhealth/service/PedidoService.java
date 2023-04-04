@@ -15,7 +15,7 @@ public interface PedidoService{
 
     public void eliminar(int id_pedido);
 
-    public void editarPedido(int id, PedidoDto pedidoDto);
+    public PedidoDto editarPedido(int id, PedidoDto pedidoDto);
 
     public PedidoDto encontrarPedido(int id_pedido);
 

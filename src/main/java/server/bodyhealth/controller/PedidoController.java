@@ -63,8 +63,9 @@ public class PedidoController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarPedido(@PathVariable int id, @RequestBody PedidoDto pedidoDto) {
         response.clear();
-        pedidoService.editarPedido(id,pedidoDto);
+        PedidoDto pedido = pedidoService.editarPedido(id,pedidoDto);
         response.put("message", "Pedido actualizado satisfactoriamente");
+        response.put("pedido", pedido);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

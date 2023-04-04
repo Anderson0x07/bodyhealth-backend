@@ -108,7 +108,7 @@ public class EntrenadorImplement implements EntrenadorService {
     }
 
     @Override
-    public void editarEntrenador(int id, EntrenadorDto entrenadorDto) {
+    public EntrenadorDto editarEntrenador(int id, EntrenadorDto entrenadorDto) {
         Usuario trainer = usuarioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("trainerNotFound",null, Locale.getDefault()))
         );
@@ -145,6 +145,7 @@ public class EntrenadorImplement implements EntrenadorService {
         if(entrenadorDto.getRol()!=null)
             trainer.setRol(rol);
         usuarioRepository.save(trainer);
+        return entrenadorMapper.toDto(trainer);
 
     }
 

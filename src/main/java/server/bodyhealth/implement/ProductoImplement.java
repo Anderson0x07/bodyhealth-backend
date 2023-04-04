@@ -87,7 +87,7 @@ public class ProductoImplement implements ProductoService {
 
     @Transactional
     @Override
-    public void editarProveedor(int id, ProductoDto productoDto) {
+    public ProductoDto editarProveedor(int id, ProductoDto productoDto) {
 
         Producto producto = productoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("productoNotFound",null, Locale.getDefault()))
@@ -107,6 +107,8 @@ public class ProductoImplement implements ProductoService {
             if(productoDto.getProveedor()!=null)
                 producto.setProveedor(proveedor);
             productoRepository.save(producto);
+
+            return productoMapper.toDto(producto);
     }
 
 

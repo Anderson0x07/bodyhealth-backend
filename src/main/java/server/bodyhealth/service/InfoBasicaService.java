@@ -11,7 +11,7 @@ public interface InfoBasicaService {
 
     public void eliminar(int id);
 
-    public void editarInfoBasica(int id, InfoBasicaDto infoBasicaDto);
+    public InfoBasicaDto editarInfoBasica(int id, InfoBasicaDto infoBasicaDto);
 
     public InfoBasicaDto encontrarInfoBasica(int id_configuracion);
 }

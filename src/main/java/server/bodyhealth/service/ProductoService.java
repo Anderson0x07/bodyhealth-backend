@@ -19,7 +19,7 @@ public interface ProductoService {
 
     public ProductoCompletoDto encontrarProducto(int id_producto);
 
-    public void editarProveedor(int id, ProductoDto productoDto);
+    public ProductoDto editarProveedor(int id, ProductoDto productoDto);
 
     public ProductoDto loadImage(ProductoDto productoDto) throws IOException;
 

@@ -17,5 +17,5 @@ public interface CompraService{
 
     public CompraCompletoDto encontrarCompra(int id_compra);
 
-    public void editarProveedor(int id, CompraDto compraDto);
+    public CompraDto editarProveedor(int id, CompraDto compraDto);
 }

@@ -21,7 +21,7 @@ public interface AdminService {
 
     public AdminDto encontrarAdminByDocument(int id_admin);
 
-    public void editarAdmin(int id, AdminDto adminDto);
+    public AdminDto editarAdmin(int id, AdminDto adminDto);
 
     public AdminDto loadImage(AdminDto adminDto) throws IOException;
 

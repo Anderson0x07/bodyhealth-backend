@@ -70,8 +70,9 @@ public class EntrenadorController {
     public ResponseEntity<?> editarEntrenador(@PathVariable int id,@RequestBody EntrenadorDto entrenadorDto) throws IOException {
         response.clear();
         EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(entrenadorDto);
-        entrenadorService.editarEntrenador(id,entrenadorDto1);
+        EntrenadorDto entrenador = entrenadorService.editarEntrenador(id,entrenadorDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
+        response.put("entrenador", entrenador);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

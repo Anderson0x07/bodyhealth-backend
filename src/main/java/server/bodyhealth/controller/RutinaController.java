@@ -54,8 +54,9 @@ public class RutinaController {
     @PutMapping("/editar/{id_rutina}")
     public ResponseEntity<?> actualizarRutina(@PathVariable int id_rutina, @RequestBody RutinaDto rutinaDto) {
         response.clear();
-        rutinaService.editarRutina(id_rutina,rutinaDto);
+        RutinaDto rutina = rutinaService.editarRutina(id_rutina,rutinaDto);
         response.put("message","Rutina actualizada satisfactoriamente");
+        response.put("rutina", rutina);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

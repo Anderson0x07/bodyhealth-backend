@@ -16,6 +16,6 @@ public interface EntrenadorClienteService {
 
     public EntrenadorClienteDto encontrarEntrenadorCliente(int id);
 
-    public void editarEntrenadorCliente(int id, EntrenadorClienteDto entrenadorClienteDto);
+    public EntrenadorClienteDto editarEntrenadorCliente(int id, EntrenadorClienteDto entrenadorClienteDto);
 
 }

@@ -17,5 +17,5 @@ public interface RutinaService {
 
     public RutinaCompletaDto encontrarRutina(int id_rutina);
 
-    public void editarRutina(int id_rutina, RutinaDto rutinaDto);
+    public RutinaDto editarRutina(int id_rutina, RutinaDto rutinaDto);
 }

@@ -57,12 +57,13 @@ public class PlanImplement implements PlanService {
 
     @Transactional
     @Override
-    public void editarPlan(int id, PlanDto planDto) {
+    public PlanDto editarPlan(int id, PlanDto planDto) {
         Plan plan = planRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("planNotFound",null, Locale.getDefault()))
         );
         planMapper.updateEntity(planDto,plan);
         planRepository.save(plan);
+        return planMapper.toDto(plan);
     }
 
     @Override

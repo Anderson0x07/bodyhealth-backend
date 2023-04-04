@@ -16,5 +16,5 @@ public interface ControlClienteService{
 
     public ControlClienteDto encontrarControlCliente(int id_controlCliente);
 
-    public void editarControlCliente(int id, ControlClienteDto controlClienteDto);
+    public ControlClienteDto editarControlCliente(int id, ControlClienteDto controlClienteDto);
 }

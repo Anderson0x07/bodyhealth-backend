@@ -11,7 +11,7 @@ public interface MusculoService {
 
     public void eliminar(int id_musculo);
 
-    public void editarMusculo(int id, MusculoDto musculoDto);
+    public MusculoDto editarMusculo(int id, MusculoDto musculoDto);
 
     public MusculoDto encontrarMusculo(int id_musculo);
 

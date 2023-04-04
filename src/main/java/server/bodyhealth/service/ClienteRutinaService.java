@@ -14,7 +14,7 @@ public interface ClienteRutinaService {
 
     public void eliminar(int id_clienteRutina);
 
-    public void editarClienteRutina(int id, ClienteRutinaDto clienteRutinaDto);
+    public ClienteRutinaDto editarClienteRutina(int id, ClienteRutinaDto clienteRutinaDto);
 
     public ClienteRutinaCompletoDto encontrarClienteRutina(int id_clienteRutina);
 

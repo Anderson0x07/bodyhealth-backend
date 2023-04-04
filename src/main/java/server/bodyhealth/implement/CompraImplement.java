@@ -83,7 +83,7 @@ public class CompraImplement implements CompraService {
     }
 
     @Override
-    public void editarProveedor(int id, CompraDto compraDto) {
+    public CompraDto editarProveedor(int id, CompraDto compraDto) {
 
         Compra compra = compraRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("compraNotFound",null, Locale.getDefault()))
@@ -116,5 +116,7 @@ public class CompraImplement implements CompraService {
         }
 
         compraRepository.save(compra);
+
+        return compraMapper.toDto(compra);
     }
 }

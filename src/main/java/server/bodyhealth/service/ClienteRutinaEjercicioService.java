@@ -13,7 +13,7 @@ public interface ClienteRutinaEjercicioService {
 
     public void eliminar(int id_clienteRutinaEjercicio);
 
-    public void editarClienteRutinaEjercicio(int id, ClienteRutinaEjercicioDto clienteRutinaEjercicioDto);
+    public ClienteRutinaEjercicioDto editarClienteRutinaEjercicio(int id, ClienteRutinaEjercicioDto clienteRutinaEjercicioDto);
 
     public ClienteRutinaEjercicioDto encontrarClienteRutinaEjercicio(int id_clienteRutinaEjercicio);
 }

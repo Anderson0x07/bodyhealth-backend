@@ -14,7 +14,7 @@ public interface ProveedorService {
 
     public void eliminar(int id_proveedor);
 
-    public void editarProveedor(int id, ProveedorDto proveedorDto);
+    public ProveedorDto editarProveedor(int id, ProveedorDto proveedorDto);
 
     public ProveedorCompletoDto encontrarProveedor(int id_proveedor);
 }

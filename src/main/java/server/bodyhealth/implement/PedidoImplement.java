@@ -79,7 +79,7 @@ public class PedidoImplement implements PedidoService {
 
     @Transactional
     @Override
-    public void editarPedido(int id, PedidoDto pedidoDto) {
+    public PedidoDto editarPedido(int id, PedidoDto pedidoDto) {
         Pedido pedido = pedidoRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("pedidoNotFound",null, Locale.getDefault()))
         );
@@ -103,6 +103,7 @@ public class PedidoImplement implements PedidoService {
             pedido.setTotal(pedidoDto.getTotal());
 
         pedidoRepository.save(pedido);
+        return pedidoMapper.toDto(pedido);
 
     }
 

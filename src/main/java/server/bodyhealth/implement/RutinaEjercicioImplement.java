@@ -73,7 +73,7 @@ public class RutinaEjercicioImplement implements RutinaEjercicioService {
 
     @Transactional
     @Override
-    public void editarRutinaEjercicio(int id, RutinaEjercicioDto rutinaEjercicioDto) {
+    public RutinaEjercicioDto editarRutinaEjercicio(int id, RutinaEjercicioDto rutinaEjercicioDto) {
         RutinaEjercicio rutinaEjercicio = rutinaEjercicioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("rutinaEjercicioNotFound",null, Locale.getDefault()))
         );
@@ -96,6 +96,7 @@ public class RutinaEjercicioImplement implements RutinaEjercicioService {
         }
 
         rutinaEjercicioRepository.save(rutinaEjercicio);
+        return rutinaEjercicioMapper.toDto(rutinaEjercicio);
 
     }
 

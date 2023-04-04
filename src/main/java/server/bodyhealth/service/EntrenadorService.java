@@ -20,7 +20,7 @@ public interface EntrenadorService {
 
     public EntrenadorCompletoDto encontrarEntrenadorByDocument(int documento);
 
-    public void editarEntrenador(int id, EntrenadorDto entrenadorDto);
+    public EntrenadorDto editarEntrenador(int id, EntrenadorDto entrenadorDto);
 
     public EntrenadorDto loadImage(EntrenadorDto entrenadorDto) throws IOException;
 

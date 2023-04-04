@@ -72,11 +72,12 @@ public class RutinaImplement implements RutinaService {
 
     @Transactional
     @Override
-    public void editarRutina(int id_rutina, RutinaDto rutinaDto) {
+    public RutinaDto editarRutina(int id_rutina, RutinaDto rutinaDto) {
         Rutina rutina = rutinaRepository.findById(id_rutina).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("rutinaNotFound",null, Locale.getDefault()))
         );
         rutinaMapper.updateEntity(rutinaDto, rutina);
         rutinaRepository.save(rutina);
+        return rutinaMapper.toDto(rutina);
     }
 }

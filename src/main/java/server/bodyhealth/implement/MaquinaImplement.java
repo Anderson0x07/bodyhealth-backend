@@ -66,7 +66,7 @@ public class MaquinaImplement implements MaquinaService {
 
     @Transactional
     @Override
-    public void editarMaquina(int id, MaquinaDto maquinaDto) {
+    public MaquinaDto editarMaquina(int id, MaquinaDto maquinaDto) {
         Maquina maquina = maquinaRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("maquinaNotFound",null, Locale.getDefault()))
         );
@@ -85,6 +85,7 @@ public class MaquinaImplement implements MaquinaService {
         //Método en MapperImpl no funciona. Por ende se desarrolla en MaquinaImplement.
 //        maquinaMapper.updateEntity(maquinaDto,maquina);
         maquinaRepository.save(maquina);
+        return maquinaMapper.toDto(maquina);
 
     }
 

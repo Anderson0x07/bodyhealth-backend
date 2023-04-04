@@ -69,8 +69,9 @@ public class ClienteController {
     public ResponseEntity<?> editarCliente(@RequestBody ClienteDto clienteDto) throws Exception {
         response.clear();
         ClienteDto clienteDto1 = clienteService.loadImage(clienteDto);
-        clienteService.editarCliente(clienteDto1.getId_usuario(),clienteDto1);
+        ClienteDto cliente =  clienteService.editarCliente(clienteDto1.getId_usuario(),clienteDto1);
         response.put("message", "Datos actualizados satisfactoriamente");
+        response.put("cliente", cliente);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

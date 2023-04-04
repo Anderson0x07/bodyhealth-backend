@@ -59,8 +59,9 @@ public class CompraController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarCompra(@PathVariable int id, @RequestBody CompraDto compraDto) {
         response.clear();
-        compraService.editarProveedor(id,compraDto);
+        CompraDto compra =  compraService.editarProveedor(id,compraDto);
         response.put("message", "Compra actualizada satisfactoriamente");
+        response.put("compra", compra);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

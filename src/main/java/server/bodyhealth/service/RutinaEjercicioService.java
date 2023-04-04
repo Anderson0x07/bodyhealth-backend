@@ -13,7 +13,7 @@ public interface RutinaEjercicioService {
 
     public void eliminar(int id_rutinaEjercicio);
 
-    public void editarRutinaEjercicio(int id, RutinaEjercicioDto rutinaEjercicioDto);
+    public RutinaEjercicioDto editarRutinaEjercicio(int id, RutinaEjercicioDto rutinaEjercicioDto);
 
     public RutinaEjercicioCompletoDto encontrarRutinaEjercicio(int id_rutinaEjercicio);
 }

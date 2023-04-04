@@ -103,7 +103,7 @@ public class ClienteImplement implements ClienteService {
 
     @Transactional
     @Override
-    public void editarCliente(int id, ClienteDto clienteDto) {
+    public ClienteDto editarCliente(int id, ClienteDto clienteDto) {
         Usuario cliente = usuarioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("clienteNotFound",null, Locale.getDefault()))
         );
@@ -130,17 +130,14 @@ public class ClienteImplement implements ClienteService {
             cliente.setJornada(clienteDto.getJornada());
         if(clienteDto.getComentario() != null)
             cliente.setComentario(clienteDto.getComentario());
-
         cliente.setEstado(clienteDto.isEstado());
-
 //        Rol rol = rolRepository.findById(clienteDto.getRol().getId_rol()).orElseThrow(
 //                () -> new NotFoundException(messageUtil.getMessage("rolNotFound",null, Locale.getDefault()))
 //        );
 //        if(clienteDto.getRol()!=null)
 //            cliente.setRol(rol);
-
-
         usuarioRepository.save(cliente);
+        return clienteMapper.toDto(cliente);
 
     }
 

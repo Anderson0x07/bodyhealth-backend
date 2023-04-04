@@ -47,8 +47,9 @@ public class MusculoController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarMusculo(@PathVariable int id, @RequestBody MusculoDto musculoDto) {
         response.clear();
-        musculoService.editarMusculo(id, musculoDto);
+        MusculoDto musculo = musculoService.editarMusculo(id, musculoDto);
         response.put("message", "Musculo actualizado satisfactoriamente");
+        response.put("musculo", musculo);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

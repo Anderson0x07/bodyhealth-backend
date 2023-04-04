@@ -72,7 +72,7 @@ public class ControlClienteImplement implements ControlClienteService {
     }
 
     @Override
-    public void editarControlCliente(int id, ControlClienteDto controlClienteDto) {
+    public ControlClienteDto editarControlCliente(int id, ControlClienteDto controlClienteDto) {
         ControlCliente controlCliente = controlClienteRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("controlClienteNotFound",null, Locale.getDefault()))
         );
@@ -94,6 +94,7 @@ public class ControlClienteImplement implements ControlClienteService {
             }
         }
         controlClienteRepository.save(controlCliente);
+        return controlClienteMapper.toDto(controlCliente);
     }
 
 }

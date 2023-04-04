@@ -53,8 +53,9 @@ public class ClienteDetalleController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarClienteDetalle(@PathVariable int id, @RequestBody ClienteDetalleDto clienteDetalleDto) {
         response.clear();
-        clienteDetalleService.editarClienteDetalle(id,clienteDetalleDto);
+        ClienteDetalleDto clienteDetalle =  clienteDetalleService.editarClienteDetalle(id,clienteDetalleDto);
         response.put("message", "Cliente detalle actualizado satisfactoriamente");
+        response.put("clientedetalle", clienteDetalle);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

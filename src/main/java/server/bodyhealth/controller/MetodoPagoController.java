@@ -45,8 +45,9 @@ public class MetodoPagoController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarMetodoPago(@PathVariable int id, @RequestBody MetodoPagoDto metodoPagoDto) {
         response.clear();
-        metodoPagoService.editarMetodoPago(id, metodoPagoDto);
+        MetodoPagoDto metodoPago = metodoPagoService.editarMetodoPago(id, metodoPagoDto);
         response.put("message", "Metodo de pago actualizado satisfactoriamente");
+        response.put("metodopago", metodoPago);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

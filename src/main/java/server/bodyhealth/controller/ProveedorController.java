@@ -47,8 +47,9 @@ public class ProveedorController {
     @PutMapping("/editar/{id_proveedor}")
     public ResponseEntity<?> actualizarProveedor(@PathVariable int id_proveedor, @RequestBody ProveedorDto proveedorDto) {
         response.clear();
-        proveedorService.editarProveedor(id_proveedor, proveedorDto);
+        ProveedorDto proveedor = proveedorService.editarProveedor(id_proveedor, proveedorDto);
         response.put("message", "Proveedor actualizado satisfactoriamente");
+        response.put("proveedor", proveedor);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

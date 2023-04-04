@@ -17,7 +17,7 @@ public interface PlanService {
 
     public void eliminar(int id_plan);
 
-    public void editarPlan(int id, PlanDto planDto);
+    public PlanDto editarPlan(int id, PlanDto planDto);
 
     public PlanCompletoDto encontrarPlan(int id_plan);
 

@@ -50,8 +50,9 @@ public class EjercicioController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarEjercicio(@PathVariable int id, @RequestBody EjercicioDto ejercicioDto) {
         response.clear();
-        ejercicioService.editarEjercicio(id, ejercicioDto);
+        EjercicioDto ejercicio = ejercicioService.editarEjercicio(id, ejercicioDto);
         response.put("message", "Ejercicio actualizado satisfactoriamente");
+        response.put("ejercicio", ejercicio);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

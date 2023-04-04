@@ -73,8 +73,9 @@ public class ProductoController {
     public ResponseEntity<?> editarProducto(@PathVariable int id_producto,@Valid @RequestBody ProductoDto productoDto) throws IOException {
         response.clear();
         ProductoDto productoDto1 = productoService.loadImage(productoDto);
-        productoService.editarProveedor(id_producto,productoDto1);
+        ProductoDto product = productoService.editarProveedor(id_producto,productoDto1);
         response.put("message", "Producto actualizada satisfactoriamente");
+        response.put("producto", product);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

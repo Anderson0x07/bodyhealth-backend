@@ -45,8 +45,9 @@ public class InfoBasicaController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> actualizarInfoBasica(@PathVariable int id, @RequestBody InfoBasicaDto infoBasicaDto) {
         response.clear();
-        infoBasicaService.editarInfoBasica(id, infoBasicaDto);
+        InfoBasicaDto infoBasica = infoBasicaService.editarInfoBasica(id, infoBasicaDto);
         response.put("message", "Informacion basica actualizada satisfactoriamente");
+        response.put("infobasica", infoBasica);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

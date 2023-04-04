@@ -14,6 +14,6 @@ public interface EjercicioService {
 
     public void eliminar(int id_ejercicio);
 
-    public void editarEjercicio(int id, EjercicioDto ejercicioDto);
+    public EjercicioDto editarEjercicio(int id, EjercicioDto ejercicioDto);
     public EjercicioCompletoDto encontrarEjercicio(int id_ejercicio);
 }

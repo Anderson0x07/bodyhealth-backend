@@ -16,7 +16,7 @@ public interface ClienteDetalleService {
 
     public void eliminar(int id_clienteDetalle);
 
-    public void editarClienteDetalle(int id, ClienteDetalleDto clienteDetalleDto);
+    public ClienteDetalleDto editarClienteDetalle(int id, ClienteDetalleDto clienteDetalleDto);
 
     public ClienteDetalleDto encontrarClienteDetalle(int id_clienteDetalle);
 

@@ -70,7 +70,7 @@ public class EjercicioImplement implements EjercicioService {
 
     @Transactional
     @Override
-    public void editarEjercicio(int id, EjercicioDto ejercicioDto) {
+    public EjercicioDto editarEjercicio(int id, EjercicioDto ejercicioDto) {
         Ejercicio ejercicio = ejercicioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("ejercicioNotFound",null, Locale.getDefault()))
         );
@@ -95,6 +95,7 @@ public class EjercicioImplement implements EjercicioService {
 
 
         ejercicioRepository.save(ejercicio);
+        return ejercicioMapper.toDto(ejercicio);
 
     }
 

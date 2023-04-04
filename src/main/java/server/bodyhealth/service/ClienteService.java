@@ -21,7 +21,7 @@ public interface ClienteService {
 
     public ClienteCompletoDto encontrarClienteByDocument(int documento);
 
-    public void editarCliente(int id, ClienteDto clienteDto);
+    public ClienteDto editarCliente(int id, ClienteDto clienteDto);
 
     public ClienteDto loadImage(ClienteDto clienteDto) throws IOException;
 

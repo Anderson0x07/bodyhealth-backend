@@ -50,8 +50,9 @@ public class PlanController {
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarPlan(@PathVariable int id, @RequestBody PlanDto planDto) {
         response.clear();
-        planService.editarPlan(id,planDto);
+        PlanDto plan = planService.editarPlan(id,planDto);
         response.put("message", "Plan actualizado satisfactoriamente");
+        response.put("plan", plan);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

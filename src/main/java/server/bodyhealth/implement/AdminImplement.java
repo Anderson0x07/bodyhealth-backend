@@ -106,7 +106,7 @@ public class AdminImplement implements AdminService {
     }
 
     @Override
-    public void editarAdmin(int id, AdminDto adminDto) {
+    public AdminDto editarAdmin(int id, AdminDto adminDto) {
         Usuario admin = usuarioRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("adminNotFound",null, Locale.getDefault()))
         );
@@ -132,6 +132,7 @@ public class AdminImplement implements AdminService {
         if(adminDto.getRol()!=null)
             admin.setRol(rol);
         usuarioRepository.save(admin);
+        return adminMapper.toDto(admin);
     }
 
 
