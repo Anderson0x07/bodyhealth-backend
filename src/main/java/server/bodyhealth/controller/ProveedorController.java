@@ -25,7 +25,7 @@ public class ProveedorController {
     @GetMapping("/all")
     public ResponseEntity<?> ListarProveedores(){
         response.clear();
-        response.put("proveedor",proveedorService.listarProveedores());
+        response.put("proveedores",proveedorService.listarProveedores());
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

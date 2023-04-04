@@ -21,6 +21,9 @@ public interface ProductoService {
 
     public void editarProveedor(int id, ProductoDto productoDto);
 
-
     public ProductoDto loadImage(ProductoDto productoDto) throws IOException;
+
+    public void desactivarProducto(int id);
+
+    public void activarProducto(int id);
 }

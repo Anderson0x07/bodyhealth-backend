@@ -137,7 +137,8 @@ public class AdminImplement implements AdminService {
 
     @Override
     public AdminDto loadImage(AdminDto adminDto) throws IOException {
-        if(!adminDto.getFoto().equals("")){
+        Usuario usuario = usuarioRepository.findById_usuario(adminDto.getId_usuario());
+        if(!adminDto.getFoto().equals("") && !usuario.getFoto().equals(adminDto.getFoto())){
             String[] foto = adminDto.getFoto().split("\\s+");
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);

@@ -148,7 +148,8 @@ public class ClienteImplement implements ClienteService {
 
     @Override
     public ClienteDto loadImage(ClienteDto clienteDto) throws IOException {
-        if(!clienteDto.getFoto().equals("")){
+        Usuario usuario = usuarioRepository.findById_usuario(clienteDto.getId_usuario());
+        if(!clienteDto.getFoto().equals("") && !usuario.getFoto().equals(clienteDto.getFoto())){
             String[] foto = clienteDto.getFoto().split("\\s+");
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);

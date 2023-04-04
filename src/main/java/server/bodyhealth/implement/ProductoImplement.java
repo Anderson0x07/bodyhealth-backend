@@ -1,5 +1,6 @@
 package server.bodyhealth.implement;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.EntrenadorDto;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
-
+@Slf4j
 @Service
 public class ProductoImplement implements ProductoService {
     @Autowired
@@ -111,20 +112,38 @@ public class ProductoImplement implements ProductoService {
 
     @Override
     public ProductoDto loadImage(ProductoDto productoDto) throws IOException {
-        if(!productoDto.getFoto().equals("")){
+        Producto producto = productoRepository.findById(productoDto.getId_producto()).get();
+        if(!productoDto.getFoto().equals("") && !producto.getFoto().equals(productoDto.getFoto())) {
             String[] foto = productoDto.getFoto().split("\\s+");
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
-            File file = convertBytesToFile(image1,foto[1]);
+            File file = convertBytesToFile(image1, foto[1]);
             String[] tipo = foto[1].split("\\.");
-            String nombre = "PRODUCT_"+productoDto.getNombre()+"."+ tipo[tipo.length-1];
-            if(file != null){
+            String nombre = "PRODUCT_" + productoDto.getNombre() + "." + tipo[tipo.length - 1];
+            if (file != null) {
                 productoDto.setFoto(nombre);
-                service.uploadFile(file,nombre);
+                service.uploadFile(file, nombre);
             }
             file.delete();
         }
         return productoDto;
+    }
 
+    @Override
+    public void desactivarProducto(int id) {
+        Producto producto = productoRepository.findById(id).get();
+        if(producto.isEstado()){
+            producto.setEstado(false);
+        }
+        productoRepository.save(producto);
+    }
+
+    @Override
+    public void activarProducto(int id) {
+        Producto producto = productoRepository.findById(id).get();
+        if(!producto.isEstado()){
+            producto.setEstado(true);
+        }
+        productoRepository.save(producto);
     }
 
     public File convertBytesToFile(byte[] bytes, String filename) throws IOException {

@@ -87,4 +87,20 @@ public class ProductoController {
         response.put("message","Producto eliminado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
+
+    @PutMapping("/desactivar/{id}")
+    public ResponseEntity<?> desactivarProducto(@PathVariable int id){
+        response.clear();
+        productoService.desactivarProducto(id);
+        response.put("message","Producto desactivado.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/activar/{id}")
+    public ResponseEntity<?> activarProducto(@PathVariable int id){
+        response.clear();
+        productoService.activarProducto(id);
+        response.put("message","Producto activado.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 }

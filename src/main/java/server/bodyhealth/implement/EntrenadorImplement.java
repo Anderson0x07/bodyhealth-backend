@@ -151,7 +151,8 @@ public class EntrenadorImplement implements EntrenadorService {
 
     @Override
     public EntrenadorDto loadImage(EntrenadorDto entrenadorDto) throws IOException {
-        if(!entrenadorDto.getFoto().equals("")){
+        Usuario usuario = usuarioRepository.findById_usuario(entrenadorDto.getId_usuario());
+        if(!entrenadorDto.getFoto().equals("") && !usuario.getFoto().equals(entrenadorDto.getFoto())){
             String[] foto = entrenadorDto.getFoto().split("\\s+");
             byte[] image1 = Base64.getMimeDecoder().decode(foto[0]);
             File file = convertBytesToFile(image1,foto[1]);
