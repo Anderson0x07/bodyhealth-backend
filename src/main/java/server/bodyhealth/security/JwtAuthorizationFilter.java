@@ -22,6 +22,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 	@Autowired
 	private UsuarioService userService;
 
+
 	@Override
 	protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse,
 			FilterChain filterChain) throws ServletException, IOException {
@@ -33,10 +34,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 			return;
 		}
 		final String token = authorizationHeader.replace(Constants.TOKEN_BEARER_PREFIX + " ", "");
-
 		String userName = TokenProvider.getUserName(token);
 		UserDetails user = userService.loadUserByUsername(userName);
-
 		UsernamePasswordAuthenticationToken authenticationToken = TokenProvider.getAuthentication(token, user);
 		SecurityContextHolder.getContext().setAuthentication(authenticationToken);
 		filterChain.doFilter(httpServletRequest, httpServletResponse);

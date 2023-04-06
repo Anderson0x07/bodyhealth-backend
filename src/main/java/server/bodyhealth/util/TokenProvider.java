@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
 
 import static server.bodyhealth.util.Constants.*;
 
-
+@Service
 public class TokenProvider {
 
 	private TokenProvider() {
 	}
 
 	public static String generateToken(Authentication authentication) {
-		// Genera el token con roles, issuer, fecha, expiración (8h)
+		// Genera el token con roles, issuer, fecha expiración (8h)
 		final String authorities = authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(","));
@@ -58,6 +59,23 @@ public class TokenProvider {
 		final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
 		return claimsJws.getBody().getSubject();
+	}
+
+	public  boolean validateToken(String token) {
+		try {
+			Claims claims = Jwts.parser()
+					.setSigningKey(SIGNING_KEY)
+					.parseClaimsJws(token)
+					.getBody();
+
+			if (claims.getExpiration().before(new Date())) {
+				return false; // Token ha expirado
+			}
+
+			return true;
+		} catch (Exception e) {
+			return false; // Token no es válido
+		}
 	}
 
 }

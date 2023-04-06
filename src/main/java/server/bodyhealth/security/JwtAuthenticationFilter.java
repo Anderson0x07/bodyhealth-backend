@@ -2,7 +2,7 @@ package server.bodyhealth.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.MediaType;
-import server.bodyhealth.dto.TokenDto;
+import server.bodyhealth.dto.UserLoginDto;
 import server.bodyhealth.util.TokenProvider;
 import server.bodyhealth.presentation.AuthorizationRequest;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -42,14 +42,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 			Authentication authResult) throws IOException {
-
 		String token = TokenProvider.generateToken(authResult);
 		response.addHeader(HEADER_AUTHORIZATION_KEY, TOKEN_BEARER_PREFIX + " " + token);
-
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(new ObjectMapper().writeValueAsString(new TokenDto(token)));
-
-
+		response.getWriter().write(new ObjectMapper().writeValueAsString(new UserLoginDto(token, authResult.getName(),authResult.getAuthorities().toArray()[0]+"")));
 	}
 }
