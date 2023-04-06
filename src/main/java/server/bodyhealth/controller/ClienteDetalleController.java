@@ -43,8 +43,9 @@ public class ClienteDetalleController {
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarClienteDetalle(@Valid @RequestBody ClienteDetalleDto clienteDetalleDto){
         response.clear();
-        clienteDetalleService.guardar(clienteDetalleDto);
+        int id_factura = clienteDetalleService.guardar(clienteDetalleDto);
         response.put("message", "Cliente detalle guardado satisfactoriamente");
+        response.put("id_factura", id_factura);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

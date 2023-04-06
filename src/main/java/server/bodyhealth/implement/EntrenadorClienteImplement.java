@@ -1,5 +1,6 @@
 package server.bodyhealth.implement;
 
+import lombok.extern.slf4j.Slf4j;
 import server.bodyhealth.dto.EntrenadorClienteDto;
 import server.bodyhealth.entity.*;
 import server.bodyhealth.exception.NotFoundException;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 public class EntrenadorClienteImplement implements EntrenadorClienteService {
     @Autowired
     private EntrenadorClienteRepository entrenadorClienteRepository;
@@ -47,13 +49,16 @@ public class EntrenadorClienteImplement implements EntrenadorClienteService {
     }
 
     @Override
-    public void guardar(EntrenadorClienteDto entrenadorClienteDto) {
+    public int guardar(EntrenadorClienteDto entrenadorClienteDto) {
         Usuario cliente = usuarioRepository.findById_usuario(entrenadorClienteDto.getCliente().getId_usuario());
         Usuario entrenador = usuarioRepository.findById_usuario(entrenadorClienteDto.getEntrenador().getId_usuario());
+
+        EntrenadorCliente entrenadorCliente;
         if(cliente.getRol().getId_rol() == 2) {
             if(entrenador.getRol().getId_rol() == 3){
-                EntrenadorCliente entrenadorCliente = entrenadorClienteMapper.toEntity(entrenadorClienteDto);
-                entrenadorClienteRepository.save(entrenadorCliente);
+
+                entrenadorCliente = entrenadorClienteMapper.toEntity(entrenadorClienteDto);
+                entrenadorCliente = entrenadorClienteRepository.save(entrenadorCliente);
             }else{
                 throw new NotFoundException(messageUtil.getMessage("trainerDoesntExist",null, Locale.getDefault()));
             }
@@ -61,6 +66,8 @@ public class EntrenadorClienteImplement implements EntrenadorClienteService {
         }else {
             throw new NotFoundException(messageUtil.getMessage("clienteDoesntExist",null, Locale.getDefault()));
         }
+
+        return entrenadorCliente.getId_asignacion();
     }
 
     @Override

@@ -9,6 +9,7 @@ import server.bodyhealth.dto.ReporteDto;
 import server.bodyhealth.service.InfoBasicaService;
 import server.bodyhealth.service.ReporteService;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,11 @@ public class ReporteImplement implements ReporteService {
         map.put("identificacion", cliente.getTipo_documento()+" - "+cliente.getDocumento());
         map.put("telefono", cliente.getTelefono());
         map.put("email", cliente.getEmail());
-        map.put("fechaCompra", pedidosDto.get(0).getCompra().getFecha_compra());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMMM-yyyy");
+        String fechaCompra = dateFormat.format(pedidosDto.get(0).getCompra().getFecha_compra());
+
+        map.put("fechaCompra", fechaCompra);
 
         List<ReporteDto> reporteProductos = new ArrayList<>();
 
@@ -49,7 +54,7 @@ public class ReporteImplement implements ReporteService {
             reporteProductos.add(new ReporteDto(cantidad, nombre, precio, importe));
             subtotal += importe;
         }
-        double iva = subtotal*0.21;
+        double iva = subtotal*0.19;
         map.put("subtotal", subtotal);
         map.put("iva", iva);
         map.put("total", subtotal+iva);

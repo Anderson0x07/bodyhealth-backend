@@ -62,6 +62,7 @@ public class RutinaController {
 
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("eliminar/{id}")
     public ResponseEntity<?> eliminarRutina(@PathVariable int id) {
         response.clear();
         rutinaService.eliminar(id);

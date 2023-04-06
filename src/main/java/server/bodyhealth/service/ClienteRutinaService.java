@@ -10,7 +10,7 @@ import java.util.List;
 public interface ClienteRutinaService {
     public List<ClienteRutinaDto> listarClienteRutinas();
 
-    public void guardar(ClienteRutinaDto clienteRutinaDto);
+    public int guardar(ClienteRutinaDto clienteRutinaDto);
 
     public void eliminar(int id_clienteRutina);
 

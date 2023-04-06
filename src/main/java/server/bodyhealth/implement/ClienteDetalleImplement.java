@@ -55,7 +55,7 @@ public class ClienteDetalleImplement implements ClienteDetalleService {
 
     @Transactional
     @Override
-    public void guardar(ClienteDetalleDto clienteDetalleDto) {
+    public int guardar(ClienteDetalleDto clienteDetalleDto) {
         ClienteDetalle clienteDetalle = clienteDetalleMapper.toEntity(clienteDetalleDto);
 
         planRepository.findById(clienteDetalleDto.getPlan().getId_plan()).orElseThrow(
@@ -74,6 +74,8 @@ public class ClienteDetalleImplement implements ClienteDetalleService {
         );
 
         clienteDetalleRepository.save(clienteDetalle);
+
+        return clienteDetalle.getId_factura();
     }
     @Override
     public void eliminar(int id) {

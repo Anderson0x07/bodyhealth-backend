@@ -59,9 +59,23 @@ public class ClienteRutinaImplement implements ClienteRutinaService {
 
     @Transactional
     @Override
-    public void guardar(ClienteRutinaDto clienteRutinaDto) {
+    public int guardar(ClienteRutinaDto clienteRutinaDto) {
         ClienteRutina clienteRutina = clienteRutinaMapper.toEntity(clienteRutinaDto);
+
+        rutinaRepository.findById(clienteRutinaDto.getRutina().getId_rutina()).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("rutinaNotFound", null, Locale.getDefault()))
+        );
+
+        Usuario cliente = usuarioRepository.findById(clienteRutinaDto.getCliente().getId_usuario()).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("clienteNotFound", null, Locale.getDefault()))
+        );
+        if(cliente.getRol().getId_rol() != 2){
+            throw new NotFoundException(messageUtil.getMessage("clienteDoesntExist",null, Locale.getDefault()));
+        }
+
         clienteRutinaRepository.save(clienteRutina);
+
+        return clienteRutina.getId_clienterutina();
     }
     @Override
     public void eliminar(int id) {

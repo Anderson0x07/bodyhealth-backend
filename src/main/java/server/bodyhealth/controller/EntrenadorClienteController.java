@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.EntrenadorClienteDto;
+import server.bodyhealth.entity.EntrenadorCliente;
 import server.bodyhealth.service.EntrenadorClienteService;
 
 import javax.validation.Valid;
@@ -46,8 +47,10 @@ public class EntrenadorClienteController {
     public ResponseEntity<?> guardarEntrenadorCliente(@Valid @RequestBody EntrenadorClienteDto entrenadorClienteDto){
         response.clear();
 
-        entrenadorClienteService.guardar(entrenadorClienteDto);
+        int id_asignacion = entrenadorClienteService.guardar(entrenadorClienteDto);
+
         response.put("message", "Entrenador Cliente guardado satisfactoriamente");
+        response.put("id_asignacion", id_asignacion);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

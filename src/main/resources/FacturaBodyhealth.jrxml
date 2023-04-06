@@ -12,7 +12,7 @@
 	<parameter name="identificacion" class="java.lang.String"/>
 	<parameter name="telefono" class="java.lang.String"/>
 	<parameter name="email" class="java.lang.String"/>
-	<parameter name="fechaCompra" class="java.util.Date"/>
+	<parameter name="fechaCompra" class="java.lang.String"/>
 	<parameter name="total" class="java.lang.Double"/>
 	<parameter name="iva" class="java.lang.Double"/>
 	<parameter name="subtotal" class="java.lang.Double"/>
@@ -375,7 +375,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[IVA 21%]]></text>
+				<text><![CDATA[IVA 19%]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="320" y="42" width="100" height="20" forecolor="#FFFFFF" backcolor="#336B87" uuid="b3e90f40-7a80-4a4a-bd38-abec8d5088f9">

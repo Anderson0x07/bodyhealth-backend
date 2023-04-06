@@ -12,7 +12,7 @@ import java.util.List;
 public interface ClienteDetalleService {
     public List<ClienteDetalleDto> listarClientesDetalles();
 
-    public void guardar(ClienteDetalleDto clienteDetalleDto);
+    public int guardar(ClienteDetalleDto clienteDetalleDto);
 
     public void eliminar(int id_clienteDetalle);
 

@@ -44,8 +44,9 @@ public class ClienteRutinaController {
     public ResponseEntity<?> guardarClienteRutina(@Valid @RequestBody ClienteRutinaDto clienteRutinaDto){
         response.clear();
 
-        clienteRutinaService.guardar(clienteRutinaDto);
+        int id_clienterutina = clienteRutinaService.guardar(clienteRutinaDto);
         response.put("message", "Cliente rutina guardada satisfactoriamente");
+        response.put("id_clienterutina", id_clienterutina);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

@@ -1,8 +1,12 @@
 package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
+import server.bodyhealth.dto.ClienteDetalleDto;
+import server.bodyhealth.dto.MetodoPagoDto;
 import server.bodyhealth.dto.PlanCompletoDto;
 import server.bodyhealth.dto.PlanDto;
+import server.bodyhealth.entity.ClienteDetalle;
+import server.bodyhealth.entity.MetodoPago;
 import server.bodyhealth.entity.Plan;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.PlanCompletoMapper;
@@ -32,10 +36,17 @@ public class PlanImplement implements PlanService {
     @Override
     public List<PlanDto> listarPlanes() {
         List<PlanDto> planesDto = new ArrayList<>();
-        for (Plan plan: planRepository.findAll()) {
-            PlanDto planDto = planMapper.toDto(plan);
-            planesDto.add(planDto);
+        List<Plan> planes = planRepository.findAll();
+
+        if(!planes.isEmpty()){
+            for (Plan plan: planes) {
+                PlanDto planDto = planMapper.toDto(plan);
+                planesDto.add(planDto);
+            }
+        } else {
+            throw new NotFoundException(messageUtil.getMessage("planEmpty",null, Locale.getDefault()));
         }
+
         return planesDto;
     }
 

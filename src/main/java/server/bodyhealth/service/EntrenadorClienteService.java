@@ -10,7 +10,7 @@ import java.util.List;
 public interface EntrenadorClienteService {
     public List<EntrenadorClienteDto> listarEntrenadoresClientes();
 
-    public void guardar(EntrenadorClienteDto entrenadorClienteDto);
+    public int guardar(EntrenadorClienteDto entrenadorClienteDto);
 
     public void eliminar(int id);
 
