@@ -1,9 +1,11 @@
 package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
+import server.bodyhealth.dto.MusculoCompletoDto;
 import server.bodyhealth.dto.MusculoDto;
 import server.bodyhealth.entity.Musculo;
 import server.bodyhealth.exception.NotFoundException;
+import server.bodyhealth.mapper.MusculoCompletoMapper;
 import server.bodyhealth.mapper.MusculoMapper;
 import server.bodyhealth.repository.MusculoRepository;
 import server.bodyhealth.service.MusculoService;
@@ -25,6 +27,9 @@ public class MusculoImplement implements MusculoService {
 
     @Autowired
     private MusculoMapper musculoMapper;
+
+    @Autowired
+    private MusculoCompletoMapper musculoCompletoMapper;
 
     @Override
     public List<MusculoDto> listarMusculos() {
@@ -72,8 +77,8 @@ public class MusculoImplement implements MusculoService {
         return musculoMapper.toDto(musculo);
     }
     @Override
-    public MusculoDto encontrarMusculo(int id_musculo) {
-        return musculoMapper.toDto(musculoRepository.findById(id_musculo).orElseThrow(
+    public MusculoCompletoDto encontrarMusculo(int id_musculo) {
+        return musculoCompletoMapper.toDto(musculoRepository.findById(id_musculo).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("musculoNotFound",null, Locale.getDefault()))
         ));
     }
