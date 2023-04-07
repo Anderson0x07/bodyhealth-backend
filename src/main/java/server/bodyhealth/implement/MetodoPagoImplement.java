@@ -1,9 +1,11 @@
 package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
+import server.bodyhealth.dto.MetodoPagoCompletoDto;
 import server.bodyhealth.dto.MetodoPagoDto;
 import server.bodyhealth.entity.MetodoPago;
 import server.bodyhealth.exception.NotFoundException;
+import server.bodyhealth.mapper.MetodoPagoCompletoMapper;
 import server.bodyhealth.mapper.MetodoPagoMapper;
 import server.bodyhealth.repository.MetodoPagoRepository;
 import server.bodyhealth.service.MetodoPagoService;
@@ -26,16 +28,19 @@ public class MetodoPagoImplement implements MetodoPagoService {
     @Autowired
     private MetodoPagoMapper metodoPagoMapper;
 
+    @Autowired
+    private MetodoPagoCompletoMapper metodoPagoCompletoMapper;
+
     @Override
-    public List<MetodoPagoDto> listarMetodosPago() {
-        List<MetodoPagoDto> metodosPagoDto = new ArrayList<>();
+    public List<MetodoPagoCompletoDto> listarMetodosPago() {
+        List<MetodoPagoCompletoDto> metodosPagoDto = new ArrayList<>();
 
         List<MetodoPago> metodosPago = metodoPagoRepository.findAll();
 
         if(!metodosPago.isEmpty()){
             for (MetodoPago metodoPago: metodosPago) {
-                MetodoPagoDto metodoPagoDto = metodoPagoMapper.toDto(metodoPago);
-                metodosPagoDto.add(metodoPagoDto);
+                MetodoPagoCompletoDto metodoPagoCompletoDto = metodoPagoCompletoMapper.toDto(metodoPago);
+                metodosPagoDto.add(metodoPagoCompletoDto);
             }
         } else {
             throw new NotFoundException(messageUtil.getMessage("metodosPagoEmpty",null, Locale.getDefault()));

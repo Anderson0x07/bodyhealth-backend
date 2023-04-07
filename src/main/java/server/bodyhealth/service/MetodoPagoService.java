@@ -1,15 +1,13 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.MetodoPagoCompletoDto;
 import server.bodyhealth.dto.MetodoPagoDto;
-import server.bodyhealth.dto.PlanCompletoDto;
-import server.bodyhealth.dto.PlanDto;
-import server.bodyhealth.entity.MetodoPago;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface MetodoPagoService {
-    public List<MetodoPagoDto> listarMetodosPago();
+    public List<MetodoPagoCompletoDto> listarMetodosPago();
 
     public void guardar(MetodoPagoDto metodoPagoDto);
 
