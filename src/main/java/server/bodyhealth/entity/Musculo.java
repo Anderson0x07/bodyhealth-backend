@@ -17,7 +17,12 @@ public class Musculo implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_musculo;
 
-    @NotEmpty(message = "Se requiere una descripción del musculo")
+    @NotEmpty(message = "Se requiere el nombre del musculo")
+    private String nombre;
+
+    @NotEmpty(message = "Se requiere el grupo muscular al que pertenece")
+    private String grupo_muscular;
+
     private String descripcion;
 
     @JsonIgnoreProperties("musculo")
