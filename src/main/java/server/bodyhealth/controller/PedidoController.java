@@ -88,7 +88,7 @@ public class PedidoController {
 
         List<PedidoDto> pedidosDto = pedidoService.encontrarPedidoPorCompra(id_compra);
 
-        Object[] arr = reporteService.llenarReporte(pedidosDto);
+        Object[] arr = reporteService.llenarReporteCompras(pedidosDto);
 
         HashMap<String, Object> map = (HashMap<String, Object>) arr[0];
         List<ReporteDto> reporteProductos = (List<ReporteDto>) arr[1];
