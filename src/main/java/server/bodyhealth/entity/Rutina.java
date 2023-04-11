@@ -21,6 +21,12 @@ public class Rutina implements Serializable {
     @Column(length = 100)
     private String nombre_rutina;
 
+    @NotEmpty(message = "Se requiere el nivel de la rutina.")
+    private String nivel;
+
+    @NotEmpty(message = "Se requiere la duracion de la rutina.")
+    private String duracion;
+
     @NotEmpty(message = "Se requiere una descripcion de la rutina.")
     @Column(length = 100)
     private String descripcion;

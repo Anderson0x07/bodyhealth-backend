@@ -13,6 +13,10 @@ import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
+    @Query(
+            value = "SELECT * FROM usuario u where u.email = :email",
+            nativeQuery = true
+    )
     Optional<Usuario> findByEmail(String email);
 
     Optional<Usuario> findByDocumento(int documento);

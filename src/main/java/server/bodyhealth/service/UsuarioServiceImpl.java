@@ -7,11 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
+import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.UserDetailsMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
+import server.bodyhealth.util.MessageUtil;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Service("userDetailsService")
@@ -20,6 +23,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 	private RolRepository roleRepository;
 
 	private UsuarioRepository userRepository;
+
+	@Autowired
+	private MessageUtil messageUtil;
 
 	@Autowired
 	public UsuarioServiceImpl(UsuarioRepository userRepository, RolRepository roleRepository) {
@@ -36,6 +42,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 		return UserDetailsMapper.build(retrievedUser);
 	}
+
+
 
 
 //	@Override
