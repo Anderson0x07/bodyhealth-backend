@@ -1,13 +1,14 @@
 package server.bodyhealth.service;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
-import server.bodyhealth.dto.RutinaCompletaDto;
+
+import server.bodyhealth.dto.UsuarioCompletoDto;
 import server.bodyhealth.entity.Usuario;
 
-public interface UsuarioService extends UserDetailsService {
+public interface UsuarioService {
 
-    //Usuario getUser(int id);
+    Usuario obtenerUsuarioLogueado(int id_usuario);
 
-   // Usuario save(Usuario user);
+    UsuarioCompletoDto obtenerUsuarioByEmail(String email);
 
 }

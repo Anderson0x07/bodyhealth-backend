@@ -21,6 +21,9 @@ public class UsuarioController {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     private Map<String,Object> response = new HashMap<>();
 
     @PreAuthorize("permitAll()")
@@ -29,6 +32,14 @@ public class UsuarioController {
         response.clear();
         emailService.confirmarCorreo(documento);
         response.put("message","Cuenta confirmada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/login/{email}")
+    public ResponseEntity<?> obtenerUsuarioLogueado(@PathVariable String email) {
+        response.clear();
+        response.put("usuario", usuarioService.obtenerUsuarioByEmail(email));
+
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 

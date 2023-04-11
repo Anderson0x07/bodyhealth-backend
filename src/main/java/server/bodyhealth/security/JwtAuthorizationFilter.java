@@ -1,7 +1,7 @@
 package server.bodyhealth.security;
 
 
-import server.bodyhealth.service.UsuarioService;
+import server.bodyhealth.service.UsuarioServiceImpl;
 import server.bodyhealth.util.Constants;
 import server.bodyhealth.util.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,7 @@ import java.io.IOException;
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private UsuarioService userService;
+	private UsuarioServiceImpl userService;
 
 
 	@Override

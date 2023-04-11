@@ -3,22 +3,22 @@ package server.bodyhealth.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import server.bodyhealth.entity.Rol;
+import server.bodyhealth.dto.UsuarioCompletoDto;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.UserDetailsMapper;
+import server.bodyhealth.mapper.UsuarioCompletoMapper;
 import server.bodyhealth.repository.RolRepository;
 import server.bodyhealth.repository.UsuarioRepository;
 import server.bodyhealth.util.MessageUtil;
 
-import java.util.HashSet;
 import java.util.Locale;
-import java.util.Set;
 
 @Service("userDetailsService")
-public class UsuarioServiceImpl implements UsuarioService {
+public class UsuarioServiceImpl implements UserDetailsService, UsuarioService {
 
 	private RolRepository roleRepository;
 
@@ -26,6 +26,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
 	@Autowired
 	private MessageUtil messageUtil;
+
+	@Autowired
+	private UsuarioCompletoMapper usuarioCompletoMapper;
 
 	@Autowired
 	public UsuarioServiceImpl(UsuarioRepository userRepository, RolRepository roleRepository) {
@@ -44,19 +47,18 @@ public class UsuarioServiceImpl implements UsuarioService {
 	}
 
 
+	@Override
+	public Usuario obtenerUsuarioLogueado(int id_usuario) {
+		return userRepository.findById(id_usuario).orElseThrow(
+				() -> new NotFoundException(messageUtil.getMessage("usuarioNotFound",null, Locale.getDefault()))
+		);
 
+	}
 
-//	@Override
-//	public Usuario getUser(int id) {
-//		return userRepository.findById_usuario(id);
-//	}
-//
-//	@Override
-//	public Usuario save(Usuario user) {
-//		Rol userRole = roleRepository.findByNombre("USER");
-//
-//		Usuario userToSave = Usuario.builder().email(user.getEmail()).password(user.getPassword()).rol(userRole).build();
-//
-//		return userRepository.save(userToSave);
-//	}
+	@Override
+	public UsuarioCompletoDto obtenerUsuarioByEmail(String email) {
+		return usuarioCompletoMapper.toDto(userRepository.findByEmail(email).orElseThrow(
+				() -> new NotFoundException(messageUtil.getMessage("usuarioNotFound", null, Locale.getDefault()))
+		));
+	}
 }

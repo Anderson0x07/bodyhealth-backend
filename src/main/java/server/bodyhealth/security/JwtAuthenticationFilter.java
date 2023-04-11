@@ -46,6 +46,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		response.addHeader(HEADER_AUTHORIZATION_KEY, TOKEN_BEARER_PREFIX + " " + token);
 		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(new ObjectMapper().writeValueAsString(new UserLoginDto(token, authResult.getName(),authResult.getAuthorities().toArray()[0]+"")));
+
+		//CONSULTA DEL USUARIO ANTES PARA ENVIAR MAS DATA QUE SIRVE EN EL FRONTEND....
+
+		response.getWriter().write(new ObjectMapper().writeValueAsString(new UserLoginDto(token, authResult.getName(), authResult.getAuthorities().toArray()[0]+"")));
 	}
 }

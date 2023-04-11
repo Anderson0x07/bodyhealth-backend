@@ -42,6 +42,14 @@ public class RutinaController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/ejercicios/{id_rutina}")
+    public ResponseEntity<?> obtenerRutinaConEjercicios(@PathVariable int id_rutina) {
+        response.clear();
+        response.put("rutina",rutinaService.encontrarRutinaConEjercicios(id_rutina));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarRutina(@Valid @RequestBody RutinaDto rutinaDto){
         response.clear();
