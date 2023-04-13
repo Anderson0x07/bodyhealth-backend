@@ -50,7 +50,7 @@ public class EntrenadorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/all/jornada/{jornada}")
     public ResponseEntity<?> listarEntrenadoresPorJornada(@PathVariable String jornada){
         response.clear();

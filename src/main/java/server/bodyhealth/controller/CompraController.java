@@ -32,7 +32,7 @@ public class CompraController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerCompraByID(@PathVariable int id) {
         response.clear();
@@ -40,7 +40,7 @@ public class CompraController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarCompra(@Valid @RequestBody CompraDto compraDto){
         response.clear();

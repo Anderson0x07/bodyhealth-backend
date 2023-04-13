@@ -124,13 +124,13 @@ public class AdminImplement implements AdminService {
             admin.setEmail(adminDto.getEmail());
         if(adminDto.getPassword() != null)
             admin.setPassword(adminDto.getPassword());
-        Rol rol = rolRepository.findById(adminDto.getRol().getId_rol()).orElseThrow(
-                () -> new NotFoundException(messageUtil.getMessage("rolNotFound",null, Locale.getDefault()))
-        );
-        if(adminDto.getRol()!=null)
-            admin.setRol(rol);
+        if(adminDto.getFoto() != null)
+            admin.setFoto(adminDto.getFoto());
+
         usuarioRepository.save(admin);
         return adminMapper.toDto(admin);
+
+
     }
 
 

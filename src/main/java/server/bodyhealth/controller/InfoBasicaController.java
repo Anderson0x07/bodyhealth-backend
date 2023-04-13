@@ -10,6 +10,7 @@ import server.bodyhealth.dto.InfoBasicaDto;
 import server.bodyhealth.service.InfoBasicaService;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,9 +44,10 @@ public class InfoBasicaController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/editar/{id}")
-    public ResponseEntity<?> actualizarInfoBasica(@PathVariable int id, @RequestBody InfoBasicaDto infoBasicaDto) {
+    public ResponseEntity<?> actualizarInfoBasica(@PathVariable int id, @RequestBody InfoBasicaDto infoBasicaDto) throws IOException {
         response.clear();
-        InfoBasicaDto infoBasica = infoBasicaService.editarInfoBasica(id, infoBasicaDto);
+        InfoBasicaDto infoBasicaDto1 = infoBasicaService.loadImage(infoBasicaDto);
+        InfoBasicaDto infoBasica = infoBasicaService.editarInfoBasica(id, infoBasicaDto1);
         response.put("message", "Informacion basica actualizada satisfactoriamente");
         response.put("infobasica", infoBasica);
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
@@ -58,5 +60,13 @@ public class InfoBasicaController {
         infoBasicaService.eliminar(id);
         response.put("message", "Informacion basica eliminada satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/logo/{id_configuracion}")
+    public ResponseEntity<?> obtenerLogoInfoBasica(@PathVariable int id_configuracion) {
+        response.clear();
+        response.put("logo", infoBasicaService.encontrarLogo(id_configuracion));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

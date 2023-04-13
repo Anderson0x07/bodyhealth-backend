@@ -20,7 +20,7 @@ public class MetodoPagoController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/all")
     public ResponseEntity<?> listarMetodosPago(){
         response.clear();

@@ -11,7 +11,6 @@ import java.util.List;
 public interface EntrenadorClienteRepository extends JpaRepository<EntrenadorCliente,Integer> {
 
 
-
     @Query(
             value = "SELECT * from entrenador_cliente d where d.id_cliente = :cliente",
             nativeQuery=true

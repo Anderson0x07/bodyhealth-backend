@@ -33,7 +33,7 @@ public class ControlClienteController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerControlClienteByID(@PathVariable int id) {
         response.clear();
