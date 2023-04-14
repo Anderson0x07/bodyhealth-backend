@@ -63,7 +63,7 @@ public class ClienteController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @PutMapping("/editar/{id}")
     public ResponseEntity<?> editarCliente(@PathVariable int id, @RequestBody ClienteDto clienteDto) throws Exception {
         response.clear();
@@ -84,7 +84,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerClienteByID(@PathVariable int id) {
         response.clear();
@@ -92,7 +92,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_CLIENTE')")
     @PostMapping("/restablecer-password/{id}")
     public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
         response.clear();

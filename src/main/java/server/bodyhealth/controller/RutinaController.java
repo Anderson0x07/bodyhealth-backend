@@ -24,7 +24,7 @@ public class RutinaController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_USER') OR hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_TRAINER') OR hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<?> listarRutinas(){
         response.clear();
@@ -33,7 +33,7 @@ public class RutinaController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @PreAuthorize("permitAll()")
     @GetMapping("/{id_rutina}")
     public ResponseEntity<?> obtenerRutina(@PathVariable int id_rutina) {
         response.clear();
