@@ -29,4 +29,6 @@ public interface EntrenadorService {
     public void enviarTokenPassword(int id) throws Exception;
 
     public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception;
+
+    public InfoEntrenadorDto infoEntrenador(int id);
 }

@@ -3,6 +3,7 @@ package server.bodyhealth.service;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.AdminDto;
+import server.bodyhealth.dto.InfoAdminDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
 
 import java.io.IOException;
@@ -28,5 +29,7 @@ public interface AdminService {
     public void enviarTokenPassword(int id) throws Exception;
 
     public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception;
+
+    public InfoAdminDto infoAdmin(int id);
 
 }

@@ -107,4 +107,11 @@ public class AdminController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> infoAdmin(@PathVariable int id){
+        response.clear();
+        response.put("informacion", adminService.infoAdmin(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

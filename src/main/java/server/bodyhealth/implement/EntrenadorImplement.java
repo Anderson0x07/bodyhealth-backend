@@ -2,17 +2,14 @@ package server.bodyhealth.implement;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.bodyhealth.dto.ClienteDto;
-import server.bodyhealth.dto.EntrenadorCompletoDto;
-import server.bodyhealth.dto.EntrenadorDto;
-import server.bodyhealth.dto.VerifyTokenRequestDto;
+import server.bodyhealth.dto.*;
 import server.bodyhealth.entity.Rol;
+import server.bodyhealth.entity.Rutina;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.EntrenadorCompletoMapper;
 import server.bodyhealth.mapper.EntrenadorMapper;
-import server.bodyhealth.repository.RolRepository;
-import server.bodyhealth.repository.UsuarioRepository;
+import server.bodyhealth.repository.*;
 import server.bodyhealth.service.EntrenadorService;
 import server.bodyhealth.service.ResetPasswordTokenService;
 import server.bodyhealth.service.StorageService;
@@ -49,6 +46,16 @@ public class EntrenadorImplement implements EntrenadorService {
 
     @Autowired
     private ResetPasswordTokenService resetPasswordTokenService;
+
+    @Autowired
+    private RutinaRepository rutinaRepository;
+
+    @Autowired
+    private MusculoRepository musculoRepository;
+
+    @Autowired
+    private EjercicioRepository ejercicioRepository;
+
     @Override
     public List<EntrenadorDto> listarEntrenadores() {
         List<EntrenadorDto> entrenadoresDto = new ArrayList<>();
@@ -208,6 +215,22 @@ public class EntrenadorImplement implements EntrenadorService {
     @Override
     public void verificarToken(VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
         resetPasswordTokenService.verificarToken(verifyTokenRequestDto);
+    }
+
+    @Override
+    public InfoEntrenadorDto infoEntrenador(int id) {
+        EntrenadorCompletoDto entrenadorCompletoDto = entrenadorCompletoMapper.toDto(usuarioRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("trainerNotFound",null, Locale.getDefault()))
+        ));
+        InfoEntrenadorDto infoEntrenadorDto = new InfoEntrenadorDto();
+        infoEntrenadorDto.setNombre(entrenadorCompletoDto.getNombre());
+        infoEntrenadorDto.setJornada(entrenadorCompletoDto.getJornada());
+        infoEntrenadorDto.setId(entrenadorCompletoDto.getId_usuario());
+        infoEntrenadorDto.setClientes(entrenadorCompletoDto.getEntrenadorClientes().size());
+        infoEntrenadorDto.setRutinas(rutinaRepository.findAll().size());
+        infoEntrenadorDto.setMusculos(musculoRepository.findAll().size());
+        infoEntrenadorDto.setEjercicios(ejercicioRepository.findAll().size());
+        return infoEntrenadorDto;
     }
 
     public File convertBytesToFile(byte[] bytes, String filename) throws IOException {

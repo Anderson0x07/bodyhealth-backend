@@ -117,5 +117,11 @@ public class EntrenadorController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> infoEntrenador(@PathVariable int id){
+        response.clear();
+        response.put("informacion", entrenadorService.infoEntrenador(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
 }

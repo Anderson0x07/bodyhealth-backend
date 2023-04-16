@@ -4,13 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import server.bodyhealth.dto.AdminDto;
+import server.bodyhealth.dto.InfoAdminDto;
 import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.AdminMapper;
-import server.bodyhealth.repository.RolRepository;
-import server.bodyhealth.repository.UsuarioRepository;
+import server.bodyhealth.repository.*;
 import server.bodyhealth.service.AdminService;
 import server.bodyhealth.service.ResetPasswordTokenService;
 import server.bodyhealth.service.StorageService;
@@ -46,6 +46,23 @@ public class AdminImplement implements AdminService {
 
     @Autowired
     private ResetPasswordTokenService resetPasswordTokenService;
+
+    @Autowired
+    private MaquinaRepository maquinaRepository;
+    @Autowired
+    private RutinaRepository rutinaRepository;
+    @Autowired
+    private MusculoRepository musculoRepository;
+    @Autowired
+    private EjercicioRepository ejercicioRepository;
+    @Autowired
+    private ProductoRepository productoRepository;
+    @Autowired
+    private CompraRepository compraRepository;
+    @Autowired
+    private ProveedorRepository proveedorRepository;
+    @Autowired
+    private PedidoRepository pedidoRepository;
 
 
     @Override
@@ -179,6 +196,24 @@ public class AdminImplement implements AdminService {
         resetPasswordTokenService.verificarToken(verifyTokenRequestDto);
     }
 
+    @Override
+    public InfoAdminDto infoAdmin(int id) {
+        //Maquinas, rutinas, ejercicios, clientes, productos, musculos, compras, proveedores, pedidos
+        InfoAdminDto infoAdminDto = new InfoAdminDto();
+        List<Integer> totales = totalUsuarios(id);
+        infoAdminDto.setMaquinas(maquinaRepository.findAll().size());
+        infoAdminDto.setRutinas(rutinaRepository.findAll().size());
+        infoAdminDto.setMusculos(musculoRepository.findAll().size());
+        infoAdminDto.setEjercicios(ejercicioRepository.findAll().size());
+        infoAdminDto.setClientes(totales.get(0));
+        infoAdminDto.setEntrenadores(totales.get(1));
+        infoAdminDto.setProductos(productoRepository.findAll().size());
+        infoAdminDto.setCompras(compraRepository.findAll().size());
+        infoAdminDto.setProveedores(proveedorRepository.findAll().size());
+        infoAdminDto.setPedidos(pedidoRepository.findAll().size());
+        return  infoAdminDto;
+    }
+
 
     public File convertBytesToFile(byte[] bytes, String filename) throws IOException {
         File file = new File(filename);
@@ -186,5 +221,22 @@ public class AdminImplement implements AdminService {
         outputStream.write(bytes);
         outputStream.close();
         return file;
+    }
+
+    public List<Integer> totalUsuarios(int id){
+        List<Usuario> usuarios = usuarioRepository.findAll();
+        List<Integer> totales = new ArrayList<>();
+        int totalUsuarios = 0;
+        int totalEntrenadores = 0;
+        for (Usuario usuario: usuarios) {
+            if(usuario.getRol().getId_rol() == 2){
+                totalUsuarios++;
+            }else if(usuario.getRol().getId_rol() == 3){
+                totalEntrenadores++;
+            }
+        }
+        totales.add(totalUsuarios);
+        totales.add(totalEntrenadores);
+        return totales;
     }
 }
