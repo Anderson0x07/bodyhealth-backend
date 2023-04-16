@@ -60,6 +60,23 @@ public class ProductoImplement implements ProductoService {
         return productoDtos;
     }
 
+    @Override
+    public List<ProductoDto> listarProductosActivos() {
+        List<ProductoDto> productoDtos = new ArrayList<>();
+        List<Producto> productos = productoRepository.findByEstado(true);
+        if(!productos.isEmpty()) {
+            for (Producto producto : productos
+            ) {
+                ProductoDto productoDto = productoMapper.toDto(producto);
+                productoDtos.add(productoDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("productosEmpty",null, Locale.getDefault()));
+        }
+        return productoDtos;
+    }
+
+
     @Transactional
     @Override
     public void guardar(ProductoDto productoDto) {
@@ -153,6 +170,18 @@ public class ProductoImplement implements ProductoService {
         if(!producto.isEstado()){
             producto.setEstado(true);
         }
+        productoRepository.save(producto);
+    }
+
+    @Override
+    public void restarStock(int id, int cantidad) {
+        Producto producto = productoRepository.findById(id).get();
+        producto.setStock(producto.getStock() - cantidad);
+
+        if(producto.getStock() == 0){
+            producto.setEstado(false);
+        }
+
         productoRepository.save(producto);
     }
 

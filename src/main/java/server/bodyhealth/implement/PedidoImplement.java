@@ -55,7 +55,7 @@ public class PedidoImplement implements PedidoService {
 
     @Transactional
     @Override
-    public void guardar(PedidoDto pedidoDto) {
+    public int guardar(PedidoDto pedidoDto) {
         Pedido pedido = pedidoMapper.toEntity(pedidoDto);
 
 
@@ -68,6 +68,8 @@ public class PedidoImplement implements PedidoService {
         );
 
         pedidoRepository.save(pedido);
+
+        return pedido.getId_pedido();
     }
     @Override
     public void eliminar(int id) {

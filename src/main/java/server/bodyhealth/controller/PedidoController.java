@@ -52,13 +52,14 @@ public class PedidoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarPedido(@Valid @RequestBody PedidoDto pedidoDto){
         response.clear();
 
-        pedidoService.guardar(pedidoDto);
+        int id_pedido = pedidoService.guardar(pedidoDto);
         response.put("message", "Pedido guardado satisfactoriamente");
+        response.put("id_pedido", id_pedido);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

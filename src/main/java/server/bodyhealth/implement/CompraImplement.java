@@ -58,10 +58,12 @@ public class CompraImplement implements CompraService {
     }
 
     @Override
-    public void guardar(CompraDto compraDto) {
+    public int guardar(CompraDto compraDto) {
 
         Compra compra = compraMapper.toEntity(compraDto);
         compraRepository.save(compra);
+
+        return compra.getId_compra();
     }
 
     @Override

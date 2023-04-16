@@ -11,7 +11,7 @@ import java.util.List;
 public interface PedidoService{
     public List<PedidoDto> listarPedidos();
 
-    public void guardar(PedidoDto pedidoDto);
+    public int guardar(PedidoDto pedidoDto);
 
     public void eliminar(int id_pedido);
 

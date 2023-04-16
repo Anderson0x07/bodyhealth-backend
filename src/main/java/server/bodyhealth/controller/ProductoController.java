@@ -35,6 +35,14 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/activos")
+    public ResponseEntity<?> listarProductosActivos(){
+        response.clear();
+        response.put("productos",productoService.listarProductosActivos());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id_producto}")
     public ResponseEntity<?> obtenerProducto(@PathVariable int id_producto) {
@@ -89,6 +97,16 @@ public class ProductoController {
         response.clear();
         productoService.activarProducto(id);
         response.put("message","Producto activado.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @PutMapping("/compra/{id_producto}/{cantidad}")
+    public ResponseEntity<?> editarStock(@PathVariable int id_producto, @PathVariable int cantidad) {
+        response.clear();
+
+        productoService.restarStock(id_producto,cantidad);
+        response.put("message", "Stock actualizado");
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

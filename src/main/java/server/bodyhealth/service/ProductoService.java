@@ -13,6 +13,8 @@ import java.util.List;
 public interface ProductoService {
     public List<ProductoDto> listarProductos();
 
+    public List<ProductoDto> listarProductosActivos();
+
     public void guardar(ProductoDto productoDto);
 
     public void eliminar(int id_producto);
@@ -26,4 +28,6 @@ public interface ProductoService {
     public void desactivarProducto(int id);
 
     public void activarProducto(int id);
+
+    public void restarStock(int id_producto,int cantidad);
 }

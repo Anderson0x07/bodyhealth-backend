@@ -45,8 +45,9 @@ public class CompraController {
     public ResponseEntity<?> guardarCompra(@Valid @RequestBody CompraDto compraDto){
         response.clear();
 
-        compraService.guardar(compraDto);
+        int id_factura = compraService.guardar(compraDto);
         response.put("message", "Compra guardada satisfactoriamente");
+        response.put("id_factura", id_factura);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

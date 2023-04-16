@@ -45,7 +45,7 @@ public class ClienteDetalleController {
     }
 
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerClienteDetalleByID(@PathVariable int id) {
         response.clear();
@@ -53,10 +53,10 @@ public class ClienteDetalleController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarClienteDetalle(@Valid @RequestBody ClienteDetalleDto clienteDetalleDto){
         response.clear();
+        log.info(clienteDetalleDto.toString());
         int id_factura = clienteDetalleService.guardar(clienteDetalleDto);
         response.put("message", "Cliente detalle guardado satisfactoriamente");
         response.put("id_factura", id_factura);

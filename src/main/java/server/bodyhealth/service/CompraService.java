@@ -11,7 +11,7 @@ import java.util.List;
 public interface CompraService{
     public List<CompraDto> listarCompras();
 
-    public void guardar(CompraDto compraDto);
+    public int guardar(CompraDto compraDto);
 
     public void eliminar(int id);
 
