@@ -62,7 +62,7 @@ public class AdminImplement implements AdminService {
     @Autowired
     private ProveedorRepository proveedorRepository;
     @Autowired
-    private PedidoRepository pedidoRepository;
+    private ClienteDetalleRepository clienteDetalleRepository;
 
 
     @Override
@@ -210,7 +210,7 @@ public class AdminImplement implements AdminService {
         infoAdminDto.setProductos(productoRepository.findAll().size());
         infoAdminDto.setCompras(compraRepository.findAll().size());
         infoAdminDto.setProveedores(proveedorRepository.findAll().size());
-        infoAdminDto.setPedidos(pedidoRepository.findAll().size());
+        infoAdminDto.setPedidos(clienteDetalleRepository.findAll().size());
         return  infoAdminDto;
     }
 

@@ -10,9 +10,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
 
-        String url = "http://localhost:5173"; //SE CAMBIA EN PRODUCCION
+        String url = "https://bodyhealth-web.netlify.app"; //SE CAMBIA EN PRODUCCION
 
-        registry.addMapping("/login").allowedOrigins(url);
+        registry.addMapping("/login").allowedOrigins(url).allowedOrigins(url);
 
 //        registry.addMapping("/login")
 //                .allowedOrigins("http://localhost:5173")

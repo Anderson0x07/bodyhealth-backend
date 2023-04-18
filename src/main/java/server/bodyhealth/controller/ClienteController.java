@@ -13,6 +13,7 @@ import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.service.ClienteService;
 import server.bodyhealth.service.EmailService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,7 +51,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarCliente(@Valid @RequestBody ClienteDto clienteDto) throws Exception {
         response.clear();

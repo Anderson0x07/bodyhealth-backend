@@ -64,7 +64,7 @@ public class ResetPasswordTokenImplement implements ResetPasswordTokenService {
         if (resetPasswordToken == null) {
             throw new NotFoundException("Token invalido.");
         }
-        if (resetPasswordToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+        if (resetPasswordToken.getExpiryDate().isBefore(LocalDateTime.now(ZoneId.of("America/Bogota")))) {
             throw new NotFoundException("Token expirado.");
         }
         Usuario usuario = resetPasswordToken.getUsuario();

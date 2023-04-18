@@ -96,7 +96,7 @@ public class PedidoController {
 
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(reporteProductos);
 
-        JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/FacturaBodyhealth.jrxml"));
+        JasperReport compileReport = JasperCompileManager.compileReport( getClass().getResourceAsStream("/FacturaBodyhealth.jrxml"));
 
         JasperPrint reporte = JasperFillManager.fillReport(compileReport, map, beanCollectionDataSource);
 

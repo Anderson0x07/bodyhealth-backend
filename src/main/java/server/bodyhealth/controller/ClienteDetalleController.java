@@ -99,7 +99,7 @@ public class ClienteDetalleController {
 
         JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(reportePlan);
 
-        JasperReport compileReport = JasperCompileManager.compileReport(new FileInputStream("src/main/resources/FacturaPlanBodyhealth.jrxml"));
+        JasperReport compileReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/FacturaPlanBodyhealth.jrxml"));
 
         JasperPrint reporte = JasperFillManager.fillReport(compileReport, map, beanCollectionDataSource);
 
