@@ -3,9 +3,7 @@ package server.bodyhealth.implement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import server.bodyhealth.dto.AdminDto;
-import server.bodyhealth.dto.InfoAdminDto;
-import server.bodyhealth.dto.VerifyTokenRequestDto;
+import server.bodyhealth.dto.*;
 import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import server.bodyhealth.exception.NotFoundException;
@@ -19,10 +17,7 @@ import server.bodyhealth.util.MessageUtil;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -211,7 +206,54 @@ public class AdminImplement implements AdminService {
         infoAdminDto.setCompras(compraRepository.findAll().size());
         infoAdminDto.setProveedores(proveedorRepository.findAll().size());
         infoAdminDto.setPedidos(clienteDetalleRepository.findAll().size());
+
+        infoAdminDto.setFacturasPorMesPlanes(obtenerFacturasPlanesDto());
+        infoAdminDto.setFacturasPorMesProductos(obtenerFacturasProductosDto());
+
         return  infoAdminDto;
+    }
+
+
+    public List<FacturasPlanesDto> obtenerFacturasPlanesDto() {
+
+        Date fechaActual = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaActual);
+
+        // Restar 12 meses
+        calendar.add(Calendar.MONTH, -12);
+        Date fechaRestada = calendar.getTime();
+
+        List<FacturasPlanesProjection> projections = clienteDetalleRepository.obtenerFacturasPlanesProjection(fechaRestada);
+        List<FacturasPlanesDto> dtos = new ArrayList<>();
+
+        for (FacturasPlanesProjection projection : projections) {
+            FacturasPlanesDto dto = new FacturasPlanesDto(projection.getMes(), projection.getTotalFacturas(), projection.getTotalVentas());
+            dtos.add(dto);
+        }
+
+        return dtos;
+    }
+
+    public List<FacturasProductosDto> obtenerFacturasProductosDto() {
+
+        Date fechaActual = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(fechaActual);
+
+        // Restar 12 meses
+        calendar.add(Calendar.MONTH, -12);
+        Date fechaRestada = calendar.getTime();
+
+        List<FacturasProductosProjection> projections = compraRepository.obtenerFacturasProductosProjection(fechaRestada);
+        List<FacturasProductosDto> dtos = new ArrayList<>();
+
+        for (FacturasProductosProjection projection : projections) {
+            FacturasProductosDto dto = new FacturasProductosDto(projection.getMes(), projection.getTotalVentas());
+            dtos.add(dto);
+        }
+
+        return dtos;
     }
 
 

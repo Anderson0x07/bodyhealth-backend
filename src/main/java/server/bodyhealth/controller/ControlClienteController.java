@@ -46,8 +46,9 @@ public class ControlClienteController {
     public ResponseEntity<?> guardarControlCliente(@Valid @RequestBody ControlClienteDto controlClienteDto){
         response.clear();
 
-        controlClienteService.guardar(controlClienteDto);
+        int id_control = controlClienteService.guardar(controlClienteDto);
         response.put("message", "Control Cliente guardado satisfactoriamente");
+        response.put("id_control", id_control);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 

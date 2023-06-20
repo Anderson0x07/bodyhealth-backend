@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.MetodoPagoDto;
 import server.bodyhealth.service.MetodoPagoService;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +38,7 @@ public class MetodoPagoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
     @PostMapping("/guardar")
     public ResponseEntity<?> guardarMetodoPago(@Valid @RequestBody MetodoPagoDto metodoPagoDto){
         response.clear();

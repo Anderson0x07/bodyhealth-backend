@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import server.bodyhealth.dto.InfoBasicaDto;
 import server.bodyhealth.service.InfoBasicaService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +26,7 @@ public class InfoBasicaController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerInfoBasica(@PathVariable int id) {
         response.clear();

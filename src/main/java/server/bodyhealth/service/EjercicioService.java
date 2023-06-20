@@ -10,6 +10,8 @@ import java.util.List;
 public interface EjercicioService {
     public List<EjercicioDto> listarEjercicios();
 
+    public List<EjercicioDto> listarEjerciciosFiltro(int id);
+
     public void guardar(EjercicioDto ejercicioDto);
 
     public void eliminar(int id_ejercicio);

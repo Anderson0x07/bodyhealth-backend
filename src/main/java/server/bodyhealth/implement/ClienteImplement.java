@@ -131,6 +131,18 @@ public class ClienteImplement implements ClienteService {
 
     }
 
+    @Transactional
+    @Override
+    public void editarEstado(int id, boolean estado) {
+        Usuario cliente = usuarioRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("clienteNotFound",null, Locale.getDefault()))
+        );
+
+        cliente.setEstado(estado);
+        usuarioRepository.save(cliente);
+
+    }
+
 
 
     @Override

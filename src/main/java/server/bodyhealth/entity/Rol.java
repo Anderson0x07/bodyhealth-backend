@@ -23,8 +23,8 @@ public class Rol implements Serializable {
     @Column(nullable = false, length = 50, unique = true)
     private String nombre;
 
-    public Rol(String name) {
-        this.nombre = name;
+    public Rol(int id_rol) {
+        this.id_rol = id_rol;
     }
 
     @JsonIgnoreProperties("rol")

@@ -53,6 +53,23 @@ public class EjercicioImplement implements EjercicioService {
 
     }
 
+    @Override
+    public List<EjercicioDto> listarEjerciciosFiltro(int id) {
+        List<EjercicioDto> ejerciciosDto = new ArrayList<>();
+        List<Ejercicio> ejercicios = ejercicioRepository.findAllByMusculo(id);
+
+        if(!ejercicios.isEmpty()) {
+            for (Ejercicio ejercicio : ejercicios) {
+                EjercicioDto ejercicioDto = ejercicioMapper.toDto(ejercicio);
+                ejerciciosDto.add(ejercicioDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("ejerciciosEmpty",null, Locale.getDefault()));
+        }
+        return ejerciciosDto;
+
+    }
+
     @Transactional
     @Override
     public void guardar(EjercicioDto ejercicioDto) {

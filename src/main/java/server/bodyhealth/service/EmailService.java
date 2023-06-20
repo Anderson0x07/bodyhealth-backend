@@ -149,7 +149,7 @@ public class EmailService {
                  "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:580px\">\n" +
                  "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                  "<tr style=\"border-collapse:collapse\">\n" +
-                 "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
+                 "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
                  "</tr>\n" +
                  "</table></td>\n" +
                  "</tr>\n" +
@@ -298,7 +298,7 @@ public class EmailService {
                  "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:560px\">\n" +
                  "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                  "<tr style=\"border-collapse:collapse\">\n" +
-                 "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
+                 "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
                  "</tr>\n" +
                  "</table></td>\n" +
                  "</tr>\n" +
@@ -435,7 +435,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:580px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
+                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +
@@ -566,7 +566,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:560px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
+                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +
@@ -709,7 +709,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:580px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
+                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +
@@ -848,7 +848,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:560px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
+                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +
@@ -990,7 +990,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:580px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
+                "<td align=\"center\" style=\"Margin:0;padding-left:10px;padding-right:10px;padding-top:25px;padding-bottom:25px;font-size:0px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\" height=\"156\"></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +
@@ -1129,7 +1129,7 @@ public class EmailService {
                 "<td valign=\"top\" align=\"center\" style=\"padding:0;Margin:0;width:560px\">\n" +
                 "<table width=\"100%\" cellspacing=\"0\" cellpadding=\"0\" role=\"presentation\" style=\"mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px\">\n" +
                 "<tr style=\"border-collapse:collapse\">\n" +
-                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://i.ibb.co/G7P02Js/Logo-Body-Health.jpg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
+                "<td class=\"es-infoblock made_with\" align=\"center\" style=\"padding:0;Margin:0;line-height:0px;font-size:0px;color:#CCCCCC\"><a target=\"_blank\" href=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" style=\"-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;text-decoration:underline;color:#CCCCCC;font-size:12px\"><img src=\"https://elasticbeanstalk-us-east-1-416927159758.s3.amazonaws.com/images/LOGO_Gym+Bodyhealth.jpeg\" alt width=\"125\" style=\"display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic\"></a></td>\n" +
                 "</tr>\n" +
                 "</table></td>\n" +
                 "</tr>\n" +

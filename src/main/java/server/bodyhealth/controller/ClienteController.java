@@ -43,7 +43,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
     @GetMapping("/all")
     public ResponseEntity<?> listarClientes(){
         response.clear();
@@ -75,6 +75,17 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @PutMapping("/cambiar-estado/{id}/{estado}")
+    public ResponseEntity<?> cambiarEstadoCliente(@PathVariable int id, @PathVariable boolean estado) {
+        response.clear();
+        clienteService.editarEstado(id,estado);
+        response.put("message", "Datos actualizados satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
@@ -93,7 +104,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_CLIENTE')")
+    @PermitAll
     @PostMapping("/restablecer-password/{id}")
     public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
         response.clear();
@@ -102,6 +113,7 @@ public class ClienteController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PermitAll
     @PostMapping("/verificar-token")
     public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
         response.clear();

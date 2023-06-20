@@ -10,7 +10,7 @@ import java.util.List;
 public interface ControlClienteService{
     public List<ControlClienteDto> listarContolClientes();
 
-    public void guardar(ControlClienteDto controlClienteDto);
+    public int guardar(ControlClienteDto controlClienteDto);
 
     public void eliminar(int id);
 

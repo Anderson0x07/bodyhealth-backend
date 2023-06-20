@@ -49,9 +49,11 @@ public class ControlClienteImplement implements ControlClienteService {
     }
 
     @Override
-    public void guardar(ControlClienteDto controlClienteDto) {
+    public int guardar(ControlClienteDto controlClienteDto) {
         ControlCliente controlCliente = controlClienteMapper.toEntity(controlClienteDto);
         controlClienteRepository.save(controlCliente);
+
+        return controlCliente.getId_controlcliente();
     }
 
     @Override

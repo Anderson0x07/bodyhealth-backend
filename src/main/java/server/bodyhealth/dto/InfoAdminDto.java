@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,4 +20,8 @@ public class InfoAdminDto {
     private int compras;
     private int proveedores;
     private int pedidos;
+
+    private List<FacturasPlanesDto> facturasPorMesPlanes;
+    private List<FacturasProductosDto> facturasPorMesProductos;
+
 }

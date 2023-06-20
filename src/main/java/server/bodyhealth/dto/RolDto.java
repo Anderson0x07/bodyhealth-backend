@@ -16,4 +16,8 @@ public class RolDto {
 
     @NotEmpty(message = "Se requiere un nombre del rol")
     private String nombre;
+
+    public RolDto(int id_rol){
+        this.id_rol = id_rol;
+    }
 }

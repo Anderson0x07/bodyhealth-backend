@@ -30,6 +30,14 @@ public class EjercicioController {
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/filtro/{id}")
+    public ResponseEntity<?> listarEjerciciosFiltro(@PathVariable int id){
+        response.clear();
+        response.put("ejercicios", ejercicioService.listarEjerciciosFiltro(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/{id}")
     public ResponseEntity<?> obtenerEjercicio(@PathVariable int id) {
         response.clear();

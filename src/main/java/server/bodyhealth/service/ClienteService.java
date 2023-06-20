@@ -23,6 +23,8 @@ public interface ClienteService {
 
     public ClienteDto editarCliente(int id, ClienteDto clienteDto);
 
+    public void editarEstado(int id, boolean estado);
+
     public ClienteDto loadImage(ClienteDto clienteDto) throws IOException;
 
     public void enviarTokenPassword(int id) throws Exception;

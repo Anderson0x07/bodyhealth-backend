@@ -25,16 +25,22 @@ public class InfoBasica {
     @NotEmpty(message = "Se requiere el rut de la empresa")
     private String rut;
 
+    @Column(length = 700)
     private String url_facebook;
 
+    @Column(length = 700)
     private String url_whatsapp;
 
+    @Column(length = 700)
     private String url_tiktok;
 
+    @Column(length = 700)
     private String url_youtube;
 
+    @Column(length = 700)
     private String url_twitter;
 
+    @Column(length = 700)
     private String url_instagram;
 
     @NotEmpty(message = "Se requiere el email de la empresa")

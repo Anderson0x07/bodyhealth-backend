@@ -32,6 +32,14 @@ public class RutinaEjercicioController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/rutina/{id}")
+    public ResponseEntity<?> listarEjerciciosByRutina(@PathVariable int id){
+        response.clear();
+        response.put("rutinaejercicios",rutinaEjercicioService.listarRutinasEjerciciosByRutina(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/{id}")

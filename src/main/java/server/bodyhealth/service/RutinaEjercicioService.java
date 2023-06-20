@@ -8,6 +8,7 @@ import java.util.List;
 @Service
 public interface RutinaEjercicioService {
     public List<RutinaEjercicioDto> listarRutinasEjercicios();
+    public List<RutinaEjercicioDto> listarRutinasEjerciciosByRutina(int id);
 
     public void guardar(RutinaEjercicioDto rutinaEjercicioDto);
 

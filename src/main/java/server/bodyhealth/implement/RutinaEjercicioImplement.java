@@ -57,6 +57,24 @@ public class RutinaEjercicioImplement implements RutinaEjercicioService {
 
     }
 
+    @Override
+    public List<RutinaEjercicioDto> listarRutinasEjerciciosByRutina(int id) {
+        List<RutinaEjercicioDto> rutinaEjerciciosDto = new ArrayList<>();
+
+        List<RutinaEjercicio> rutinaEjercicios = rutinaEjercicioRepository.encontrarRutinaEjerciciosByRutina(id);
+
+        if(!rutinaEjercicios.isEmpty()) {
+            for (RutinaEjercicio rutinaEjercicio : rutinaEjercicios) {
+                RutinaEjercicioDto rutinaEjercicioDto = rutinaEjercicioMapper.toDto(rutinaEjercicio);
+                rutinaEjerciciosDto.add(rutinaEjercicioDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("rutinaEjerciciosEmpty",null, Locale.getDefault()));
+        }
+        return rutinaEjerciciosDto;
+
+    }
+
     @Transactional
     @Override
     public void guardar(RutinaEjercicioDto rutinaEjercicioDto) {
