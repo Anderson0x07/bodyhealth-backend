@@ -28,6 +28,8 @@ public class ProductoCompletoDto {
 
     private boolean estado;
 
+    private String tipo;
+
     private ProveedorDto proveedor;
 
     private List<PedidoDto> pedidos = new ArrayList<>();

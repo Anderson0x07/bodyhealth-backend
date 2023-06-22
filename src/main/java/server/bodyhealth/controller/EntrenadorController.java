@@ -12,6 +12,7 @@ import server.bodyhealth.dto.VerifyTokenRequestDto;
 import server.bodyhealth.service.EmailService;
 import server.bodyhealth.service.EntrenadorService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
@@ -42,7 +43,7 @@ public class EntrenadorController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PermitAll
     @GetMapping("/all")
     public ResponseEntity<?> listarEntrenadores(){
         response.clear();

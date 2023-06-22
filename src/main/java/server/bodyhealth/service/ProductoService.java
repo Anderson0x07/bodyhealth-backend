@@ -15,6 +15,11 @@ public interface ProductoService {
 
     public List<ProductoDto> listarProductosActivos();
 
+    public List<ProductoDto> listarProductosPorTipo(String tipo);
+
+    public List<ProductoDto> listarProductosActivosPorTipo(String tipo);
+
+
     public void guardar(ProductoDto productoDto);
 
     public void eliminar(int id_producto);

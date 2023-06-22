@@ -27,5 +27,7 @@ public class ProductoDto {
 
     private boolean estado;
 
+    private String tipo;
+
     private ProveedorDto proveedor;
 }

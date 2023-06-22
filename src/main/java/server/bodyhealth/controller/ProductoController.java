@@ -10,9 +10,11 @@ import server.bodyhealth.dto.ProductoDto;
 import server.bodyhealth.service.ProductoService;
 
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,6 +42,22 @@ public class ProductoController {
     public ResponseEntity<?> listarProductosActivos(){
         response.clear();
         response.put("productos",productoService.listarProductosActivos());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/filtro/{tipo}")
+    public ResponseEntity<?> listarProductosFiltro(@PathVariable String tipo){
+        response.clear();
+        response.put("productos",productoService.listarProductosPorTipo(tipo));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/filtro/activos/{tipo}")
+    public ResponseEntity<?> listarProductosActivosFiltro(@PathVariable String tipo){
+        response.clear();
+        response.put("productos",productoService.listarProductosActivosPorTipo(tipo));
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

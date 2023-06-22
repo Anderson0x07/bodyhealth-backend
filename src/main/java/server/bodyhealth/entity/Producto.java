@@ -32,6 +32,8 @@ public class Producto implements Serializable{
 
     private boolean estado;
 
+    private String tipo;
+
     @ManyToOne()
     @JoinColumn(name = "id_proveedor")
     private Proveedor proveedor;

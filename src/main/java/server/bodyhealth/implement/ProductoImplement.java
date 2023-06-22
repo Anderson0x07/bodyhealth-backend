@@ -76,6 +76,36 @@ public class ProductoImplement implements ProductoService {
         return productoDtos;
     }
 
+    @Override
+    public List<ProductoDto> listarProductosPorTipo(String tipo) {
+        List<ProductoDto> productoDtos = new ArrayList<>();
+        List<Producto> productos = productoRepository.findByTipo(tipo);
+        if(!productos.isEmpty()) {
+            for (Producto producto : productos) {
+                ProductoDto productoDto = productoMapper.toDto(producto);
+                productoDtos.add(productoDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("productosEmpty",null, Locale.getDefault()));
+        }
+        return productoDtos;
+    }
+
+    @Override
+    public List<ProductoDto> listarProductosActivosPorTipo(String tipo) {
+        List<ProductoDto> productoDtos = new ArrayList<>();
+        List<Producto> productos = productoRepository.findActivosByTipo(tipo);
+        if(!productos.isEmpty()) {
+            for (Producto producto : productos) {
+                ProductoDto productoDto = productoMapper.toDto(producto);
+                productoDtos.add(productoDto);
+            }
+        }else{
+            throw new NotFoundException(messageUtil.getMessage("productosEmpty",null, Locale.getDefault()));
+        }
+        return productoDtos;
+    }
+
 
     @Transactional
     @Override
@@ -110,6 +140,8 @@ public class ProductoImplement implements ProductoService {
         producto.setEstado(productoDto.isEstado());
         if(productoDto.getNombre()!=null)
             producto.setNombre(productoDto.getNombre());
+        if(productoDto.getTipo()!=null)
+            producto.setTipo(productoDto.getTipo());
         if(productoDto.getFoto()!=null)
             producto.setFoto(productoDto.getFoto());
         if(productoDto.getPrecio()>=100.0)

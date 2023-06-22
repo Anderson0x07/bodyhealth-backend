@@ -58,6 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.csrf().disable()
 				.authorizeRequests().antMatchers("/login").permitAll()
 				.antMatchers("/cliente/guardar").permitAll()
+				.antMatchers("/entrenador/all").permitAll()
 				.antMatchers("/cliente/restablecer-password/**").permitAll()
 				.antMatchers("/cliente/verificar-token").permitAll()
 				//tests permisos
