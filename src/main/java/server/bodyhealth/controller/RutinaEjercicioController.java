@@ -2,12 +2,16 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.RutinaEjercicio;
+import server.bodyhealth.dto.RutinaEjercicioDto;
 import server.bodyhealth.service.RutinaEjercicioService;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -18,62 +22,61 @@ public class RutinaEjercicioController {
     @Autowired
     private RutinaEjercicioService rutinaEjercicioService;
 
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/all")
-    public ResponseEntity<List<RutinaEjercicio>> listarRutinaEjercicioes(){
-
-        List<RutinaEjercicio> rutinaEjercicios = rutinaEjercicioService.listarRutinasEjercicios();
-        if (!rutinaEjercicios.isEmpty()) {
-            return ResponseEntity.ok(rutinaEjercicios);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<?> listarRutinaEjercicios(){
+        response.clear();
+        response.put("rutinaejercicios",rutinaEjercicioService.listarRutinasEjercicios());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_rutinaEjercicio}")
-    public ResponseEntity<RutinaEjercicio> obtenerRutinaEjercicio(@PathVariable int id_rutinaEjercicio) {
-        RutinaEjercicio rutinaEjercicio = rutinaEjercicioService.encontrarRutinaEjercicio(id_rutinaEjercicio);
-        if (rutinaEjercicio == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(rutinaEjercicio);
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/rutina/{id}")
+    public ResponseEntity<?> listarEjerciciosByRutina(@PathVariable int id){
+        response.clear();
+        response.put("rutinaejercicios",rutinaEjercicioService.listarRutinasEjerciciosByRutina(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerRutinaEjercicioByID(@PathVariable int id) {
+        response.clear();
+        response.put("rutinaejercicio", rutinaEjercicioService.encontrarRutinaEjercicio(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
-    public ResponseEntity<RutinaEjercicio> guardarRutinaEjercicio(@RequestBody RutinaEjercicio rutinaEjercicio){
-        RutinaEjercicio rutinaEjercicioExiste = rutinaEjercicioService.encontrarRutinaEjercicio(rutinaEjercicio.getId_rutina_ejercicio());
-        if (rutinaEjercicioExiste == null) {
-            rutinaEjercicioService.guardar(rutinaEjercicio);
-            return ResponseEntity.ok(rutinaEjercicio);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarRutinaEjercicio(@Valid @RequestBody RutinaEjercicioDto rutinaEjercicioDto){
+        response.clear();
+
+        rutinaEjercicioService.guardar(rutinaEjercicioDto);
+        response.put("message", "Rutina ejercicio guardada satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_rutinaEjercicio}")
-    public ResponseEntity<RutinaEjercicio> editarRutinaEjercicio(@PathVariable int id_rutinaEjercicio, @RequestBody RutinaEjercicio rutinaEjercicioActualizado) {
-        RutinaEjercicio rutinaEjercicioExistente = rutinaEjercicioService.encontrarRutinaEjercicio(id_rutinaEjercicio);
-        if (rutinaEjercicioExistente != null) {
 
-            rutinaEjercicioExistente.setEjercicio(rutinaEjercicioActualizado.getEjercicio());
-            rutinaEjercicioExistente.setRutina(rutinaEjercicioActualizado.getRutina());
-
-            rutinaEjercicioService.guardar(rutinaEjercicioExistente);
-
-            return ResponseEntity.ok(rutinaEjercicioExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarRutinaEjercicio(@PathVariable int id, @RequestBody RutinaEjercicioDto rutinaEjercicioDto) {
+        response.clear();
+        RutinaEjercicioDto rutinaEjercicio = rutinaEjercicioService.editarRutinaEjercicio(id,rutinaEjercicioDto);
+        response.put("message", "Rutina ejercicio actualizada satisfactoriamente");
+        response.put("rutinaejercicio", rutinaEjercicio);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_rutinaEjercicio}")
-    public ResponseEntity<Void> eliminarRutinaEjercicio(@PathVariable int id_rutinaEjercicio) {
-        RutinaEjercicio rutinaEjercicioExistente = rutinaEjercicioService.encontrarRutinaEjercicio(id_rutinaEjercicio);
-        if (rutinaEjercicioExistente != null) {
-            rutinaEjercicioService.eliminar(rutinaEjercicioExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarRutinaEjercicio(@PathVariable int id) {
+        response.clear();
+        rutinaEjercicioService.eliminar(id);
+        response.put("message", "Rutina ejercicio eliminada satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

@@ -1,82 +1,114 @@
 package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.ClienteDetalle;
+import server.bodyhealth.dto.ClienteDetalleDto;
+import server.bodyhealth.dto.ReportePlanDto;
 import server.bodyhealth.service.ClienteDetalleService;
-import server.bodyhealth.service.ClienteDetalleService;
+import server.bodyhealth.service.ReporteService;
 
+import javax.validation.Valid;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/clientedetalle")
 @CrossOrigin
 @Slf4j
-@RequestMapping("/clienteDetalle")
 public class ClienteDetalleController {
     @Autowired
     private ClienteDetalleService clienteDetalleService;
 
-    @GetMapping("/all")
-    public ResponseEntity<List<ClienteDetalle>> listarClienteDetalles(){
+    @Autowired
+    private ReporteService reporteService;
 
-        List<ClienteDetalle> clienteDetalles = clienteDetalleService.listarClientesDetalles();
-        if (!clienteDetalles.isEmpty()) {
-            return ResponseEntity.ok(clienteDetalles);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<?> listarClienteDetalles(){
+        response.clear();
+        response.put("clientedetalles",clienteDetalleService.listarClientesDetalles());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_clienteDetalle}")
-    public ResponseEntity<ClienteDetalle> obtenerClienteDetalle(@PathVariable int id_clienteDetalle) {
-        ClienteDetalle clienteDetalle = clienteDetalleService.encontrarClienteDetalle(id_clienteDetalle);
-        if (clienteDetalle == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(clienteDetalle);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerClienteDetalleByID(@PathVariable int id) {
+        response.clear();
+        response.put("clientedetalle", clienteDetalleService.encontrarClienteDetalle(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<ClienteDetalle> guardarClienteDetalle(@RequestBody ClienteDetalle clienteDetalle){
-        ClienteDetalle clienteDetalleExiste = clienteDetalleService.encontrarClienteDetalle(clienteDetalle.getId_factura());
-        if (clienteDetalleExiste == null) {
-            clienteDetalleService.guardar(clienteDetalle);
-            return ResponseEntity.ok(clienteDetalle);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarClienteDetalle(@Valid @RequestBody ClienteDetalleDto clienteDetalleDto){
+        response.clear();
+        log.info(clienteDetalleDto.toString());
+        int id_factura = clienteDetalleService.guardar(clienteDetalleDto);
+        response.put("message", "Cliente detalle guardado satisfactoriamente");
+        response.put("id_factura", id_factura);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_clienteDetalle}")
-    public ResponseEntity<ClienteDetalle> editarClienteDetalle(@PathVariable int id_clienteDetalle, @RequestBody ClienteDetalle clienteDetalleActualizado) {
-        ClienteDetalle clienteDetalleExistente = clienteDetalleService.encontrarClienteDetalle(id_clienteDetalle);
-        if (clienteDetalleExistente != null) {
 
-            clienteDetalleExistente.setFecha_fin(clienteDetalleActualizado.getFecha_fin());
-            clienteDetalleExistente.setFecha_inicio(clienteDetalleActualizado.getFecha_inicio());
-            clienteDetalleExistente.setCliente(clienteDetalleActualizado.getCliente());
-            clienteDetalleExistente.setMetodoPago(clienteDetalleActualizado.getMetodoPago());
-            clienteDetalleExistente.setPlan(clienteDetalleActualizado.getPlan());
-
-            clienteDetalleService.guardar(clienteDetalleExistente);
-
-            return ResponseEntity.ok(clienteDetalleExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarClienteDetalle(@PathVariable int id, @RequestBody ClienteDetalleDto clienteDetalleDto) {
+        response.clear();
+        ClienteDetalleDto clienteDetalle =  clienteDetalleService.editarClienteDetalle(id,clienteDetalleDto);
+        response.put("message", "Cliente detalle actualizado satisfactoriamente");
+        response.put("clientedetalle", clienteDetalle);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_clienteDetalle}")
-    public ResponseEntity<Void> eliminarClienteDetalle(@PathVariable int id_clienteDetalle) {
-        ClienteDetalle clienteDetalleExistente = clienteDetalleService.encontrarClienteDetalle(id_clienteDetalle);
-        if (clienteDetalleExistente != null) {
-            clienteDetalleService.eliminar(clienteDetalleExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarClienteDetalle(@PathVariable int id) {
+        response.clear();
+        clienteDetalleService.eliminar(id);
+        response.put("message", "Cliente detalle eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    //GENERAR PDF DE PEDIDOS
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping( value = "/pdf/{id_factura}", produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]> generarPDF(@PathVariable int id_factura) throws FileNotFoundException, JRException, SQLException {
+
+        ClienteDetalleDto clienteDetalleDto = clienteDetalleService.encontrarClienteDetalle(id_factura);
+
+        Object[] arr = reporteService.llenarReportePlan(clienteDetalleDto);
+
+        HashMap<String, Object> map = (HashMap<String, Object>) arr[0];
+
+        List<ReportePlanDto> reportePlan = (List<ReportePlanDto>) arr[1];
+
+        JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(reportePlan);
+
+        JasperReport compileReport = JasperCompileManager.compileReport(getClass().getResourceAsStream("/FacturaPlanBodyhealth.jrxml"));
+
+        JasperPrint reporte = JasperFillManager.fillReport(compileReport, map, beanCollectionDataSource);
+
+        byte[] data = JasperExportManager.exportReportToPdf(reporte);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=factura-plan-"+clienteDetalleDto.getCliente().getDocumento()+".pdf");
+
+        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(data);
+
     }
 }

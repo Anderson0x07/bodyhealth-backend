@@ -2,80 +2,72 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.ClienteRutina;
+import server.bodyhealth.dto.ClienteRutinaDto;
 import server.bodyhealth.service.ClienteRutinaService;
-import server.bodyhealth.service.ClienteRutinaService;
-
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
 @Slf4j
-@RequestMapping("/clienteRutina")
+@RequestMapping("/clienterutina")
 public class ClienteRutinaController {
-
     @Autowired
     private ClienteRutinaService clienteRutinaService;
 
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<List<ClienteRutina>> listarClienteRutinaes(){
-
-        List<ClienteRutina> clientesRutinas = clienteRutinaService.listarClientesRutina();
-        if (!clientesRutinas.isEmpty()) {
-            return ResponseEntity.ok(clientesRutinas);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<?> listarClienteRutinas(){
+        response.clear();
+        response.put("clienterutinas",clienteRutinaService.listarClienteRutinas());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_clienteRutina}")
-    public ResponseEntity<ClienteRutina> obtenerClienteRutina(@PathVariable int id_clienteRutina) {
-        ClienteRutina clienteRutina = clienteRutinaService.encontrarClienteRutina(id_clienteRutina);
-        if (clienteRutina == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(clienteRutina);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerClienteRutinaByID(@PathVariable int id) {
+        response.clear();
+        response.put("clienterutina", clienteRutinaService.encontrarClienteRutina(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
-    public ResponseEntity<ClienteRutina> guardarClienteRutina(@RequestBody ClienteRutina clienteRutina){
-        ClienteRutina clienteRutinaExiste = clienteRutinaService.encontrarClienteRutina(clienteRutina.getId_clienterutina());
-        if (clienteRutinaExiste == null) {
-            clienteRutinaService.guardar(clienteRutina);
-            return ResponseEntity.ok(clienteRutina);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarClienteRutina(@Valid @RequestBody ClienteRutinaDto clienteRutinaDto){
+        response.clear();
+
+        int id_clienterutina = clienteRutinaService.guardar(clienteRutinaDto);
+        response.put("message", "Cliente rutina guardada satisfactoriamente");
+        response.put("id_clienterutina", id_clienterutina);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_clienteRutina}")
-    public ResponseEntity<ClienteRutina> editarClienteRutina(@PathVariable int id_clienteRutina, @RequestBody ClienteRutina clienteRutinaActualizada) {
-        ClienteRutina clienteRutinaExistente = clienteRutinaService.encontrarClienteRutina(id_clienteRutina);
-        if (clienteRutinaExistente != null) {
 
-            clienteRutinaExistente.setCliente(clienteRutinaActualizada.getCliente());
-            clienteRutinaExistente.setRutina(clienteRutinaActualizada.getRutina());
-
-            clienteRutinaService.guardar(clienteRutinaExistente);
-
-            return ResponseEntity.ok(clienteRutinaExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarClienteRutina(@PathVariable int id, @RequestBody ClienteRutinaDto clienteRutinaDto) {
+        response.clear();
+        ClienteRutinaDto clienteRutina =  clienteRutinaService.editarClienteRutina(id,clienteRutinaDto);
+        response.put("message", "Cliente rutina actualizada satisfactoriamente");
+        response.put("clienterutina", clienteRutina);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_clienteRutina}")
-    public ResponseEntity<Void> eliminarClienteRutina(@PathVariable int id_clienteRutina) {
-        ClienteRutina clienteRutinaExistente = clienteRutinaService.encontrarClienteRutina(id_clienteRutina);
-        if (clienteRutinaExistente != null) {
-            clienteRutinaService.eliminar(clienteRutinaExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarClienteRutina(@PathVariable int id) {
+        response.clear();
+        clienteRutinaService.eliminar(id);
+        response.put("message", "Cliente rutina eliminada satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
-
 }

@@ -1,12 +1,13 @@
 package server.bodyhealth.entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Data
@@ -30,6 +31,8 @@ public class Producto implements Serializable{
     private  String foto;
 
     private boolean estado;
+
+    private String tipo;
 
     @ManyToOne()
     @JoinColumn(name = "id_proveedor")

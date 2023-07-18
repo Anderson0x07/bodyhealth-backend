@@ -14,7 +14,7 @@ public interface MaquinaService {
 
     public void eliminar(int id);
 
-    public void editarMaquina(int id, MaquinaDto maquinaDto);
+    public MaquinaDto editarMaquina(int id, MaquinaDto maquinaDto);
 
     //POR SERIAL MAQUINA
     public MaquinaDto encontrarMaquina(int id_maquina);

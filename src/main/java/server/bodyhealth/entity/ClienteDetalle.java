@@ -17,7 +17,7 @@ public class ClienteDetalle implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    private Usuario cliente;
 
     @ManyToOne
     @JoinColumn(name = "id_plan")
@@ -31,7 +31,7 @@ public class ClienteDetalle implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fecha_fin;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    @JoinColumn(name = "id_metodopago")
+    @ManyToOne
+    @JoinColumn(name="id_metodopago")
     private MetodoPago metodoPago;
 }

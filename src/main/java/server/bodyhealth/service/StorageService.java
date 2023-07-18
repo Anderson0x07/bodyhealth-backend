@@ -1,5 +1,5 @@
 package server.bodyhealth.service;
-/*
+
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -26,11 +26,11 @@ public class StorageService {
     @Autowired
     private AmazonS3 s3Client;
 
-    public String uploadFile(MultipartFile file) {
-        File fileObj = convertMultiPartFileToFile(file);
-        String fileName = file.getOriginalFilename();
-        s3Client.putObject(new PutObjectRequest(bucketName, fileName, fileObj).withCannedAcl(CannedAccessControlList.PublicRead));
-        fileObj.delete();
+    public String uploadFile(File file,String nombre) {
+//        File fileObj = convertMultiPartFileToFile(file);
+        String fileName = nombre;
+        s3Client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
+        //fileObj.delete();
         return "File uploaded : " + fileName;
     }
 
@@ -64,5 +64,5 @@ public class StorageService {
         }
         return convertedFile;
     }
-}*/
+}
 

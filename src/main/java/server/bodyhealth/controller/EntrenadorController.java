@@ -2,62 +2,127 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Entrenador;
-import server.bodyhealth.service.UsuarioService;
+import server.bodyhealth.dto.EntrenadorDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
+import server.bodyhealth.service.EmailService;
+import server.bodyhealth.service.EntrenadorService;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/entrenador")
 @CrossOrigin
 @Slf4j
 public class EntrenadorController {
 
+    @Autowired
+    private EntrenadorService entrenadorService;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    private EmailService emailService;
 
-    //M I P E R F I L
-    @GetMapping("/trainer/mi-perfil/{prueba}")
-    public ResponseEntity<Entrenador> perfilEntrenador(@PathVariable String prueba){
-        Entrenador entrenador = usuarioService.encontrarEntrenadorEmail(prueba);
-        if (entrenador == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(entrenador);
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @GetMapping("/mi-perfil/{id_entrenador}")
+    public ResponseEntity<?> perfilEntrenador(@PathVariable int id_entrenador){
+        response.clear();
+        response.put("entrenador", entrenadorService.encontrarEntrenador(id_entrenador));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PermitAll
+    @GetMapping("/all")
+    public ResponseEntity<?> listarEntrenadores(){
+        response.clear();
+        response.put("entrenadores",entrenadorService.listarEntrenadores());
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/all/jornada/{jornada}")
+    public ResponseEntity<?> listarEntrenadoresPorJornada(@PathVariable String jornada){
+        response.clear();
+        response.put("entrenadores",entrenadorService.listarEntrenadores(jornada));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardarEntrenador(@Valid @RequestBody EntrenadorDto entrenadorDto) throws IOException {
+        response.clear();
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(entrenadorDto);
+        entrenadorDto.setPassword(bCryptPasswordEncoder.encode(entrenadorDto1.getPassword()));
+        entrenadorService.guardar(entrenadorDto1);
+        emailService.emailRegistro(entrenadorDto.getEmail(),entrenadorDto.getNombre(),entrenadorDto.getId_usuario());
+        response.put("message", "Entrenador guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
 
-    @PutMapping("/trainer/perfil/editar")
-    public ResponseEntity<Entrenador> editarPerfil(@Valid @RequestBody Entrenador entrenadorActualizado) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarEntrenador(@PathVariable int id,@RequestBody EntrenadorDto entrenadorDto) throws IOException {
+        response.clear();
+        EntrenadorDto entrenadorDto1 = entrenadorService.loadImage(entrenadorDto);
+        EntrenadorDto entrenador = entrenadorService.editarEntrenador(id,entrenadorDto1);
+        response.put("message", "Datos actualizados satisfactoriamente");
+        response.put("entrenador", entrenador);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-        Entrenador entrenadorExistente = usuarioService.encontrarEntrenadorEmail(entrenadorActualizado.getEmail());
 
-        if (entrenadorExistente != null) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarEntrenador(@PathVariable int id) {
+        response.clear();
+        entrenadorService.eliminar(id);
+        response.put("message", "Entrenador eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-            entrenadorExistente.setNombre(entrenadorActualizado.getNombre());
-            entrenadorExistente.setApellido(entrenadorActualizado.getApellido());
-            entrenadorExistente.setDocumento(entrenadorActualizado.getDocumento());
-            entrenadorExistente.setEmail(entrenadorActualizado.getEmail());
-            entrenadorExistente.setTipo_documento(entrenadorActualizado.getTipo_documento());
-            entrenadorExistente.setPassword(entrenadorActualizado.getPassword());
-            entrenadorExistente.setFecha_nacimiento(entrenadorActualizado.getFecha_nacimiento());
-            entrenadorExistente.setTelefono(entrenadorActualizado.getTelefono());
-            entrenadorExistente.setFoto(entrenadorActualizado.getFoto());
-            entrenadorExistente.setEstado(entrenadorActualizado.isEstado());
-            entrenadorExistente.setExperiencia(entrenadorActualizado.getExperiencia());
-            entrenadorExistente.setHoja_vida(entrenadorActualizado.getHoja_vida());
-            entrenadorExistente.setJornada(entrenadorActualizado.getJornada());
-            entrenadorExistente.setTitulo_academico(entrenadorActualizado.getTitulo_academico());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerEntrenadorByID(@PathVariable int id) {
+        response.clear();
+        response.put("entrenador", entrenadorService.encontrarEntrenador(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-            usuarioService.guardar(entrenadorExistente);
+    @PreAuthorize("hasRole('ROLE_TRAINER')")
+    @PostMapping("/restablecer-password/{id}")
+    public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
+        response.clear();
+        entrenadorService.enviarTokenPassword(id);
+        response.put("message", "Se envió el token al correo");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-            return ResponseEntity.ok(entrenadorExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PostMapping("/verificar-token")
+    public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        response.clear();
+        entrenadorService.verificarToken(verifyTokenRequestDto);
+        response.put("message", "Password actualizada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> infoEntrenador(@PathVariable int id){
+        response.clear();
+        response.put("informacion", entrenadorService.infoEntrenador(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

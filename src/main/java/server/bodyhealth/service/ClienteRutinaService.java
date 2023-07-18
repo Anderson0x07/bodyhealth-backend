@@ -1,19 +1,22 @@
 package server.bodyhealth.service;
 
-import server.bodyhealth.entity.ClienteRutina;
+import server.bodyhealth.dto.ClienteRutinaCompletoDto;
+import server.bodyhealth.dto.ClienteRutinaDto;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public interface ClienteRutinaService {
-    public List<ClienteRutina> listarClientesRutina();
+    public List<ClienteRutinaDto> listarClienteRutinas();
 
-    public void guardar(ClienteRutina clienteRutina);
+    public int guardar(ClienteRutinaDto clienteRutinaDto);
 
-    public void eliminar(ClienteRutina clienteRutina);
+    public void eliminar(int id_clienteRutina);
 
-    public ClienteRutina encontrarClienteRutina(int id_clienteRutina);
+    public ClienteRutinaDto editarClienteRutina(int id, ClienteRutinaDto clienteRutinaDto);
 
-    public List<ClienteRutina> encontrarClientesRutina(int id_rutina);
+    public ClienteRutinaCompletoDto encontrarClienteRutina(int id_clienteRutina);
+
+
 }

@@ -1,17 +1,21 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.EntrenadorClienteDto;
+import server.bodyhealth.dto.MaquinaDto;
 import server.bodyhealth.entity.EntrenadorCliente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface EntrenadorClienteService {
-    public List<EntrenadorCliente> listarEntrenadoresClientes();
+    public List<EntrenadorClienteDto> listarEntrenadoresClientes();
 
-    public void guardar(EntrenadorCliente entrenadorCliente);
+    public int guardar(EntrenadorClienteDto entrenadorClienteDto);
 
-    public void eliminar(EntrenadorCliente entrenadorCliente);
+    public void eliminar(int id);
 
-    public EntrenadorCliente encontrarEntrenadorCliente(EntrenadorCliente entrenadorCliente);
+    public EntrenadorClienteDto encontrarEntrenadorCliente(int id);
+
+    public EntrenadorClienteDto editarEntrenadorCliente(int id, EntrenadorClienteDto entrenadorClienteDto);
 
 }

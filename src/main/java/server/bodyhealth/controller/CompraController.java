@@ -2,13 +2,16 @@ package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Compra;
-import server.bodyhealth.service.CompraService;
+import server.bodyhealth.dto.CompraDto;
 import server.bodyhealth.service.CompraService;
 
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @CrossOrigin
@@ -18,64 +21,54 @@ public class CompraController {
     @Autowired
     private CompraService compraService;
 
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/all")
-    public ResponseEntity<List<Compra>> listarCompras(){
-
-        List<Compra> compras = compraService.listarCompras();
-        if (!compras.isEmpty()) {
-            return ResponseEntity.ok(compras);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<?> listarCompras(){
+        response.clear();
+        response.put("compras",compraService.listarCompras());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_compra}")
-    public ResponseEntity<Compra> obtenerCompra(@PathVariable int id_compra) {
-        Compra compra = compraService.encontrarCompra(id_compra);
-        if (compra == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(compra);
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerCompraByID(@PathVariable int id) {
+        response.clear();
+        response.put("compra", compraService.encontrarCompra(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @PostMapping("/guardar")
-    public ResponseEntity<Compra> guardarCompra(@RequestBody Compra compra){
-        Compra compraExiste = compraService.encontrarCompra(compra.getId_compra());
-        if (compraExiste == null) {
-            compraService.guardar(compra);
-            return ResponseEntity.ok(compra);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarCompra(@Valid @RequestBody CompraDto compraDto){
+        response.clear();
+
+        int id_factura = compraService.guardar(compraDto);
+        response.put("message", "Compra guardada satisfactoriamente");
+        response.put("id_factura", id_factura);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_compra}")
-    public ResponseEntity<Compra> editarCompra(@PathVariable int id_compra, @RequestBody Compra compraActualizada) {
-        Compra compraExistente = compraService.encontrarCompra(id_compra);
-        if (compraExistente != null) {
 
-            compraExistente.setFecha_compra(compraActualizada.getFecha_compra());
-            compraExistente.setTotal(compraActualizada.getTotal());
-            compraExistente.setCliente(compraActualizada.getCliente());
-            compraExistente.setMetodoPago(compraActualizada.getMetodoPago());
-
-            compraService.guardar(compraExistente);
-
-            return ResponseEntity.ok(compraExistente);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarCompra(@PathVariable int id, @RequestBody CompraDto compraDto) {
+        response.clear();
+        CompraDto compra =  compraService.editarProveedor(id,compraDto);
+        response.put("message", "Compra actualizada satisfactoriamente");
+        response.put("compra", compra);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_compra}")
-    public ResponseEntity<Void> eliminarCompra(@PathVariable int id_compra) {
-        Compra compraExistente = compraService.encontrarCompra(id_compra);
-        if (compraExistente != null) {
-            compraService.eliminar(compraExistente);
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarCompra(@PathVariable int id) {
+        response.clear();
+        compraService.eliminar(id);
+        response.put("message", "Compra eliminada satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

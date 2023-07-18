@@ -1,20 +1,38 @@
 package server.bodyhealth.service;
 
+import org.springframework.web.multipart.MultipartFile;
+import server.bodyhealth.dto.ProductoCompletoDto;
 import server.bodyhealth.dto.ProductoDto;
+import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Producto;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 @Service
 public interface ProductoService {
     public List<ProductoDto> listarProductos();
 
+    public List<ProductoDto> listarProductosActivos();
+
+    public List<ProductoDto> listarProductosPorTipo(String tipo);
+
+    public List<ProductoDto> listarProductosActivosPorTipo(String tipo);
+
+
     public void guardar(ProductoDto productoDto);
 
-    public void eliminar(Producto producto);
+    public void eliminar(int id_producto);
 
-    public Producto encontrarProducto(int id_producto);
-    public List<Producto> listarActivos();
+    public ProductoCompletoDto encontrarProducto(int id_producto);
 
-    public List<Producto> listarDesactivados();
+    public ProductoDto editarProveedor(int id, ProductoDto productoDto);
+
+    public ProductoDto loadImage(ProductoDto productoDto) throws IOException;
+
+    public void desactivarProducto(int id);
+
+    public void activarProducto(int id);
+
+    public void restarStock(int id_producto,int cantidad);
 }

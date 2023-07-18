@@ -1,6 +1,7 @@
 package server.bodyhealth.service;
 
 import server.bodyhealth.dto.RutinaCompletaDto;
+import server.bodyhealth.dto.RutinaCompletaSinClienteDto;
 import server.bodyhealth.dto.RutinaDto;
 import server.bodyhealth.entity.Rutina;
 import org.springframework.stereotype.Service;
@@ -17,5 +18,7 @@ public interface RutinaService {
 
     public RutinaCompletaDto encontrarRutina(int id_rutina);
 
-    public void editarRutina(int id_rutina, RutinaDto rutinaDto);
+    public RutinaCompletaSinClienteDto encontrarRutinaConEjercicios(int id_rutina);
+
+    public RutinaDto editarRutina(int id_rutina, RutinaDto rutinaDto);
 }

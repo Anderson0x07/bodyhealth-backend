@@ -14,4 +14,14 @@ public interface ProductoRepository extends JpaRepository<Producto,Integer> {
             nativeQuery=true
     )
     List<Producto> findByEstado(@Param("estado") boolean estado);
+
+    List<Producto> findByTipo(String tipo);
+
+    @Query(
+            value = "SELECT * from producto e where e.estado = 1 and e.tipo = :tipo",
+            nativeQuery=true
+    )
+    List<Producto> findActivosByTipo(@Param("tipo") String tipo);
+
+
 }

@@ -2,10 +2,12 @@ package server.bodyhealth.implement;
 
 import org.springframework.transaction.annotation.Transactional;
 import server.bodyhealth.dto.RutinaCompletaDto;
+import server.bodyhealth.dto.RutinaCompletaSinClienteDto;
 import server.bodyhealth.dto.RutinaDto;
 import server.bodyhealth.entity.Rutina;
 import server.bodyhealth.exception.NotFoundException;
 import server.bodyhealth.mapper.RutinaCompletaMapper;
+import server.bodyhealth.mapper.RutinaCompletaSinClienteMapper;
 import server.bodyhealth.mapper.RutinaMapper;
 import server.bodyhealth.repository.RutinaRepository;
 import server.bodyhealth.service.RutinaService;
@@ -30,6 +32,9 @@ public class RutinaImplement implements RutinaService {
 
     @Autowired
     RutinaCompletaMapper rutinaCompletaMapper;
+
+    @Autowired
+    private RutinaCompletaSinClienteMapper rutinaCompletaSinClienteMapper;
     @Override
     public List<RutinaDto> listarRutina() {
 
@@ -70,13 +75,21 @@ public class RutinaImplement implements RutinaService {
         ));
     }
 
+    @Override
+    public RutinaCompletaSinClienteDto encontrarRutinaConEjercicios(int id_rutina) {
+        return rutinaCompletaSinClienteMapper.toDto(rutinaRepository.findById(id_rutina).orElseThrow(
+                () -> new NotFoundException(messageUtil.getMessage("rutinaNotFound",null, Locale.getDefault()))
+        ));
+    }
+
     @Transactional
     @Override
-    public void editarRutina(int id_rutina, RutinaDto rutinaDto) {
+    public RutinaDto editarRutina(int id_rutina, RutinaDto rutinaDto) {
         Rutina rutina = rutinaRepository.findById(id_rutina).orElseThrow(
                 () -> new NotFoundException(messageUtil.getMessage("rutinaNotFound",null, Locale.getDefault()))
         );
         rutinaMapper.updateEntity(rutinaDto, rutina);
         rutinaRepository.save(rutina);
+        return rutinaMapper.toDto(rutina);
     }
 }

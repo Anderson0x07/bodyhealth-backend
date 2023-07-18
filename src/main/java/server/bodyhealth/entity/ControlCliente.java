@@ -17,7 +17,7 @@ public class ControlCliente implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
+    private Usuario cliente;
 
     private double peso;
 

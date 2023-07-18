@@ -4,15 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import server.bodyhealth.dto.ProductoDto;
-import server.bodyhealth.entity.Producto;
-import server.bodyhealth.entity.Producto;
-import server.bodyhealth.service.ProductoService;
 import server.bodyhealth.service.ProductoService;
 
+
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -28,9 +28,8 @@ public class ProductoController {
 
     private Map<String,Object> response = new HashMap<>();
 
-    /*@Autowired
-    private StorageService service;*/
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
     @GetMapping("/all")
     public ResponseEntity<?> listarProductos(){
         response.clear();
@@ -38,66 +37,94 @@ public class ProductoController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_producto}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable int id_producto) {
-        Producto producto = productoService.encontrarProducto(id_producto);
-        if (producto == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(producto);
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/activos")
+    public ResponseEntity<?> listarProductosActivos(){
+        response.clear();
+        response.put("productos",productoService.listarProductosActivos());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @PostMapping("/guardar")
-    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto /*,@RequestParam("file") MultipartFile imagen*/){
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/filtro/{tipo}")
+    public ResponseEntity<?> listarProductosFiltro(@PathVariable String tipo){
         response.clear();
-        productoService.guardar(productoDto);
+        response.put("productos",productoService.listarProductosPorTipo(tipo));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @GetMapping("/filtro/activos/{tipo}")
+    public ResponseEntity<?> listarProductosActivosFiltro(@PathVariable String tipo){
+        response.clear();
+        response.put("productos",productoService.listarProductosActivosPorTipo(tipo));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id_producto}")
+    public ResponseEntity<?> obtenerProducto(@PathVariable int id_producto) {
+        response.clear();
+        response.put("producto", productoService.encontrarProducto(id_producto));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardarProducto(@Valid @RequestBody ProductoDto productoDto) throws IOException {
+        response.clear();
+        ProductoDto productoDto1 = productoService.loadImage(productoDto);
+        productoService.guardar(productoDto1);
         response.put("message","Producto guardado satisfactoriamente");
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/editar/{id_producto}")
+    public ResponseEntity<?> editarProducto(@PathVariable int id_producto,@Valid @RequestBody ProductoDto productoDto) throws IOException {
+        response.clear();
+        ProductoDto productoDto1 = productoService.loadImage(productoDto);
+        ProductoDto product = productoService.editarProveedor(id_producto,productoDto1);
+        response.put("message", "Producto actualizada satisfactoriamente");
+        response.put("producto", product);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-//    @PutMapping("/editar/{id_producto}")
-//    public ResponseEntity<Producto> editarProducto(@PathVariable int id_producto, @RequestBody Producto productoActualizado/*, @RequestParam("file") MultipartFile imagen*/) {
-//
-//        Producto productoExistente = productoService.encontrarProducto(id_producto);
-//
-//        if (productoExistente != null) {
-//
-//            productoExistente.setEstado(productoActualizado.isEstado());
-//            productoExistente.setNombre(productoActualizado.getNombre());
-//            productoExistente.setPrecio(productoActualizado.getPrecio());
-//            productoExistente.setStock(productoActualizado.getStock());
-//            productoExistente.setProveedor(productoActualizado.getProveedor());
-//
-//            /*ACTUALIZAR IMAGEN
-//            if(!imagen.isEmpty()){
-//                storageService.uploadFile(imagen);
-//                productoExistente.setFoto(imagen.getOriginalFilename());
-//            }else{
-//                productoExistente.setFoto(productoActualizado.getFoto());
-//            }*/
-//
-//            productoExistente.setFoto(productoActualizado.getFoto());
-//
-//            productoService.guardar(productoExistente);
-//            return ResponseEntity.ok(productoExistente);
-//        } else {
-//            return ResponseEntity.notFound().build();
-//        }
-//    }
-
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id_producto}")
-    public ResponseEntity<Void> eliminarProducto(@PathVariable int id_producto) {
+    public ResponseEntity<?> eliminarProducto(@PathVariable int id_producto) {
 
-        Producto productoExistente = productoService.encontrarProducto(id_producto);
+        response.clear();
+        productoService.eliminar(id_producto);
+        response.put("message","Producto eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-        if (productoExistente != null) {
-            productoService.eliminar(productoExistente);
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/desactivar/{id}")
+    public ResponseEntity<?> desactivarProducto(@PathVariable int id){
+        response.clear();
+        productoService.desactivarProducto(id);
+        response.put("message","Producto desactivado.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/activar/{id}")
+    public ResponseEntity<?> activarProducto(@PathVariable int id){
+        response.clear();
+        productoService.activarProducto(id);
+        response.put("message","Producto activado.");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_CLIENTE')")
+    @PutMapping("/compra/{id_producto}/{cantidad}")
+    public ResponseEntity<?> editarStock(@PathVariable int id_producto, @PathVariable int cantidad) {
+        response.clear();
+
+        productoService.restarStock(id_producto,cantidad);
+        response.put("message", "Stock actualizado");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

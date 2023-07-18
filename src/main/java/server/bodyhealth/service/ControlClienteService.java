@@ -1,16 +1,20 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.ControlClienteDto;
+import server.bodyhealth.dto.EjercicioDto;
 import server.bodyhealth.entity.ControlCliente;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface ControlClienteService{
-    public List<ControlCliente> listarContolClientes();
+    public List<ControlClienteDto> listarContolClientes();
 
-    public void guardar(ControlCliente controlCliente);
+    public int guardar(ControlClienteDto controlClienteDto);
 
-    public void eliminar(ControlCliente controlCliente);
+    public void eliminar(int id);
 
-    public ControlCliente encontrarControlCliente(int id_controlCliente);
+    public ControlClienteDto encontrarControlCliente(int id_controlCliente);
+
+    public ControlClienteDto editarControlCliente(int id, ControlClienteDto controlClienteDto);
 }

@@ -3,9 +3,7 @@ package server.bodyhealth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.bodyhealth.entity.Proveedor;
 
-import javax.persistence.*;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 
@@ -28,6 +26,8 @@ public class ProductoDto {
     private  String foto;
 
     private boolean estado;
+
+    private String tipo;
 
     private ProveedorDto proveedor;
 }

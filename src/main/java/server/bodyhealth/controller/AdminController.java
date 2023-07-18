@@ -1,55 +1,117 @@
 package server.bodyhealth.controller;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Administrador;
-import server.bodyhealth.service.UsuarioService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import server.bodyhealth.dto.AdminDto;
+import server.bodyhealth.dto.VerifyTokenRequestDto;
+import server.bodyhealth.service.AdminService;
+import server.bodyhealth.service.EmailService;
 
 import javax.validation.Valid;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/admin")
+@CrossOrigin
 @Slf4j
 public class AdminController {
+
     @Autowired
-    private UsuarioService usuarioService;
+    private AdminService adminService;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    //M I P E R F I L
-    @GetMapping("/admin/mi-perfil/{prueba}")
-    public ResponseEntity<Administrador> perfilAdmin(@PathVariable String prueba){
-        Administrador administrador = usuarioService.encontrarAdminEmail(prueba);
-        if (administrador == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(administrador);
+    @Autowired
+    private EmailService emailService;
+
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/all")
+    public ResponseEntity<?> listarAdministradores(){
+        response.clear();
+        response.put("administradores",adminService.listarAdmins());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/mi-perfil/{id_admin}")
+    public ResponseEntity<?> perfilAdmin(@PathVariable int id_admin){
+        response.clear();
+        response.put("admin", adminService.encontrarAdmin(id_admin));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-    @PutMapping("/admin/perfil/editar")
-    public ResponseEntity<Administrador> editarPerfil(@Valid @RequestBody Administrador administradorActualizado) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/guardar")
+    public ResponseEntity<?> guardarAdministrador(@Valid @RequestBody AdminDto adminDto) throws IOException {
+        response.clear();
+        AdminDto adminDto1 = adminService.loadImage(adminDto);
+        adminDto.setPassword(bCryptPasswordEncoder.encode(adminDto1.getPassword()));
+        adminService.guardar(adminDto1);
+        emailService.emailRegistro(adminDto.getEmail(),adminDto.getNombre(),adminDto.getDocumento());
+        response.put("message", "Administrador guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 
-        Administrador administradorExistente = usuarioService.encontrarAdminEmail(administradorActualizado.getEmail());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarAdministrador(@PathVariable int id,@RequestBody AdminDto adminDto) throws IOException {
+        response.clear();
+        AdminDto adminDto1 = adminService.loadImage(adminDto);
+        AdminDto admin = adminService.editarAdmin(id,adminDto1);
+        response.put("message", "Administrador actualizado satisfactoriamente");
+        response.put("admin", admin);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-        if (administradorExistente != null) {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarAdministrador(@PathVariable int id) {
+        response.clear();
+        adminService.eliminar(id);
+        response.put("message", "Administrador eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
 
-            administradorExistente.setNombre(administradorActualizado.getNombre());
-            administradorExistente.setApellido(administradorActualizado.getApellido());
-            administradorExistente.setDocumento(administradorActualizado.getDocumento());
-            administradorExistente.setEmail(administradorActualizado.getEmail());
-            administradorExistente.setTipo_documento(administradorActualizado.getTipo_documento());
-            administradorExistente.setPassword(administradorActualizado.getPassword());
-            administradorExistente.setFecha_nacimiento(administradorActualizado.getFecha_nacimiento());
-            administradorExistente.setTelefono(administradorActualizado.getTelefono());
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerAdminByID(@PathVariable int id) {
+        response.clear();
+        response.put("admin", adminService.encontrarAdmin(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-            usuarioService.guardar(administradorExistente);
-            // Devolver una respuesta exitosa con el admin actualizado
-            return ResponseEntity.ok(administradorExistente);
-        } else {
-            // Devolver una respuesta de error si el admin no existe
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PostMapping("/restablecer-password/{id}")
+    public ResponseEntity<?> restablecerPassword(@PathVariable int id) throws Exception {
+        response.clear();
+        adminService.enviarTokenPassword(id);
+        response.put("message", "Se envió el token al correo");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/verificar-token")
+    public ResponseEntity<?> verifyToken(@RequestBody VerifyTokenRequestDto verifyTokenRequestDto) throws Exception {
+        response.clear();
+        adminService.verificarToken(verifyTokenRequestDto);
+        response.put("message", "Password actualizada satisfactoriamente.");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("/info/{id}")
+    public ResponseEntity<?> infoAdmin(@PathVariable int id){
+        response.clear();
+        response.put("informacion", adminService.infoAdmin(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }

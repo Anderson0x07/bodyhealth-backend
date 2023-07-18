@@ -1,16 +1,21 @@
 package server.bodyhealth.service;
 
+import server.bodyhealth.dto.CompraCompletoDto;
+import server.bodyhealth.dto.CompraDto;
+import server.bodyhealth.dto.ProveedorDto;
 import server.bodyhealth.entity.Compra;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
 public interface CompraService{
-    public List<Compra> listarCompras();
+    public List<CompraDto> listarCompras();
 
-    public void guardar(Compra compra);
+    public int guardar(CompraDto compraDto);
 
-    public void eliminar(Compra compra);
+    public void eliminar(int id);
 
-    public Compra encontrarCompra(int id_compra);
+    public CompraCompletoDto encontrarCompra(int id_compra);
+
+    public CompraDto editarProveedor(int id, CompraDto compraDto);
 }

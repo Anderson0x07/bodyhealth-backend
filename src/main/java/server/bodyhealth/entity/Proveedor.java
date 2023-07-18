@@ -1,4 +1,5 @@
 package server.bodyhealth.entity;
+
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 

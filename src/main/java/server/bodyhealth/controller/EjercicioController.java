@@ -1,15 +1,16 @@
 package server.bodyhealth.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import server.bodyhealth.entity.Ejercicio;
-import server.bodyhealth.entity.Rutina;
+import server.bodyhealth.dto.EjercicioDto;
 import server.bodyhealth.service.EjercicioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
-
-import java.util.List;
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/ejercicio")
@@ -18,70 +19,57 @@ import java.util.List;
 public class EjercicioController {
     @Autowired
     private EjercicioService ejercicioService;
+    private Map<String,Object> response = new HashMap<>();
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @GetMapping("/all")
-    public ResponseEntity<List<Ejercicio>> listarEjercicios(){
-
-        List<Ejercicio> ejercicios = ejercicioService.listarEjercicios();
-        if (!ejercicios.isEmpty()) {
-            return ResponseEntity.ok(ejercicios);
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<?> listarEjercicios(){
+        response.clear();
+        response.put("ejercicios", ejercicioService.listarEjercicios());
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @GetMapping("/{id_ejercicio}")
-    public ResponseEntity<Ejercicio> obtenerEjercicio(@PathVariable int id_ejercicio) {
-        Ejercicio ejercicio = ejercicioService.encontrarEjercicio(id_ejercicio);
-        if (ejercicio == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(ejercicio);
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/filtro/{id}")
+    public ResponseEntity<?> listarEjerciciosFiltro(@PathVariable int id){
+        response.clear();
+        response.put("ejercicios", ejercicioService.listarEjerciciosFiltro(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<?> obtenerEjercicio(@PathVariable int id) {
+        response.clear();
+        response.put("ejercicio", ejercicioService.encontrarEjercicio(id));
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
     @PostMapping("/guardar")
-    public ResponseEntity<Ejercicio> guardarEjercicio(@RequestBody Ejercicio ejercicio){
-
-        Ejercicio ejercicioExiste = ejercicioService.encontrarEjercicio(ejercicio.getId_ejercicio());
-        if (ejercicioExiste == null) {
-            ejercicioService.guardar(ejercicio);
-            return ResponseEntity.ok(ejercicio);
-        } else {
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<?> guardarEjercicio(@Valid @RequestBody EjercicioDto ejercicioDto){
+        response.clear();
+        ejercicioService.guardar(ejercicioDto);
+        response.put("message", "Ejercicio guardado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    @PutMapping("/editar/{id_ejercicio}")
-    public ResponseEntity<Ejercicio> actualizarEjercicio(@PathVariable int id_ejercicio, @RequestBody Ejercicio ejercicioActualizado) {
-        Ejercicio ejercicioExistente = ejercicioService.encontrarEjercicio(id_ejercicio);
-        if (ejercicioExistente != null) {
-            // Actualizar el producto existente con los nuevos datos
-            ejercicioExistente.setDescripcion(ejercicioActualizado.getDescripcion());
-            ejercicioExistente.setRepeticiones(ejercicioActualizado.getRepeticiones());
-            ejercicioExistente.setSeries(ejercicioActualizado.getSeries());
-            ejercicioExistente.setUrl_video(ejercicioActualizado.getUrl_video());
-            ejercicioExistente.setMusculo(ejercicioActualizado.getMusculo());
-
-            ejercicioService.guardar(ejercicioExistente);
-            // Devolver una respuesta exitosa con el producto actualizado
-            return ResponseEntity.ok(ejercicioExistente);
-        } else {
-            // Devolver una respuesta de error si el producto no existe
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @PutMapping("/editar/{id}")
+    public ResponseEntity<?> editarEjercicio(@PathVariable int id, @RequestBody EjercicioDto ejercicioDto) {
+        response.clear();
+        EjercicioDto ejercicio = ejercicioService.editarEjercicio(id, ejercicioDto);
+        response.put("message", "Ejercicio actualizado satisfactoriamente");
+        response.put("ejercicio", ejercicio);
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @DeleteMapping("/eliminar/{id_ejercicio}")
-    public ResponseEntity<Void> eliminarEjercicio(@PathVariable int id_ejercicio) {
-        Ejercicio ejercicioExistente = ejercicioService.encontrarEjercicio(id_ejercicio);
-        if (ejercicioExistente != null) {
-            // Eliminar el producto existente
-            ejercicioService.eliminar(ejercicioExistente);
-
-            // Devolver una respuesta exitosa sin cuerpo
-            return ResponseEntity.noContent().build();
-        } else {
-            // Devolver una respuesta de error si el producto no existe
-            return ResponseEntity.notFound().build();
-        }
+    @PreAuthorize("hasRole('ROLE_ADMIN') OR hasRole('ROLE_TRAINER')")
+    @DeleteMapping("/eliminar/{id}")
+    public ResponseEntity<?> eliminarEjercicio(@PathVariable int id) {
+        response.clear();
+        ejercicioService.eliminar(id);
+        response.put("message", "Ejercicio eliminado satisfactoriamente");
+        return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 }

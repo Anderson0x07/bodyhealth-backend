@@ -3,7 +3,6 @@ package server.bodyhealth.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import server.bodyhealth.entity.ClienteDetalle;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 import java.util.ArrayList;
@@ -22,5 +21,5 @@ public class PlanCompletoDto {
     @Positive
     private int meses;
 
-    private List<ClienteDetalle> clienteDetalles = new ArrayList<>();
+    private List<ClienteDetalleDto> clienteDetalles = new ArrayList<>();
 }

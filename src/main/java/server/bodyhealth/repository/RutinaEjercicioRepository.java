@@ -13,6 +13,6 @@ public interface RutinaEjercicioRepository extends JpaRepository<server.bodyheal
             value = "SELECT * FROM rutina_ejercicio re where re.id_rutina = :id_rutina",
             nativeQuery=true
     )
-    List<RutinaEjercicio> encontrarRutinaEjercicios(@Param("id_rutina") int id_rutina);
+    List<RutinaEjercicio> encontrarRutinaEjerciciosByRutina(@Param("id_rutina") int id_rutina);
 
 }

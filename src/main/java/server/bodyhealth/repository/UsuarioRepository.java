@@ -1,84 +1,57 @@
 package server.bodyhealth.repository;
 
-import server.bodyhealth.entity.Administrador;
-import server.bodyhealth.entity.Cliente;
-import server.bodyhealth.entity.Entrenador;
+
+import org.springframework.data.jpa.repository.Query;
+import server.bodyhealth.entity.Rol;
 import server.bodyhealth.entity.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
+
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 
 public interface UsuarioRepository extends JpaRepository<Usuario,Integer> {
 
-    //Usuario findByEmail(String email);
+    @Query(
+            value = "SELECT * FROM usuario u where u.email = :email",
+            nativeQuery = true
+    )
+    Optional<Usuario> findByEmail(String email);
+
+    Optional<Usuario> findByDocumento(int documento);
 
     @Query(
-            value = "SELECT * from usuario u where u.rol = 'ADMIN' and u.email = :email",
+            value = "SELECT rol.* FROM rol " +
+                    "JOIN usuario ON rol.id_rol = usuario.id_rol " +
+                    "WHERE usuario.id_usuario = :id_usuario;",
             nativeQuery=true
     )
-    Usuario findByRolAdmin(@Param("email") String email);
+    Optional<Rol> findRolById(int id_usuario);
+
 
     @Query(
-            value = "SELECT * from usuario u where u.rol = 'CLIENTE' and u.email = :email",
+        value = "SELECT * FROM usuario u where u.id_usuario = :id_usuario",
+        nativeQuery=true
+    )
+    Usuario findById_usuario(int id_usuario);
+
+
+    //Usuario findById_usuario(int id);
+
+    List<Usuario> findAll();
+
+    @Query(
+            value = "SELECT * FROM usuario u where u.id_rol = :id_rol",
             nativeQuery=true
     )
-    Usuario findByRolCliente(@Param("email") String email);
+    List<Usuario> findAllByRol(int id_rol);
 
     @Query(
-            value = "SELECT * from usuario u where u.rol = 'TRAINER' and u.email = :email",
+            value = "SELECT * FROM usuario u where u.id_rol = :id_rol and u.jornada = :jornada",
             nativeQuery=true
     )
-    Usuario findByRolTrainer(@Param("email") String email);
+    List<Usuario> findAllByRolAndJornada(int id_rol, String jornada);
 
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'CLIENTE' and u.estado=1",
-            nativeQuery = true
-    )
-    List<Cliente> findClientesActivos();
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'CLIENTE' and u.estado=0",
-            nativeQuery = true
-    )
-    List<Cliente> findClientesDesactivados();
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'TRAINER' and u.estado=1",
-            nativeQuery = true
-    )
-    List<Entrenador> findEntrenadoresActivos();
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'TRAINER' and u.estado=0",
-            nativeQuery = true
-    )
-    List<Entrenador> findEntrenadoresDesactivados();
-
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'TRAINER' and u.estado=1 and u.jornada=:jornada",
-            nativeQuery = true
-    )
-    List<Entrenador> entrenadoresJornada(@Param("jornada") String jornada);
-
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'ADMIN' and u.email=:email",
-            nativeQuery = true
-    )
-    Administrador encontrarAdminEmail(@Param("email") String email);
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'TRAINER' and u.email=:email",
-            nativeQuery = true
-    )
-    Entrenador encontrarTrainerEmail(@Param("email") String email);
-
-    @Query(
-            value = "SELECT * from usuario u where u.rol = 'CLIENTE' and u.email=:email",
-            nativeQuery = true
-    )
-    Cliente encontrarClienteEmail(@Param("email") String email);
 
 }
