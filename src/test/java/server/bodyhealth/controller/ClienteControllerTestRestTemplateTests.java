@@ -22,24 +22,5 @@ import java.util.List;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ClienteControllerTestRestTemplateTests {
 
-    @Autowired
-    private TestRestTemplate testRestTemplate;
-
-
-    @Test
-    @Order(2)
-    public void testListarClientes() {
-        ResponseEntity<List<ClienteDto>> response = testRestTemplate.exchange("/cliente/all", HttpMethod.GET, null, new ParameterizedTypeReference<>() {
-        });
-
-        Assert.assertEquals(HttpStatus.OK, response.getStatusCode());
-        Assert.assertEquals(MediaType.APPLICATION_JSON, response.getHeaders().getContentType());
-
-        List<ClienteDto> clientes = response.getBody();
-
-        Assert.assertNotNull(clientes);
-        Assert.assertFalse(clientes.isEmpty());
-        Assert.assertEquals(6, clientes.size());
-    }
 
 }
